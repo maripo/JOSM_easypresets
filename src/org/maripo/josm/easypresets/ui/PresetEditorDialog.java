@@ -245,7 +245,6 @@ public class PresetEditorDialog extends ExtendedDialog {
 			uiInclude.setSelected(true);
 			uiKeyFixed.setText(key);
 			
-			// TODO add options if multiple values are found
 			if (map.size() > 0) {
 				Iterator<String> ite = map.keySet().iterator();
 				this.uiValue.setText(ite.next());
@@ -271,6 +270,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 				Text text = (Text)item;
 				key = text.key;
 				uiValue.setText(text.default_);
+				uiEditable.setSelected(true);
 			}
 			uiKeyFixed.setText(key);
 		}
