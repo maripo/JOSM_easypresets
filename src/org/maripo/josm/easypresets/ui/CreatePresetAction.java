@@ -84,6 +84,7 @@ public class CreatePresetAction extends JosmAction {
 			}
 		}
 		return allTags;
+	
 	}
 
 	private void incrementKeyValueCount(Map<String, Map<String, Integer>> allTags, 

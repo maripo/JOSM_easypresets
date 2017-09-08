@@ -183,7 +183,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		}
 
 		public TaggingPresetItem getTaggingPresetItem() {
-			if (!uiInclude.isSelected() || !getKey().isEmpty()) {
+			if (!uiInclude.isSelected() || getKey().isEmpty()) {
 				return null;
 			}
 			if (uiEditable.isSelected()) {
@@ -344,7 +344,6 @@ public class PresetEditorDialog extends ExtendedDialog {
 	private TaggingPreset createPreset () {
 		TaggingPreset preset = new TaggingPreset();
 		preset.name = uiPresetName.getText();
-		preset.locale_name = uiPresetName.getText();
 
 		// Add "Label"
 		Label label = new Label();
