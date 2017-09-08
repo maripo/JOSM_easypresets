@@ -11,19 +11,19 @@
 ** Call "ant help" to get possible build targets.
 **
 -->
-<project name="EasyPreset" default="dist" basedir=".">
+<project name="EasyPresets" default="dist" basedir=".">
 
     <!-- enter the SVN commit message -->
     <property name="commit.message" value="Commit message"/>
     <!-- enter the *lowest* JOSM version this plugin is currently compatible with -->
-    <property name="plugin.main.version" value="12545"/>
+    <property name="plugin.main.version" value="12712"/>
 
     <!-- Configure these properties (replace "..." accordingly).
          See https://josm.openstreetmap.de/wiki/DevelopersGuide/DevelopingPlugins
     -->
     <property name="plugin.author" value="Maripo GODA"/>
     <property name="plugin.class" value="org.maripo.josm.easypresets.EasyPresetsPlugin"/>
-    <property name="plugin.description" value="Help you create and use custom presets"/>
+    <property name="plugin.description" value="EasyPresets plugin helps you create and use custom presets"/>
     
     <property name="plugin.icon" value="images/easypresets.png"/>
     <property name="plugin.link" value="https://github.com/maripo/JOSM_easypresets"/>
