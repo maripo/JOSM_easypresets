@@ -13,10 +13,7 @@ public class ManagePresetsAction extends JosmAction {
 	public ManagePresetsAction () {
         super(tr("Manage custom presets"), "easypresets.png",
                 tr("List, Update Or Delete Custom Presets"),
-                Shortcut.registerShortcut(
-                        "tools:easy_presets", tr("Tool: {0}", tr("Manage Custom Presets")), 
-                        KeyEvent.VK_F2,
-                        Shortcut.ALT_CTRL_SHIFT), true);
+                null, true);
 		
 	}
 	@Override
