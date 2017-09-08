@@ -22,6 +22,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.gui.JosmUserIdentityManager;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
@@ -89,7 +90,7 @@ public class EasyPresets {
 		TaggingPresets.addTaggingPresets(toAdd);
 	}
 
-	public boolean save() {
+	public void saveTo(File file) {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -97,6 +98,7 @@ public class EasyPresets {
 			Document doc = docBuilder.newDocument();
 			Element rootElement = doc.createElement("presets");
 			rootElement.setAttribute("xmlns", "http://josm.openstreetmap.de/tagging-preset-1.0");
+			rootElement.setAttribute("author", JosmUserIdentityManager.getInstance().getUserName());
 			doc.appendChild(rootElement);
 			for (TaggingPreset preset: presets) {
 				Element presetElement = createpresetElement(doc, preset);
@@ -109,7 +111,7 @@ public class EasyPresets {
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 			DOMSource source = new DOMSource(doc);
 			// Write to local XML
-			StreamResult result = new StreamResult(new File(EasyPresets.getInstance().getXMLPath()));
+			StreamResult result = new StreamResult(file);
 			transformer.transform(source, result);
 			
 		} catch (ParserConfigurationException e) {
@@ -120,7 +122,11 @@ public class EasyPresets {
 			e.printStackTrace();
 		}
 		updatePresetListMenu();
-		return true;
+		
+	}
+
+	public void save() {
+		saveTo(new File(EasyPresets.getInstance().getXMLPath()));
 	}
 	
 	private void updatePresetListMenu() {

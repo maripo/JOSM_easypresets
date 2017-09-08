@@ -4,11 +4,14 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -17,9 +20,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.actions.ExtensionFileFilter;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
@@ -63,6 +69,18 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		list = new JList(EasyPresets.getInstance().getPresets().toArray());
 		list.setCellRenderer(new PresetRenderer());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
+		
+
+
+		final JButton exportButton = new JButton(tr("Export"));
+		exportButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				export();
+			}
+		});
+		mainPane.add(exportButton, GBC.eol().anchor(GridBagConstraints.EAST));
+		
 		mainPane.add(list, GBC.eol().fill(GBC.HORIZONTAL));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addListSelectionListener(this);
@@ -99,6 +117,16 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		setContent(mainPane);
 	}
 
+	private void export() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle(tr("Save Presets"));
+        chooser.setFileFilter(new FileNameExtensionFilter("XML File", "xml"));
+        int returnVal = chooser.showSaveDialog(this);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+        	EasyPresets.getInstance().saveTo(chooser.getSelectedFile());
+        }
+	}
+			
 	protected void edit() {
 		// Open 
 		if (selectedPreset!=null) {
