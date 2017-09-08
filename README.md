@@ -21,6 +21,11 @@ Your custom presets can be exported to local XML files.
 * You can edit, delete and export data by "Presets > Manage custom presets" menu.
 * Exported XML files are compatible with JOSM preset files. If you want to share your cool presets with other users, please refer to official document because only a few tags and attributes are included. https://josm.openstreetmap.de/wiki/TaggingPresets
 
-## その他
+## Misc
 * This plugin stores the data to "EasyPresets.xml" in your JOSM user directory.
 * It is now under development and has only basic functionalities. I am plannning to implement more functionalities such as grouping, sorting and support of various preset types. 
+
+## TODO
+* Grouping
+* Sorting
+* Localization
