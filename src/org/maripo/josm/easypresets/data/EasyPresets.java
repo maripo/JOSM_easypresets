@@ -102,6 +102,9 @@ public class EasyPresets {
 			Element rootElement = doc.createElement("presets");
 			rootElement.setAttribute("xmlns", "http://josm.openstreetmap.de/tagging-preset-1.0");
 			rootElement.setAttribute("author", JosmUserIdentityManager.getInstance().getUserName());
+			rootElement.setAttribute("version", "");
+			rootElement.setAttribute("description", "");
+			rootElement.setAttribute("shortdescription", "");
 			doc.appendChild(rootElement);
 			rootElement.appendChild(doc.createComment(getComment()));
 			for (TaggingPreset preset: presets) {

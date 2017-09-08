@@ -1,22 +1,26 @@
 # JOSM EasyPresets Plugin
 
-簡単にプリセットを作って使用することができます。このプラグインは "プリセット" メニューに新しいメニューを追加します。
-また、JOSMのプリセットとして使うことのできるXMLをエクスポートすることが可能です。
-サポートしているのはプリセットファイル仕様の一部ですが、配布用プリセットの作成が少し楽になります。
+EasyPresets plugin helps you create and use custom presets.
+You can easily create presets according to selected objects. 
+Some functionalities will be added to "Preset" menu.
 
-## プリセットを作成する
-* 元にしたいノードやウェイを選択した状態で "Create Preset" を選択します。
-* プリセット作成ダイアログが開きます。不要なタグは "Use" 欄にチェックに入れればプリセットに含まれません。
-* このプラグインは2通りのタグ設定をサポートしています。"Editable" にチェックを入れれば編集可能なテキストボックスに、チェックを入れなければキーと値のペアが自動で入るようになります。
-* 作成したプリセットは後で編集することができます。
+Your custom presets can be exported to local XML files.
 
-## 作ったプリセットを使う
-* 作成したプリセットは一般のプリセットと同様に使用することができます。検索の対象にもなります。
-* 作成したプリセットはすべて "プリセット > Custom presets" メニューに表示されます。
+## Create Presets
+* Select nodes or ways and click "Presets > Create Preset" menu. It shows a dialog containing tags extracted from the selection.
+* If you want to exclude some of listed tags, please uncheck "Use" checkboxes.
+* This plugin supports two types of tags. Check "Editable" checkbox if you want to make the value editable. If  the checkbox is not checked, the tag will be added as a fixed key-value pair.  
+* You can select target types such as nodes, ways and multipolygons.
 
-## プリセットを管理する
-* "プリセット > Manage custom presets" メニューを選ぶと、プリセットを編集・削除・エクスポートできます。 
+## Use Presets
+* You can use custom preset in the same manner as normal presets.
+* Your custom presets can be found in "Presets > Custom Presets" menu in the toolbar.
+* Custom presets can also be found by "Search presets" (F3) dialog.
+
+## Manage Presets
+* You can edit, delete and export data by "Presets > Manage custom presets" menu.
+* Exported XML files are compatible with JOSM preset files. If you want to share your cool presets with other users, please refer to official document because only a few tags and attributes are included. https://josm.openstreetmap.de/wiki/TaggingPresets
 
 ## その他
-* このプラグインは作成したカスタムプリセットをJOSMのユーザデータディレクトリに "EasyPresets.xml" というファイル名で保存します。
-* 作成したプリセットのソートやグループ分けは今のところサポートしておりませんが、今後サポート予定です。
+* This plugin stores the data to "EasyPresets.xml" in your JOSM user directory.
+* It is now under development and has only basic functionalities. I am plannning to implement more functionalities such as grouping, sorting and support of various preset types. 

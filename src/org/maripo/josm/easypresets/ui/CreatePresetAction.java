@@ -28,7 +28,7 @@ public class CreatePresetAction extends JosmAction {
         super(tr("Create Preset"), "easypresets.png",
                 tr("Create or edit your custom preset based on tags from the current selection"),
                 Shortcut.registerShortcut(
-                        "tools:easy_presets", tr("Tool: {0}", tr("Create Preset")), 
+                        "tools:easy_presets_create", tr("Tool: {0}", tr("Create Preset")), 
                         KeyEvent.VK_F3,
                         Shortcut.ALT_CTRL_SHIFT), true);
 	}
@@ -42,7 +42,7 @@ public class CreatePresetAction extends JosmAction {
         }
         Collection<OsmPrimitive> selected = layer.data.getSelected();
         if (selected==null || selected.isEmpty()) {
-        	debugDialog("Selection is null");
+        	debugDialog("Selection is empty. EasyPresets creates new presets based on selected nodes or ways.");
         	return;
         }
         Map<String, Map<String, Integer>> tagMap = findTagsFromSelection(selected);
@@ -102,7 +102,7 @@ public class CreatePresetAction extends JosmAction {
 	}
 
 	private void debugDialog(String string) {
-        final ExtendedDialog dialog = new ExtendedDialog(Main.parent, "Alert", "OK")
+        final ExtendedDialog dialog = new ExtendedDialog(Main.parent, "EasyPresets", "OK")
         		.setContent(string);
         dialog.showDialog();
 	}
