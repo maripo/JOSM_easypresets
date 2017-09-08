@@ -29,7 +29,7 @@ public class CreatePresetAction extends JosmAction {
                 tr("Create or edit your custom preset based on tags from the current selection"),
                 Shortcut.registerShortcut(
                         "tools:easy_presets", tr("Tool: {0}", tr("Create Preset")), 
-                        KeyEvent.VK_1,
+                        KeyEvent.VK_F3,
                         Shortcut.ALT_CTRL_SHIFT), true);
 	}
 	
