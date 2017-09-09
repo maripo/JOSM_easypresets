@@ -2,6 +2,7 @@ package org.maripo.josm.easypresets.ui;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -92,6 +93,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		initUI();
 	}
 	JPanel listPane;
+	JLabel errorMessageLabel;
 	private void initUI() {
 		targetTypes.add(new TargetType(TaggingPresetType.NODE));
 		targetTypes.add(new TargetType(TaggingPresetType.WAY));
@@ -154,7 +156,9 @@ public class PresetEditorDialog extends ExtendedDialog {
 			}
 		});
 
-        //mainPane.add(uiXML, GBC.eol());
+        errorMessageLabel = new JLabel();
+        errorMessageLabel.setForeground(Color.RED);
+        mainPane.add(errorMessageLabel, GBC.eol().fill());
         mainPane.add(saveButton);
         mainPane.add(cancelButton, GBC.eol());
         setContent(mainPane);
@@ -303,6 +307,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	}
 
 	protected void save () {
+		errorMessageLabel.setText("");
 		TaggingPreset newPreset = createPreset();
 		if (newPreset!=null) {
 			EasyPresets.getInstance().add(newPreset);
@@ -343,17 +348,28 @@ public class PresetEditorDialog extends ExtendedDialog {
 	 */
 	private TaggingPreset createPreset () {
 		TaggingPreset preset = new TaggingPreset();
+		if (uiPresetName.getText().isEmpty()) {
+			errorMessageLabel.setText(tr("Preset name is empty."));
+			return null;
+		}
 		preset.name = uiPresetName.getText();
 
 		// Add "Label"
 		Label label = new Label();
 		label.text = uiPresetName.getText();
 		preset.data.add(label);
+		
+		boolean hasItem = false;
 		for (AbstractTagConf conf : tagConfs) {
 			TaggingPresetItem item = conf.getTaggingPresetItem();
 			if (item!=null) {
+				hasItem = true;
 				preset.data.add(item);
 			}
+		}
+		if (!hasItem) {
+			errorMessageLabel.setText(tr("Tag list is empty."));
+			return null;
 		}
 		preset.setDisplayName();
 		if (preset.types==null) {
