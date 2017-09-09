@@ -29,3 +29,9 @@ Your custom presets can be exported to local XML files.
 * Grouping
 * Sorting
 * Localization
+
+## Developer
+Maripo GODA <goda.mariko@gmail.com>
+* Twitter @MaripoGoda
+* Blog http://blog.maripo.org
+* OpenStreetMap maripogoda (Mapping around Akihabara)

@@ -21,3 +21,9 @@
 ## その他
 * このプラグインは作成したカスタムプリセットをJOSMのユーザデータディレクトリに "EasyPresets.xml" というファイル名で保存します。
 * 作成したプリセットのソートやグループ分けは今のところサポートしておりませんが、今後サポート予定です。
+
+## 開発者
+Maripo GODA <goda.mariko@gmail.com>
+* Twitter @MaripoGoda
+* Blog http://blog.maripo.org
+* OpenStreetMap maripogoda (秋葉原〜上野エリアでマッピングしてます)
