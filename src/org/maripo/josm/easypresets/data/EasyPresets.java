@@ -140,7 +140,7 @@ public class EasyPresets {
 		comment.append("\n");
 		comment.append(tr("It support just a few tags and attributes.\n"));
 		comment.append(tr("If you want to share your custom tags with other users, please look through the official document.\n"));
-		comment.append(PLUGIN_HELP_URL);
+		comment.append(PRESET_FORMAT_URL);
 		comment.append("\n");
 		return comment.toString();
 	}
