@@ -3,8 +3,10 @@ package org.maripo.josm.easypresets.data;
 import static org.openstreetmap.josm.tools.I18n.tr;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,6 +38,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import jdk.internal.util.xml.impl.ReaderUTF8;
+
 /**
  * Container of custom presets
  * @author maripo
@@ -66,18 +70,16 @@ public class EasyPresets {
 	Collection<TaggingPreset> presets = new ArrayList<TaggingPreset>();
 
 	public void load() {
-		BufferedReader bReader = null;
-		FileReader fReader = null;
+		ReaderUTF8 reader;
 		try {
-			fReader = new FileReader(EasyPresets.getInstance().getXMLPath());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			reader = new ReaderUTF8(new FileInputStream(EasyPresets.getInstance().getXMLPath()));
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
 			return;
 		}
-		bReader = new BufferedReader(fReader);
 		Collection<TaggingPreset> readResult;
 		try {
-			readResult = TaggingPresetReader.readAll(bReader, true);
+			readResult = TaggingPresetReader.readAll(reader, true);
 			presets = readResult;
 			TaggingPresets.addTaggingPresets(readResult);
 		} catch (SAXException e) {
