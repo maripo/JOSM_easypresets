@@ -32,6 +32,7 @@ import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
+import org.openstreetmap.josm.gui.tagging.presets.items.Combo;
 import org.openstreetmap.josm.gui.tagging.presets.items.Key;
 import org.openstreetmap.josm.gui.tagging.presets.items.Label;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
@@ -202,10 +203,13 @@ public class PresetEditorDialog extends ExtendedDialog {
 			if (TYPE_TEXTBOX.equals(uiType.getSelectedItem())) {
 				return createTextItem();
 			}
-			else {
-			// else if (TYPE_FIXED.equals(uiType.getSelectedItem())) {
+			else if (TYPE_FIXED.equals(uiType.getSelectedItem())) {
 				return createKeyItem();
 			}
+			else if (TYPE_SELECTION.equals(uiType.getSelectedItem())) {
+				return createSelectionItem();
+			}
+			return null;
 		}
 		protected abstract JComponent getUIKey();
 		protected abstract String getKey();
@@ -230,6 +234,17 @@ public class PresetEditorDialog extends ExtendedDialog {
 			item.key = getKey();
 			item.text = getKey();
 			item.value = uiValue.getText();
+			return item;
+		}
+		/**
+		 * Generate selection type with comma separated values
+		 * @return
+		 */
+		private TaggingPresetItem createSelectionItem() {
+			Combo item = new Combo();
+			item.key = getKey();
+			item.text = getKey();
+			item.values = uiValue.getText();
 			return item;
 		}
 	}
