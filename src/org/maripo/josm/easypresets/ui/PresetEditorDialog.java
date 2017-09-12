@@ -173,7 +173,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	private static final String TYPE_FIXED = "Fixed value";
 	private static final String TYPE_TEXTBOX = "Textbox";
 	private static final String TYPE_SELECTION = "Selection";
-	private static final String[] TYPE_OPTIONS = {TYPE_FIXED, TYPE_TEXTBOX/*, TYPE_SELECTION*/}; 
+	private static final String[] TYPE_OPTIONS = {TYPE_FIXED, TYPE_TEXTBOX, TYPE_SELECTION}; 
 	static abstract class AbstractTagConf {
 		protected JCheckBox uiInclude;
 		protected JTextField uiValue;
