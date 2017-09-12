@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -55,9 +56,9 @@ public class PresetEditorDialog extends ExtendedDialog {
 	protected Collection<TaggingPresetType> defaultTypes;
 	
 	/**
-	 * Create new preset
+	 * Create new preset (Initialize with tags and types extracted from selection)
 	 * @param tagMap
-	 * @param targetTypes2 
+	 * @param presetTypes 
 	 */
 	public PresetEditorDialog (Map<String, Map<String, Integer>> tagMap, 
 			List<TaggingPresetType> presetTypes) {
@@ -74,7 +75,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	}
 
 	/**
-	 * Edit existing preset
+	 * Edit existing preset (Initialize with existing TaggingPreset object)
 	 * @param selectedPreset
 	 */
 	public PresetEditorDialog(TaggingPreset preset) {
@@ -92,6 +93,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		}
 		initUI();
 	}
+	
 	JPanel listPane;
 	JLabel errorMessageLabel;
 	private void initUI() {
@@ -120,7 +122,7 @@ public class PresetEditorDialog extends ExtendedDialog {
         listPane = new JPanel(new GridBagLayout());
         // Header
         listPane.add(new JLabel(tr("Use")));
-        listPane.add(new JLabel(tr("Editable")), GBC.std().insets(5, 0, 0, 0));
+        listPane.add(new JLabel(tr("Type")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.CENTER));
         listPane.add(new JLabel(tr("Key")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.CENTER));
         listPane.add(new JLabel(tr("Value")), GBC.eol().insets(5, 0, 0, 0).fill(GBC.HORIZONTAL));
         
@@ -168,20 +170,27 @@ public class PresetEditorDialog extends ExtendedDialog {
             }
         });
 	}
-	
+	private static final String TYPE_FIXED = "Fixed value";
+	private static final String TYPE_TEXTBOX = "Textbox";
+	private static final String TYPE_SELECTION = "Selection";
+	private static final String[] TYPE_OPTIONS = {TYPE_FIXED, TYPE_TEXTBOX/*, TYPE_SELECTION*/}; 
 	static abstract class AbstractTagConf {
 		protected JCheckBox uiInclude;
 		protected JTextField uiValue;
-		protected JCheckBox uiEditable;
+		// Dropbox to select types (Fixed value, Textbox, Selection)
+		protected JComboBox<String> uiType;
 
 		public AbstractTagConf() {
 			uiInclude = new JCheckBox();
-			uiEditable = new JCheckBox();
+			uiType = new JComboBox<String>();
+			for (String label: TYPE_OPTIONS) {
+				uiType.addItem(label);
+			}
 			uiValue = new JTextField();
 		}
 		public void appendUI(JPanel pane) {
 			pane.add(uiInclude,GBC.std().anchor(GridBagConstraints.CENTER));
-			pane.add(uiEditable, GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.CENTER));
+			pane.add(uiType, GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.CENTER));
 			pane.add(getUIKey(), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.CENTER));
 			pane.add(uiValue, GBC.eol().insets(5, 0, 0, 0).fill(GBC.HORIZONTAL));
 		}
@@ -190,10 +199,11 @@ public class PresetEditorDialog extends ExtendedDialog {
 			if (!uiInclude.isSelected() || getKey().isEmpty()) {
 				return null;
 			}
-			if (uiEditable.isSelected()) {
+			if (TYPE_TEXTBOX.equals(uiType.getSelectedItem())) {
 				return createTextItem();
 			}
 			else {
+			// else if (TYPE_FIXED.equals(uiType.getSelectedItem())) {
 				return createKeyItem();
 			}
 		}
@@ -269,13 +279,15 @@ public class PresetEditorDialog extends ExtendedDialog {
 				Key keyItem = (Key)item;
 				key = ((Key) item).key;
 				uiValue.setText(keyItem.value);
+				uiType.setSelectedItem(TYPE_FIXED);
 			} else if (item instanceof Text) {
 				// Editable field
 				Text text = (Text)item;
 				key = text.key;
 				uiValue.setText(text.default_);
-				uiEditable.setSelected(true);
+				uiType.setSelectedItem(TYPE_TEXTBOX);
 			}
+			// TODO combobox
 			uiKeyFixed.setText(key);
 		}
 		public TagConf() {
