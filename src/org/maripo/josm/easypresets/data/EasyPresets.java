@@ -50,6 +50,10 @@ public class EasyPresets {
 	private static final String PRESET_FORMAT_URL = "https://josm.openstreetmap.de/wiki/TaggingPresets";
 	public static final String PLUGIN_HELP_URL = "https://github.com/maripo/JOSM_easypresets/blob/master/README.md";
 
+	/**
+	 * Get file path of custom preset data file
+	 * @return Full path of preset data file
+	 */
 	public String getXMLPath() {
 		return Main.pref.getUserDataDirectory() + "/" + FILE_NAME;
 	}
@@ -69,6 +73,9 @@ public class EasyPresets {
 
 	Collection<TaggingPreset> presets = new ArrayList<TaggingPreset>();
 
+	/**
+	 * Load custom presets from local XML (if exists)
+	 */
 	public void load() {
 		ReaderUTF8 reader;
 		try {
@@ -87,7 +94,11 @@ public class EasyPresets {
 		}
 	}
 
-	public void add(TaggingPreset preset) {
+	/**
+	 * Add new tagging preset
+	 * @param preset
+	 */
+	public void add (TaggingPreset preset) {
 		presets.add(preset);
 		Collection<TaggingPreset> toAdd = new ArrayList<TaggingPreset>();
 		toAdd.add(preset);
@@ -95,6 +106,10 @@ public class EasyPresets {
 		TaggingPresets.addTaggingPresets(toAdd);
 	}
 
+	/**
+	 * Save all custom presets to specified file
+	 * @param file
+	 */
 	public void saveTo(File file) {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
