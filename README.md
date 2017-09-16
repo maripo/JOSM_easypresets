@@ -9,7 +9,10 @@ Your custom presets can be exported to local XML files.
 ## Create Presets
 * Select nodes or ways and click "Presets > Create Preset" menu. It shows a dialog containing tags extracted from the selection.
 * If you want to exclude some of listed tags, please uncheck "Use" checkboxes.
-* This plugin supports two types of tags. Select "Textbox" if you want to make the value editable. If "Fixed value" is selected, the tag will be added as a fixed key-value pair.  
+* This plugin supports three types of tags.  
+	* Select "Fixed value" to create a fixed key-value pair.
+	* Select "Textbox" if you want to make the value editable. You can set default values.
+	* Select "Selection" to create dropdown field with multiple options.  
 * You can select target types such as nodes, ways and multipolygons.
 
 ## Use Presets
