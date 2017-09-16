@@ -3,10 +3,8 @@ package org.maripo.josm.easypresets.ui;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import org.openstreetmap.josm.actions.JosmAction;
-import org.openstreetmap.josm.tools.Shortcut;
 
 public class ManagePresetsAction extends JosmAction {
 

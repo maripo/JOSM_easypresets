@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
+import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;

@@ -24,6 +24,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
+import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.ExtensionFileFilter;
 import org.openstreetmap.josm.gui.ExtendedDialog;
