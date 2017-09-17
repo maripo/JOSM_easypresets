@@ -1,12 +1,10 @@
 package org.maripo.josm.easypresets.data;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
-import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,6 +49,7 @@ public class EasyPresets {
 	private static final String PRESET_FORMAT_URL = "https://josm.openstreetmap.de/wiki/TaggingPresets";
 	public static final String PLUGIN_HELP_URL = "https://github.com/maripo/JOSM_easypresets/blob/master/README.md";
 
+	boolean isDirty = false;
 	/**
 	 * Get file path of custom preset data file
 	 * @return Full path of preset data file
@@ -72,7 +71,7 @@ public class EasyPresets {
 		return instance;
 	}
 
-	Collection<TaggingPreset> presets = new ArrayList<TaggingPreset>();
+	List<TaggingPreset> presets = new ArrayList<TaggingPreset>();
 
 	/**
 	 * Load custom presets from local XML (if exists)
@@ -85,10 +84,12 @@ public class EasyPresets {
 			ex.printStackTrace();
 			return;
 		}
-		Collection<TaggingPreset> readResult;
+		presets = new ArrayList<TaggingPreset>();
 		try {
-			readResult = TaggingPresetReader.readAll(reader, true);
-			presets = readResult;
+			Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
+			if (readResult!=null) {
+				presets.addAll(readResult);
+			}
 			TaggingPresets.addTaggingPresets(readResult);
 		} catch (SAXException e) {
 			e.printStackTrace();
@@ -163,8 +164,14 @@ public class EasyPresets {
 		return comment.toString();
 	}
 
+	public void saveIfNeeded() {
+		if (isDirty) {
+			save();
+		}
+	}
 	public void save() {
 		saveTo(new File(EasyPresets.getInstance().getXMLPath()));
+		isDirty = false;
 	}
 	
 	private void updatePresetListMenu() {
@@ -250,5 +257,24 @@ public class EasyPresets {
 		remove(presetToDelete);
 		save();
 		updatePresetListMenu();
+	}
+
+	public void moveDown(int index) {
+		if (index >= presets.size()-1) {
+			return;
+		}
+		TaggingPreset presetToMove = presets.remove(index);
+		presets.add(index+1, presetToMove);
+		isDirty = true;
+	}
+
+	public void moveUp(int index) {
+		if (index <= 0) {
+			return;
+		}
+		TaggingPreset presetToMove = presets.remove(index);
+		presets.add(index-1, presetToMove);
+		isDirty = true;
+		
 	}
 }

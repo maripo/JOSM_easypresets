@@ -27,10 +27,13 @@ import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
+import org.openstreetmap.josm.tools.ImageProvider;
 
 public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener {
 	private JButton deleteButton;
 	private JButton editButton;
+	private JButton reorderUpButton;
+	private JButton reorderDownButton;
 
 	public ManagePresetsDialog () {
 		super(Main.parent, tr("Manage Custom Presets"));
@@ -68,6 +71,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		
 		final JButton exportButton = new JButton(tr("Export"));
+		exportButton.setToolTipText(tr("Export custom presets as a local XML file"));
 		exportButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -75,12 +79,36 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			}
 		});
 		mainPane.add(exportButton, GBC.eol().anchor(GridBagConstraints.EAST));
-		
-		mainPane.add(list, GBC.eol().fill(GBC.HORIZONTAL));
+
+		final JPanel listPane = new JPanel(new GridBagLayout());
+		final JPanel buttons = new JPanel(new GridBagLayout());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addListSelectionListener(this);
-
 		refreshList();
+		listPane.add(list, GBC.std());
+		reorderUpButton = new JButton();
+		reorderUpButton.setIcon(ImageProvider.get("dialogs", "up"));
+		reorderUpButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reorderUp();
+			}});
+		reorderDownButton = new JButton();
+		reorderDownButton.setIcon(ImageProvider.get("dialogs", "down"));
+		reorderDownButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reorderDown();
+			}});
+		reorderUpButton.setEnabled(false);
+		reorderDownButton.setEnabled(false);
+		reorderUpButton.setToolTipText(tr("Move up"));
+		reorderDownButton.setToolTipText(tr("Move down"));
+		buttons.add(reorderUpButton, GBC.eol());
+		buttons.add(reorderDownButton, GBC.eol());
+		listPane.add(buttons, GBC.eol().fill());
+		mainPane.add(listPane, GBC.eol().fill());
+
 		
 		editButton = new JButton(tr("Edit"));
 		editButton.addActionListener(new ActionListener() {
@@ -144,13 +172,25 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 	}
 	
+	@Override
+	public void dispose() {
+		EasyPresets.getInstance().saveIfNeeded();
+		super.dispose();
+	}
+	
 	protected void cancel() {
 		dispose();
 	}
 
+	boolean isSelectionValid () {
+		return !(list.getSelectedIndex() < 0 || list.getSelectedIndex() >= presets.length); 
+	}
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if (e.getFirstIndex() < 0 || e.getFirstIndex() >= presets.length) {
+		reorderUpButton.setEnabled(e.getFirstIndex()>0);
+		reorderDownButton.setEnabled(e.getFirstIndex()<presets.length-1);
+		
+		if (!isSelectionValid()) {
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(false);
 			return;
@@ -163,5 +203,23 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	private void select(TaggingPreset preset) {
 		this.selectedPreset = preset;
 		
+	}
+	private void reorderUp () {
+		if (!isSelectionValid()) {
+			return;
+		}
+		int index = list.getSelectedIndex();
+		EasyPresets.getInstance().moveUp(index);
+		refreshList();
+		list.setSelectedIndex(index-1);
+	}
+	private void reorderDown () {
+		if (!isSelectionValid()) {
+			return;
+		}
+		int index = list.getSelectedIndex();
+		EasyPresets.getInstance().moveDown(index);
+		refreshList();
+		list.setSelectedIndex(index+1);
 	}
 }
