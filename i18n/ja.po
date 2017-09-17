@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-17 21:52+0900\n"
+"POT-Creation-Date: 2017-09-17 22:35+0900\n"
 "PO-Revision-Date: 2017-09-17 15:22+0900\n"
 "Last-Translator: Mariko GODA <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese\n"
@@ -53,6 +53,16 @@ msgstr ""
 #, java-format
 msgid "Tool: {0}"
 msgstr "Tool: {0}"
+
+#: src/org/maripo/josm/easypresets/ui/CreatePresetAction.java:39
+msgid "Layer is null"
+msgstr "レイヤが存在しません"
+
+#: src/org/maripo/josm/easypresets/ui/CreatePresetAction.java:44
+msgid ""
+"Selection is empty. EasyPresets creates new presets based on selected nodes "
+"or ways."
+msgstr "何も選択されていません。ノードやウェイを1つ以上選択した状態で実行してください。"
 
 #: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:59
 #: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:76
@@ -157,26 +167,26 @@ msgstr "エクスポート"
 msgid "Export custom presets as a local XML file"
 msgstr "カスタムプリセットをXMLファイルとしてローカルに保存"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:103
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:105
 msgid "Move up"
 msgstr "上に移動"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:104
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:106
 msgid "Move down"
 msgstr "下に移動"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:111
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:113
 msgid "Edit"
 msgstr "編集"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:120
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:122
 msgid "Delete"
 msgstr "削除"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:129
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:131
 msgid "Close"
 msgstr "閉じる"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:151
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:153
 msgid "Save Presets"
 msgstr "プリセットを保存する"

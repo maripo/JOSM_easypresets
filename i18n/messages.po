@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-17 21:52+0900\n"
+"POT-Creation-Date: 2017-09-17 22:35+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,6 +48,16 @@ msgstr ""
 #: src/org/maripo/josm/easypresets/ui/CreatePresetAction.java:30
 #, java-format
 msgid "Tool: {0}"
+msgstr ""
+
+#: src/org/maripo/josm/easypresets/ui/CreatePresetAction.java:39
+msgid "Layer is null"
+msgstr ""
+
+#: src/org/maripo/josm/easypresets/ui/CreatePresetAction.java:44
+msgid ""
+"Selection is empty. EasyPresets creates new presets based on selected nodes "
+"or ways."
 msgstr ""
 
 #: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:59
@@ -153,26 +163,26 @@ msgstr ""
 msgid "Export custom presets as a local XML file"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:103
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:105
 msgid "Move up"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:104
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:106
 msgid "Move down"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:111
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:113
 msgid "Edit"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:120
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:122
 msgid "Delete"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:129
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:131
 msgid "Close"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:151
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:153
 msgid "Save Presets"
 msgstr ""
