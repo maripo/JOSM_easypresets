@@ -63,13 +63,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	}
 	private void initUI() {
-		presets = EasyPresets.getInstance().getPresets().toArray(new TaggingPreset[0]);
-		list = new JList(EasyPresets.getInstance().getPresets().toArray());
+		list = new JList();
 		list.setCellRenderer(new PresetRenderer());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		
-
-
 		final JButton exportButton = new JButton(tr("Export"));
 		exportButton.addActionListener(new ActionListener() {
 			@Override
@@ -82,6 +79,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		mainPane.add(list, GBC.eol().fill(GBC.HORIZONTAL));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addListSelectionListener(this);
+
+		refreshList();
 		
 		editButton = new JButton(tr("Edit"));
 		editButton.addActionListener(new ActionListener() {
@@ -101,7 +100,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		});
 		deleteButton.setEnabled(false);
 
-		final JButton cancelButton = new JButton(tr("Cancel"));
+		final JButton cancelButton = new JButton(tr("Close"));
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -113,6 +112,12 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		mainPane.add(deleteButton);
 		mainPane.add(cancelButton);
 		setContent(mainPane);
+	}
+
+	private void refreshList() {
+		presets = EasyPresets.getInstance().getPresets().toArray(new TaggingPreset[0]);
+		list.clearSelection();
+		list.setListData(presets);
 	}
 
 	private void export() {
@@ -135,17 +140,17 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	protected void delete() {
 		if (selectedPreset!=null) {
 			EasyPresets.getInstance().delete(selectedPreset);
-			dispose();
+			refreshList();
 		}
-		
 	}
+	
 	protected void cancel() {
 		dispose();
 	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if (e.getFirstIndex() < 0) {
+		if (e.getFirstIndex() < 0 || e.getFirstIndex() >= presets.length) {
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(false);
 			return;
