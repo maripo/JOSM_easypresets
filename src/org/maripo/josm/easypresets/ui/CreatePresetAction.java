@@ -36,12 +36,12 @@ public class CreatePresetAction extends JosmAction {
 	public void actionPerformed(ActionEvent e) {
 		OsmDataLayer layer = getLayerManager().getEditLayer();
         if (layer==null || layer.data==null) {
-        	debugDialog("Layer is null");
+        	debugDialog(tr("Layer is null"));
         	return;
         }
         Collection<OsmPrimitive> selected = layer.data.getSelected();
         if (selected==null || selected.isEmpty()) {
-        	debugDialog("Selection is empty. EasyPresets creates new presets based on selected nodes or ways.");
+        	debugDialog(tr("Selection is empty. EasyPresets creates new presets based on selected nodes or ways."));
         	return;
         }
         Map<String, Map<String, Integer>> tagMap = findTagsFromSelection(selected);

@@ -147,7 +147,7 @@ msgstr "カスタムプリセットの一覧表示・編集・削除"
 
 #: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:39
 msgid "Manage Custom Presets"
-msgstr "カスタムプリセットを管理する"
+msgstr "カスタムプリセットの管理"
 
 #: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:73
 msgid "Export"
