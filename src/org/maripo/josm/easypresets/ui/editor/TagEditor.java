@@ -322,12 +322,12 @@ public class TagEditor {
 	}
 
 	public void appendUI(JPanel pane) {
-		pane.add(uiInclude,GBC.std().anchor(GridBagConstraints.NORTHWEST));
+		pane.add(uiInclude,GBC.std().anchor(GridBagConstraints.WEST));
 		pane.add(uiType, GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.WEST));
 		pane.add(keyField.getUI(), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.WEST));
 		pane.add(valuePanel, GBC.eol().fill(GBC.HORIZONTAL));
-		int rowsCount = 1+(pane.getComponentCount() / 4);
-		pane.setPreferredSize(new Dimension(620, rowsCount * 32));
+		int rowsCount = pane.getComponentCount() / 4;
+		pane.setPreferredSize(new Dimension(620, rowsCount * 35 + 22));
 		pane.invalidate();
 		uiType.addActionListener(new ActionListener(){
 
