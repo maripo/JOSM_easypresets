@@ -154,7 +154,7 @@ public class TagEditor {
 		String[] values;
 		public ValueFieldSelection () {
 			super();
-			button = new JButton("Edit options");
+			button = new JButton(tr("Edit options")+"...");
 			label = new JLabel();
 			button.addActionListener(this);
 		}
@@ -200,11 +200,18 @@ public class TagEditor {
 		}
 	}
 
-	private static final String TYPE_FIXED = "Fixed value";
-	private static final String TYPE_TEXTBOX = "Textbox";
-	private static final String TYPE_SELECTION = "Selection";
-	private static final String TYPE_DEFAULT = TYPE_FIXED;
-	private static final String[] TYPE_OPTIONS = {TYPE_FIXED, TYPE_TEXTBOX, TYPE_SELECTION};
+	private static final String TYPE_FIXED;
+	private static final String TYPE_TEXTBOX;
+	private static final String TYPE_SELECTION;
+	private static final String TYPE_DEFAULT;
+	private static final String[] TYPE_OPTIONS;
+	static {
+		TYPE_FIXED = tr("Fixed value");
+		TYPE_TEXTBOX = tr("Textbox");
+		TYPE_SELECTION = tr("Selection");
+		TYPE_DEFAULT = TYPE_FIXED;
+		TYPE_OPTIONS = new String[]{TYPE_FIXED, TYPE_TEXTBOX, TYPE_SELECTION};
+	}
 
 	private JCheckBox uiInclude;
 	private KeyField keyField;

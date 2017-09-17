@@ -98,7 +98,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		targetTypes.add(new TargetType(TaggingPresetType.MULTIPOLYGON));
 		
 		final JPanel mainPane = new JPanel(new GridBagLayout());
-		mainPane.add(new JLabel("Preset Name"));
+		mainPane.add(new JLabel(tr("Preset Name")));
 		uiPresetName = new JTextField();
 		uiPresetName.setText(name);
 		mainPane.add(uiPresetName, GBC.eol().fill(GBC.HORIZONTAL));
@@ -129,7 +129,7 @@ public class PresetEditorDialog extends ExtendedDialog {
         uiXML = new JTextArea();
         uiXML.setRows(tagEditors.size() + 1);
 
-        JButton addTagButton = new JButton("Add Tag");
+        JButton addTagButton = new JButton(tr("Add Tag"));
         addTagButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
