@@ -17,8 +17,17 @@ import javax.swing.SwingUtilities;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.tools.GBC;
 
+/**
+ * Dialog to input multiple options to "Selection" tag
+ * @author maripo
+ *
+ */
 public class ValuesEditorDialog extends ExtendedDialog {
 
+	/**
+	 * Interface to receive edit or cancel result
+	 * @author maripo
+	 */
 	interface ValuesEditorDialogListener {
 		public void onInput (String[] values);
 		public void onCancel ();

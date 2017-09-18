@@ -142,6 +142,7 @@ public class PresetEditorDialog extends ExtendedDialog {
         uiXML.setRows(tagEditors.size() + 1);
 
         JButton addTagButton = new JButton(tr("Add Tag"));
+        addTagButton.setIcon(ImageProvider.get("dialogs", "add"));
         addTagButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
