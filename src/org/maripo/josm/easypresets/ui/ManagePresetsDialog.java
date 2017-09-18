@@ -104,13 +104,11 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		reorderDownButton.setEnabled(false);
 		reorderUpButton.setToolTipText(tr("Move up"));
 		reorderDownButton.setToolTipText(tr("Move down"));
-		buttons.add(reorderUpButton, GBC.eol());
-		buttons.add(reorderDownButton, GBC.eol());
-		listPane.add(buttons, GBC.eol().fill());
-		mainPane.add(listPane, GBC.eol().fill());
 
 		
-		editButton = new JButton(tr("Edit"));
+		editButton = new JButton();
+		editButton.setToolTipText(tr("Edit"));
+		editButton.setIcon(ImageProvider.get("dialogs", "edit"));
 		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -119,7 +117,9 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		});
 		editButton.setEnabled(false);
 
-		deleteButton = new JButton(tr("Delete"));
+		deleteButton = new JButton();
+		deleteButton.setToolTipText(tr("Delete"));
+		deleteButton.setIcon(ImageProvider.get("dialogs", "delete"));
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -127,6 +127,13 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			}
 		});
 		deleteButton.setEnabled(false);
+
+		buttons.add(reorderUpButton, GBC.eol());
+		buttons.add(reorderDownButton, GBC.eol());
+		buttons.add(editButton, GBC.eol());
+		buttons.add(deleteButton, GBC.eol());
+		listPane.add(buttons, GBC.eol().fill());
+		mainPane.add(listPane, GBC.eol().fill());
 
 		final JButton cancelButton = new JButton(tr("Close"));
 		cancelButton.addActionListener(new ActionListener() {
@@ -136,9 +143,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			}
 		});
 
-		mainPane.add(editButton);
-		mainPane.add(deleteButton);
-		mainPane.add(cancelButton);
+		mainPane.add(cancelButton, GBC.eol());
 		setContent(mainPane);
 	}
 
