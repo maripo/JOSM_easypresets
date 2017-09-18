@@ -46,7 +46,6 @@ public class PresetEditorDialog extends ExtendedDialog {
 	
 	private List<TagEditor> tagEditors;
 	private JTextField uiPresetName;
-	private JTextArea uiXML;
 
 	List<TargetType> targetTypes = new ArrayList<TargetType>();
 	String name;
@@ -137,9 +136,7 @@ public class PresetEditorDialog extends ExtendedDialog {
         scroll.setAlignmentX(JScrollPane.LEFT_ALIGNMENT);
         scroll.setAlignmentY(JScrollPane.TOP_ALIGNMENT);
         scroll.setPreferredSize(new Dimension(640, 300));
-        mainPane.add(scroll, GBC.eol().fill(GBC.HORIZONTAL).insets(0, 0, 0, 15));
-        uiXML = new JTextArea();
-        uiXML.setRows(tagEditors.size() + 1);
+        mainPane.add(scroll, GBC.eol().fill(GBC.HORIZONTAL).insets(0, 0, 0, 0));
 
         JButton addTagButton = new JButton(tr("Add Tag"));
         addTagButton.setIcon(ImageProvider.get("dialogs", "add"));
@@ -148,9 +145,10 @@ public class PresetEditorDialog extends ExtendedDialog {
 			public void actionPerformed(ActionEvent e) {
 				addTag();
 			}});
-        mainPane.add(addTagButton, GBC.eol());
+        mainPane.add(addTagButton, GBC.eol().insets(0, 0, 0, 15));
 
         JButton saveButton = new JButton(tr("Save"));
+        saveButton.setIcon(ImageProvider.get("ok"));
         saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -159,6 +157,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		});
 
         JButton cancelButton = new JButton(tr("Cancel"));
+        cancelButton.setIcon(ImageProvider.get("cancel"));
         cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -166,10 +165,11 @@ public class PresetEditorDialog extends ExtendedDialog {
 			}
 		});
 
-        errorMessageLabel = new JLabel();
+        errorMessageLabel = new JLabel("");
         errorMessageLabel.setForeground(Color.RED);
+        errorMessageLabel.setVisible(false);
         mainPane.add(errorMessageLabel, GBC.eol().fill());
-        mainPane.add(saveButton);
+        mainPane.add(saveButton, GBC.std());
         mainPane.add(cancelButton, GBC.eol());
         setContent(mainPane);
         SwingUtilities.invokeLater(new Runnable() {
@@ -191,8 +191,16 @@ public class PresetEditorDialog extends ExtendedDialog {
 		this.dispose();
 	}
 
+	void showErrorMessage(String message) {
+		if (message==null || message.isEmpty()) {
+			errorMessageLabel.setVisible(false);
+		} else {
+			errorMessageLabel.setVisible(true);
+			errorMessageLabel.setText(message);
+		}
+	}
 	protected void save () {
-		errorMessageLabel.setText("");
+		showErrorMessage("");
 		TaggingPreset newPreset = createPreset();
 		if (newPreset!=null) {
 			EasyPresets.getInstance().add(newPreset);
@@ -234,7 +242,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	private TaggingPreset createPreset () {
 		TaggingPreset preset = new TaggingPreset();
 		if (uiPresetName.getText().isEmpty()) {
-			errorMessageLabel.setText(tr("Preset name is empty."));
+			showErrorMessage(tr("Preset name is empty."));
 			return null;
 		}
 		preset.name = uiPresetName.getText();
@@ -253,7 +261,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 			}
 		}
 		if (!hasItem) {
-			errorMessageLabel.setText(tr("Tag list is empty."));
+			showErrorMessage(tr("Tag list is empty."));
 			return null;
 		}
 		preset.setDisplayName();
