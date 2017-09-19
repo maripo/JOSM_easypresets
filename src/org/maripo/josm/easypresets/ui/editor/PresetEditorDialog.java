@@ -4,7 +4,6 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -17,15 +16,12 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingUtilities;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
@@ -203,9 +199,12 @@ public class PresetEditorDialog extends ExtendedDialog {
 		showErrorMessage("");
 		TaggingPreset newPreset = createPreset();
 		if (newPreset!=null) {
-			EasyPresets.getInstance().add(newPreset);
 			if (presetToEdit!=null) {
-				EasyPresets.getInstance().remove(presetToEdit);
+				// Replace old preset
+				EasyPresets.getInstance().replace(presetToEdit, newPreset);
+			} else {
+				// Add new preset
+				EasyPresets.getInstance().add(newPreset);
 			}
 			EasyPresets.getInstance().save();
 			close();

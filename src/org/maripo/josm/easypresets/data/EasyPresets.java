@@ -259,6 +259,11 @@ public class EasyPresets {
 		updatePresetListMenu();
 	}
 
+
+	/**
+	 * Reorder presets
+	 * @param index
+	 */
 	public void moveDown(int index) {
 		if (index >= presets.size()-1) {
 			return;
@@ -268,6 +273,10 @@ public class EasyPresets {
 		isDirty = true;
 	}
 
+	/**
+	 * Reorder presets
+	 * @param index
+	 */
 	public void moveUp(int index) {
 		if (index <= 0) {
 			return;
@@ -276,5 +285,21 @@ public class EasyPresets {
 		presets.add(index-1, presetToMove);
 		isDirty = true;
 		
+	}
+
+	/**
+	 * Replace existing preset with another preset
+	 * @param oldPreset
+	 * @param newPreset
+	 */
+	public void replace(TaggingPreset oldPreset, TaggingPreset newPreset) {
+		int index = presets.indexOf(oldPreset);
+		if (index < -1) {
+			// Not found.
+			presets.add(newPreset);
+			return;
+		}
+		presets.remove(oldPreset);
+		presets.add(index, newPreset);
 	}
 }
