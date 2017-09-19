@@ -167,6 +167,7 @@ public class TagEditor {
 		@Override
 		public void setVisibility(boolean visible) {
 			button.setVisible(visible);
+			label.setVisible(visible);
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
