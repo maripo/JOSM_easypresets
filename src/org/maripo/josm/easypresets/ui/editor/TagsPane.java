@@ -3,7 +3,6 @@ package org.maripo.josm.easypresets.ui.editor;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -19,10 +18,12 @@ import org.openstreetmap.josm.tools.GBC;
 
 public class TagsPane extends JPanel {
 	private List<TagEditor> tagEditors;
-
 	List<Line> lines;
-	public TagsPane (List<TagEditor> tagEditors) {
+
+	private PresetEditorDialog baseDialog;
+	public TagsPane (List<TagEditor> tagEditors, PresetEditorDialog baseDialog) {
 		super(new GridBagLayout());
+		this.baseDialog = baseDialog;
 		this.tagEditors = tagEditors;
 		lines = new ArrayList<Line>();
 		
@@ -31,6 +32,15 @@ public class TagsPane extends JPanel {
         for (TagEditor editor: tagEditors) {
     		appendEditorUI(editor);
         }
+	}
+
+	private void createHeader() {
+		// Header
+        this.add(new JLabel(tr("Use")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
+        this.add(new JLabel(tr("Type")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
+        this.add(new JLabel(tr("Key")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
+        this.add(new JLabel(tr("Value")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
+        this.add(new JLabel(tr("Order")), GBC.eol().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST).fill(GBC.HORIZONTAL));
 	}
 
 	// Container of data line
@@ -42,20 +52,17 @@ public class TagsPane extends JPanel {
 		public Line(TagEditor editor, int index) {
 			this.index = index;
 
-			containerInclude = new JPanel();
-			containerType = new JPanel();
-			containerKey = new JPanel();
-			containerValue = new JPanel();
-
-			containerType.setBackground(Color.PINK);
-			containerValue.setBackground(Color.CYAN);
+			containerInclude = new JPanel(new GridBagLayout());
+			containerType = new JPanel(new GridBagLayout());
+			containerKey = new JPanel(new GridBagLayout());
+			containerValue = new JPanel(new GridBagLayout());
 
 			renderEditor(editor);
 
-			add(containerInclude, GBC.std().anchor(GridBagConstraints.WEST));
-			add(containerType, GBC.std().anchor(GridBagConstraints.WEST));
-			add(containerKey, GBC.std().anchor(GridBagConstraints.WEST));
-			add(containerValue, GBC.std());
+			add(containerInclude, GBC.std().insets(0));
+			add(containerType, GBC.std().insets(0));
+			add(containerKey, GBC.std().insets(0));
+			add(containerValue, GBC.std().insets(0));
 			
 			JPanel orderButtonsPanel = new JPanel();
 			upButton = new JButton("up");
@@ -64,7 +71,7 @@ public class TagsPane extends JPanel {
 			upButton.addActionListener(this);
 			downButton.addActionListener(this);
 			orderButtonsPanel.add(downButton);
-			add(orderButtonsPanel, GBC.eol().fill(GBC.HORIZONTAL));
+			add(orderButtonsPanel, GBC.eol().insets(0).fill(GBC.HORIZONTAL));
 			
 		}
 		@Override
@@ -82,12 +89,10 @@ public class TagsPane extends JPanel {
 			containerValue.remove(0);
 		}
 		public void renderEditor(TagEditor editor) {
-
-			containerInclude.add(editor.getUiInclude());
-			containerType.add(editor.getUiType());
-			containerKey.add(editor.getUiKey());
-			containerValue.add(editor.getUiValue());
-			
+			containerInclude.add(editor.getUiInclude(), GBC.eol().insets(0));
+			containerType.add(editor.getUiType(), GBC.eol().insets(0));
+			containerKey.add(editor.getUiKey(), GBC.eol().insets(0));
+			containerValue.add(editor.getUiValue(), GBC.eol().insets(0));
 		}
 	}
 	void reorder (int index, int direction) {
@@ -113,27 +118,18 @@ public class TagsPane extends JPanel {
 		lines.get(fromIndex).renderEditor(toEditor);
 		lines.get(toIndex).renderEditor(fromEditor);
 		// swap UI
-		repaint();
+		invalidate();
+		baseDialog.repaint();
 		
 	}
 	private void appendEditorUI(TagEditor editor) {
 		Line line = new Line(editor, lines.size());
 		lines.add(line);
-		setPreferredSize(new Dimension(620, lines.size() * 35 + 22));
+		//setPreferredSize(new Dimension(620, lines.size() * 44));
 		invalidate();
-		
 	}
 
-	private void createHeader() {
-		// Header
-        this.add(new JLabel(tr("Use")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Type")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Key")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Value")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Order")), GBC.eol().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST).fill(GBC.HORIZONTAL));
-	}
-
-	public void addTag(PresetEditorDialog baseDialog) {
+	public void addTag() {
 		TagEditor editor = TagEditor.create(baseDialog);
 		tagEditors.add(editor);
 		appendEditorUI(editor);

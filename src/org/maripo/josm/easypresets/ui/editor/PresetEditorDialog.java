@@ -111,7 +111,7 @@ public class PresetEditorDialog extends ExtendedDialog {
         mainPane.add(typesPane, GBC.eol().fill(GBC.HORIZONTAL).insets(0, 15, 0, 15));
         
 		
-        tagsPane = new TagsPane(tagEditors);
+        tagsPane = new TagsPane(tagEditors, this);
         
         JPanel listWrapper = new JPanel();
         listWrapper.setLayout(new GridBagLayout());
@@ -166,7 +166,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	} 
 
 	protected void addTag () {
-		tagsPane.addTag(this);
+		tagsPane.addTag();
 		repaint();
 	}
 	
