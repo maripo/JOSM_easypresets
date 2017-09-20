@@ -40,7 +40,6 @@ import org.openstreetmap.josm.tools.ImageProvider;
  */
 public class PresetEditorDialog extends ExtendedDialog {
 	
-	private List<TagEditor> tagEditors;
 	private JTextField uiPresetName;
 
 	List<TargetType> targetTypes = new ArrayList<TargetType>();
@@ -58,13 +57,13 @@ public class PresetEditorDialog extends ExtendedDialog {
 		super(Main.parent, tr("Preset Editor"));
 		this.defaultTypes = presetTypes;
 
-		tagEditors = new ArrayList<TagEditor>();
+		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
         for (final String key: tagMap.keySet()) {
         	TagEditor editor = TagEditor.create(this, key, tagMap.get(key));
         	tagEditors.add(editor);
         }
         name = "";
-		initUI();
+		initUI(tagEditors);
 	}
 
 	/**
@@ -76,7 +75,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		name = preset.name;
 		this.presetToEdit = preset;
 		defaultTypes = preset.types;
-		tagEditors = new ArrayList<TagEditor>();
+		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
 		// Select all
 		for (final TaggingPresetItem item: preset.data) {
 			TagEditor editor = TagEditor.create(this, item);
@@ -84,12 +83,12 @@ public class PresetEditorDialog extends ExtendedDialog {
 				tagEditors.add(editor);
 			}
 		}
-		initUI();
+		initUI(tagEditors);
 	}
 	
-	JPanel listPane;
+	TagsPane tagsPane;
 	JLabel errorMessageLabel;
-	private void initUI() {
+	private void initUI(List<TagEditor> tagEditors) {
 		targetTypes.add(new TargetType(TaggingPresetType.NODE));
 		targetTypes.add(new TargetType(TaggingPresetType.WAY));
 		targetTypes.add(new TargetType(TaggingPresetType.CLOSEDWAY));
@@ -112,20 +111,11 @@ public class PresetEditorDialog extends ExtendedDialog {
         mainPane.add(typesPane, GBC.eol().fill(GBC.HORIZONTAL).insets(0, 15, 0, 15));
         
 		
-        listPane = new JPanel(new GridBagLayout());
-        // Header
-        listPane.add(new JLabel(tr("Use")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        listPane.add(new JLabel(tr("Type")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        listPane.add(new JLabel(tr("Key")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        listPane.add(new JLabel(tr("Value")), GBC.eol().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST).fill(GBC.HORIZONTAL));
-        
-        for (TagEditor editor: tagEditors) {
-        	editor.appendUI(listPane);
-        }
+        tagsPane = new TagsPane(tagEditors);
         
         JPanel listWrapper = new JPanel();
         listWrapper.setLayout(new GridBagLayout());
-        listWrapper.add(listPane, GBC.eol());
+        listWrapper.add(tagsPane, GBC.eol());
         listWrapper.add(Box.createVerticalGlue(), GBC.eol().fill(GBC.VERTICAL));
 
         JScrollPane scroll = new JScrollPane(listWrapper);
@@ -176,10 +166,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	} 
 
 	protected void addTag () {
-		TagEditor editor = TagEditor.create(this);
-		tagEditors.add(editor);
-		editor.appendUI(listPane);
-		revalidate();
+		tagsPane.addTag(this);
 		repaint();
 	}
 	
@@ -252,6 +239,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		preset.data.add(label);
 		
 		boolean hasItem = false;
+		List<TagEditor> tagEditors = tagsPane.getTagEditors();
 		for (TagEditor editor : tagEditors) {
 			TaggingPresetItem item = editor.getTaggingPresetItem();
 			if (item!=null) {

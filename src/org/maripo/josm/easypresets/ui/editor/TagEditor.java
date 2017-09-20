@@ -215,10 +215,10 @@ public class TagEditor {
 	}
 
 	private JCheckBox uiInclude;
-	private KeyField keyField;
 	private JComboBox<String> uiType;
-	Map <String, ValueField> fields;
+	private KeyField keyField;
 	private JPanel valuePanel;
+	Map <String, ValueField> fields;
 	private ExtendedDialog baseDialog;
 
 	
@@ -280,6 +280,7 @@ public class TagEditor {
 			String firstKey = map.keySet().iterator().next();
 			instance.getSelectedValueField().setDefaultValue(firstKey);
 		}
+		instance.initUI();
 		return instance;
 	}
 
@@ -308,7 +309,18 @@ public class TagEditor {
 		instance.switchType(type);
 		instance.getSelectedValueField().setDefaultValue(tag.getValues().toArray(new String[0]));
 		instance.keyField = new KeyFieldFixed(tag.key);
+		instance.initUI();
 		return instance;
+	}
+
+	private void initUI() {
+		uiType.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				onSelectedTypeChange();
+			}
+		});
 	}
 
 	/**
@@ -319,26 +331,11 @@ public class TagEditor {
 		TagEditor instance = new TagEditor(baseDialog);
 		instance.keyField = new KeyFieldEditable();
 		instance.switchType(TYPE_DEFAULT);
+		instance.initUI();
 		return instance;
 	}
 
-	public void appendUI(JPanel pane) {
-		pane.add(uiInclude,GBC.std().anchor(GridBagConstraints.WEST));
-		pane.add(uiType, GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.WEST));
-		pane.add(keyField.getUI(), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.WEST));
-		pane.add(valuePanel, GBC.eol().fill(GBC.HORIZONTAL));
-		int rowsCount = pane.getComponentCount() / 4;
-		pane.setPreferredSize(new Dimension(620, rowsCount * 35 + 22));
-		pane.invalidate();
-		uiType.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				onSelectedTypeChange();
-			}
-			
-		});
-		this.parentPane = pane;
+	public void _appendUI(JPanel pane) {
 	}
 
 	/**
@@ -404,6 +401,24 @@ public class TagEditor {
 			return createSelectionItem();
 		}
 		return null;
+	}
+
+	
+	/* Getters of UI components */
+	public Component getUiInclude() {
+		return uiInclude;
+	}
+
+	public Component getUiType() {
+		return uiType;
+	}
+
+	public Component getUiKey() {
+		return keyField.getUI();
+	}
+
+	public Component getUiValue() {
+		return valuePanel;
 	}
 
 
