@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-17 22:35+0900\n"
+"POT-Creation-Date: 2017-09-21 00:37+0900\n"
 "PO-Revision-Date: 2017-09-17 15:22+0900\n"
 "Last-Translator: Mariko GODA <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese\n"
@@ -62,51 +62,37 @@ msgstr "レイヤが存在しません"
 msgid ""
 "Selection is empty. EasyPresets creates new presets based on selected nodes "
 "or ways."
-msgstr "何も選択されていません。ノードやウェイを1つ以上選択した状態で実行してください。"
+msgstr ""
+"何も選択されていません。ノードやウェイを1つ以上選択した状態で実行してくださ"
+"い。"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:59
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:76
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:57
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:74
 msgid "Preset Editor"
 msgstr "プリセット編集"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:101
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:99
 msgid "Preset Name"
 msgstr "プリセットの名前"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:118
-msgid "Use"
-msgstr "使用"
-
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:119
-msgid "Type"
-msgstr "タイプ"
-
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:120
-msgid "Key"
-msgstr "キー"
-
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:121
-msgid "Value"
-msgstr "値"
-
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:132
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:127
 msgid "Add Tag"
 msgstr "タグを追加する"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:140
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:136
 msgid "Save"
 msgstr "保存"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:148
-#: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:47
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:145
+#: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:56
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:224
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:231
 msgid "Preset name is empty."
 msgstr "プリセットに名前をつけてください。"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:243
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:251
 msgid "Tag list is empty."
 msgstr "タグが登録されていません。"
 
@@ -118,32 +104,52 @@ msgstr "デフォルト"
 msgid "Edit options"
 msgstr "選択肢を編集"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:184
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:185
 #, java-format
 msgid "{0} options"
 msgstr "{0}個の選択肢"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:209
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:210
 msgid "Fixed value"
 msgstr "固定値"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:210
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:211
 msgid "Textbox"
 msgstr "テキストボックス"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:211
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:212
 msgid "Selection"
 msgstr "選択式"
 
-#: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:35
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:40
+msgid "Use"
+msgstr "使用"
+
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:41
+msgid "Type"
+msgstr "タイプ"
+
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:42
+msgid "Key"
+msgstr "キー"
+
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:43
+msgid "Value"
+msgstr "値"
+
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:44
+msgid "Order"
+msgstr "順序"
+
+#: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:44
 msgid "Options"
 msgstr "選択肢"
 
-#: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:45
+#: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:54
 msgid "Enter one option per line."
 msgstr "選択肢を1行ごとにわけて入力してください"
 
-#: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:46
+#: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:55
 msgid "OK"
 msgstr "OK"
 
@@ -175,18 +181,18 @@ msgstr "上に移動"
 msgid "Move down"
 msgstr "下に移動"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:113
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:110
 msgid "Edit"
 msgstr "編集"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:122
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:121
 msgid "Delete"
 msgstr "削除"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:131
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:138
 msgid "Close"
 msgstr "閉じる"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:153
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:158
 msgid "Save Presets"
 msgstr "プリセットを保存する"
