@@ -4,6 +4,7 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -67,6 +68,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 	private void initUI() {
 		list = new JList();
+		list.setPreferredSize(new Dimension(320, 400));
 		list.setCellRenderer(new PresetRenderer());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		

@@ -83,7 +83,6 @@ public class CreatePresetAction extends JosmAction {
 			}
 		}
 		return allTags;
-	
 	}
 
 	private void incrementKeyValueCount(Map<String, Map<String, Integer>> allTags, 
@@ -97,7 +96,6 @@ public class CreatePresetAction extends JosmAction {
 			int count = (valueCountMap.containsKey(value)) ? valueCountMap.get(value).intValue() : 0;
 			valueCountMap.put(value, new Integer(count+1));
 		}
-		
 	}
 
 	private void showAlertDialog(String string) {
