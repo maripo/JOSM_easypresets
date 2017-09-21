@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-21 00:37+0900\n"
+"POT-Creation-Date: 2017-09-21 11:01+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,33 +60,37 @@ msgid ""
 "or ways."
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:57
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:74
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:56
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:73
 msgid "Preset Editor"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:99
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:98
 msgid "Preset Name"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:127
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:113
+msgid "Applies to"
+msgstr ""
+
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:133
 msgid "Add Tag"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:136
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:142
 msgid "Save"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:145
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:151
 #: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:56
 msgid "Cancel"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:231
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:238
 msgid "Preset name is empty."
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:251
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:258
 msgid "Tag list is empty."
 msgstr ""
 
@@ -115,23 +119,23 @@ msgstr ""
 msgid "Selection"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:40
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:42
 msgid "Use"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:41
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:43
 msgid "Type"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:42
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:44
 msgid "Key"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:43
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:45
 msgid "Value"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:44
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:46
 msgid "Order"
 msgstr ""
 

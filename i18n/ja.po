@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-21 00:37+0900\n"
+"POT-Creation-Date: 2017-09-21 11:01+0900\n"
 "PO-Revision-Date: 2017-09-17 15:22+0900\n"
 "Last-Translator: Mariko GODA <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese\n"
@@ -66,33 +66,37 @@ msgstr ""
 "何も選択されていません。ノードやウェイを1つ以上選択した状態で実行してくださ"
 "い。"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:57
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:74
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:56
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:73
 msgid "Preset Editor"
 msgstr "プリセット編集"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:99
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:98
 msgid "Preset Name"
 msgstr "プリセットの名前"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:127
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:113
+msgid "Applies to"
+msgstr "適用対象"
+
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:133
 msgid "Add Tag"
 msgstr "タグを追加する"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:136
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:142
 msgid "Save"
 msgstr "保存"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:145
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:151
 #: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:56
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:231
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:238
 msgid "Preset name is empty."
 msgstr "プリセットに名前をつけてください。"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:251
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:258
 msgid "Tag list is empty."
 msgstr "タグが登録されていません。"
 
@@ -121,23 +125,23 @@ msgstr "テキストボックス"
 msgid "Selection"
 msgstr "選択式"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:40
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:42
 msgid "Use"
 msgstr "使用"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:41
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:43
 msgid "Type"
 msgstr "タイプ"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:42
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:44
 msgid "Key"
 msgstr "キー"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:43
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:45
 msgid "Value"
 msgstr "値"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:44
+#: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:46
 msgid "Order"
 msgstr "順序"
 

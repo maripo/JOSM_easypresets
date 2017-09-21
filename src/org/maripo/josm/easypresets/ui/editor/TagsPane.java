@@ -2,9 +2,9 @@ package org.maripo.josm.easypresets.ui.editor;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -33,15 +33,17 @@ public class TagsPane extends JPanel {
         for (TagEditor editor: tagEditors) {
     		appendEditorUI(editor);
         }
+        
+        repaintAll();
 	}
 
 	private void createHeader() {
 		// Header
-        this.add(new JLabel(tr("Use")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Type")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Key")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Value")), GBC.std().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Order")), GBC.eol().insets(5, 0, 0, 0).anchor(GridBagConstraints.NORTHWEST).fill(GBC.HORIZONTAL));
+        this.add(new JLabel(tr("Use")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
+        this.add(new JLabel(tr("Type")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
+        this.add(new JLabel(tr("Key")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
+        this.add(new JLabel(tr("Value")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
+        this.add(new JLabel(tr("Order")), GBC.eol().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST).fill(GBC.HORIZONTAL));
 	}
 
 	// Container of data line
@@ -50,8 +52,10 @@ public class TagsPane extends JPanel {
 		private int index;
 		JButton upButton, downButton;
 		private JPanel containerInclude, containerType, containerKey, containerValue;
+		private TagEditor editor;
 		public Line(TagEditor editor, int index) {
 			this.index = index;
+			this.editor = editor;
 
 			containerInclude = new JPanel(new GridBagLayout());
 			containerType = new JPanel(new GridBagLayout());
@@ -60,20 +64,23 @@ public class TagsPane extends JPanel {
 
 			renderEditor(editor);
 
-			add(containerInclude, GBC.std().insets(0));
-			add(containerType, GBC.std().insets(0));
-			add(containerKey, GBC.std().insets(0));
-			add(containerValue, GBC.std().insets(0));
+			add(containerInclude, GBC.std().insets(0).anchor(GBC.WEST));
+			add(containerType, GBC.std().insets(0).anchor(GBC.WEST));
+			add(containerKey, GBC.std().insets(0).anchor(GBC.WEST));
+			add(containerValue, GBC.std().insets(0).anchor(GBC.WEST));
 			
-			JPanel orderButtonsPanel = new JPanel();
+			JPanel orderButtonsPanel = new JPanel(new GridLayout(1, 2));
 			upButton = new JButton();
 			upButton.setIcon(ImageProvider.get("dialogs", "up"));
 			downButton = new JButton();
 			downButton.setIcon(ImageProvider.get("dialogs", "down"));
-			orderButtonsPanel.add(upButton);
 			upButton.addActionListener(this);
 			downButton.addActionListener(this);
+			orderButtonsPanel.add(upButton);
 			orderButtonsPanel.add(downButton);
+			if (index==0) {
+				upButton.setVisible(false);
+			}
 			add(orderButtonsPanel, GBC.eol().insets(0).fill(GBC.HORIZONTAL));
 			
 		}
@@ -92,13 +99,21 @@ public class TagsPane extends JPanel {
 			containerValue.remove(0);
 		}
 		public void renderEditor(TagEditor editor) {
+			this.editor = editor;
 			containerInclude.add(editor.getUiInclude(), GBC.eol().insets(0));
 			containerType.add(editor.getUiType(), GBC.eol().insets(0));
 			containerKey.add(editor.getUiKey(), GBC.eol().insets(0));
 			containerValue.add(editor.getUiValue(), GBC.eol().insets(0));
 		}
+		public void revalidateComponents() {
+			containerInclude.revalidate();
+			containerType.revalidate();
+			containerKey.revalidate();
+			containerValue.revalidate();
+		}
 	}
-	void reorder (int index, int direction) {
+	
+	private void reorder (int index, int direction) {
 		int fromIndex, toIndex;
 		if (direction > 0) {
 			fromIndex = index;
@@ -120,15 +135,21 @@ public class TagsPane extends JPanel {
 		lines.get(toIndex).removeUI();
 		lines.get(fromIndex).renderEditor(toEditor);
 		lines.get(toIndex).renderEditor(fromEditor);
-		// swap UI
-		invalidate();
-		baseDialog.repaint();
-		
+        repaintAll();
 	}
+	
+	private void repaintAll () {
+		for (Line line: lines) {
+			line.downButton.setVisible(line.index<lines.size()-1);
+			line.revalidateComponents();
+		}
+		repaint();
+		baseDialog.repaint();
+	}
+	
 	private void appendEditorUI(TagEditor editor) {
 		Line line = new Line(editor, lines.size());
 		lines.add(line);
-		//setPreferredSize(new Dimension(620, lines.size() * 44));
 		invalidate();
 	}
 
@@ -136,7 +157,7 @@ public class TagsPane extends JPanel {
 		TagEditor editor = TagEditor.create(baseDialog);
 		tagEditors.add(editor);
 		appendEditorUI(editor);
-		revalidate();
+		repaintAll();
 	}
 
 	public List<TagEditor> getTagEditors() {

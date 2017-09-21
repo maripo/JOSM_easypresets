@@ -4,7 +4,6 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -96,22 +95,31 @@ public class PresetEditorDialog extends ExtendedDialog {
 		targetTypes.add(new TargetType(TaggingPresetType.MULTIPOLYGON));
 		
 		final JPanel mainPane = new JPanel(new GridBagLayout());
-		mainPane.add(new JLabel(tr("Preset Name")));
-		uiPresetName = new JTextField();
+		mainPane.add(new JLabel(tr("Preset Name") + ":"),  GBC.std().anchor(GBC.WEST));
+		uiPresetName = new JTextField(20);
 		uiPresetName.setText(name);
-		mainPane.add(uiPresetName, GBC.eol().fill(GBC.HORIZONTAL));
+		mainPane.add(uiPresetName, GBC.eol().insets(0, 0, 0, 10));
 		
 		// Types pane
 		final JPanel typesPane = new JPanel(new GridBagLayout());
+		int index = 0;
 		for (final TargetType type: targetTypes) {
 			typesPane.add(type.createCheckbox());
 			typesPane.add(new JLabel(ImageProvider.get(type.type.getIconName())));
-			typesPane.add(new JLabel(tr(type.type.getName())), GBC.eol().fill(GBC.HORIZONTAL));
+			GBC constraints = (index%3==2)?GBC.eol():GBC.std();
+			typesPane.add(new JLabel(tr(type.type.getName())), constraints);
+			index++;
 		}
-        mainPane.add(typesPane, GBC.eol().fill(GBC.HORIZONTAL).insets(0, 15, 0, 15));
+		mainPane.add(new JLabel(tr("Applies to") + ":"), GBC.std().anchor(GBC.NORTHWEST));
+        mainPane.add(typesPane, GBC.eol().insets(0, 0, 0, 5).anchor(GBC.NORTHWEST));
+
+		mainPane.add(new JLabel(tr("Tags") + ":"), GBC.eol().anchor(GBC.NORTHWEST));
         
 		
         tagsPane = new TagsPane(tagEditors, this);
+        if (tagEditors.isEmpty()) {
+        	tagsPane.addTag();
+        }
         
         JPanel listWrapper = new JPanel();
         listWrapper.setLayout(new GridBagLayout());
@@ -182,6 +190,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 			errorMessageLabel.setText(message);
 		}
 	}
+	
 	protected void save () {
 		showErrorMessage("");
 		TaggingPreset newPreset = createPreset();
