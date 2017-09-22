@@ -7,9 +7,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -88,6 +89,12 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		final JPanel buttons = new JPanel(new GridBagLayout());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addListSelectionListener(this);
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+		    public void mouseClicked(MouseEvent evt) {
+				edit();
+			}
+		});
 		refreshList();
 		listPane.add(list, GBC.std());
 		reorderUpButton = new JButton();
