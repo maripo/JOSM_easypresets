@@ -5,6 +5,7 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.Box;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -24,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
+import org.maripo.josm.easypresets.ui.editor.IconPickerDialog.IconPickerDialogListener;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
@@ -40,6 +44,8 @@ import org.openstreetmap.josm.tools.ImageProvider;
 public class PresetEditorDialog extends ExtendedDialog {
 	
 	private JTextField uiPresetName;
+	private Icon icon;
+	private String iconPath;
 
 	List<TargetType> targetTypes = new ArrayList<TargetType>();
 	String name;
@@ -72,6 +78,8 @@ public class PresetEditorDialog extends ExtendedDialog {
 	public PresetEditorDialog(TaggingPreset preset) {
 		super(Main.parent, tr("Preset Editor"));
 		name = preset.name;
+		icon = preset.getIcon();
+		iconPath = preset.iconName;
 		this.presetToEdit = preset;
 		defaultTypes = preset.types;
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
@@ -95,7 +103,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		targetTypes.add(new TargetType(TaggingPresetType.MULTIPOLYGON));
 		
 		final JPanel mainPane = new JPanel(new GridBagLayout());
-		mainPane.add(new JLabel(tr("Preset Name") + ":"),  GBC.std().anchor(GBC.WEST));
+		mainPane.add(new JLabel(tr("Preset Name") + ":"),  GBC.std().insets(0, 0, 0, 10).anchor(GBC.WEST));
 		uiPresetName = new JTextField(20);
 		uiPresetName.setText(name);
 		mainPane.add(uiPresetName, GBC.eol().insets(0, 0, 0, 10));
@@ -110,8 +118,58 @@ public class PresetEditorDialog extends ExtendedDialog {
 			typesPane.add(new JLabel(tr(type.type.getName())), constraints);
 			index++;
 		}
+
+		mainPane.add(new JLabel(tr("Icon") + ":"), GBC.std().anchor(GBC.NORTHWEST));
+		JPanel iconPane = new JPanel(new GridBagLayout());
+		JLabel iconLabel = new JLabel();
+		JLabel iconPathLabel = new JLabel();
+		if (icon!=null) {
+			iconLabel.setIcon(icon);
+		}
+		if (iconPath!=null && !iconPath.isEmpty()) {
+			iconPathLabel.setText(iconPath);
+		}
+        JButton iconPickerButton = new JButton(tr("Select icon") + "...");
+        ExtendedDialog dialog = this;
+        iconPickerButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				IconPickerDialog iconPickerDialog = new IconPickerDialog(dialog);
+				iconPickerDialog.setModalityType(ModalityType.APPLICATION_MODAL);
+				iconPickerDialog.setAlwaysOnTop(true);
+				iconPickerDialog.setupDialog();
+				iconPickerDialog.setListener(new IconPickerDialogListener() {
+					
+					@Override
+					public void onSelectIcon(ImageIcon _icon, String name) {
+						icon = _icon;
+						iconLabel.setIcon(icon);
+						iconPathLabel.setText(name);
+						iconLabel.revalidate();
+						iconPathLabel.revalidate();
+						iconPath = name;
+					}
+					
+					@Override
+					public void onCancel() {
+						
+					}
+				});
+				iconPickerDialog.showDialog();
+			}
+		});
+        iconPane.add(iconLabel, GBC.std().insets(0));
+        iconPane.add(iconPathLabel, GBC.std().insets(0));
+        iconPane.add(iconPickerButton, GBC.std().insets(0));
+        mainPane.add(iconPane, GBC.eol());
+		
+				
+        mainPane.add(iconPane, GBC.eol().insets(0, 0, 0, 5).anchor(GBC.NORTHWEST));
+        
 		mainPane.add(new JLabel(tr("Applies to") + ":"), GBC.std().anchor(GBC.NORTHWEST));
         mainPane.add(typesPane, GBC.eol().insets(0, 0, 0, 5).anchor(GBC.NORTHWEST));
+        
+
 
 		mainPane.add(new JLabel(tr("Tags") + ":"), GBC.eol().anchor(GBC.NORTHWEST));
         
@@ -165,6 +223,7 @@ public class PresetEditorDialog extends ExtendedDialog {
         mainPane.add(errorMessageLabel, GBC.eol().fill());
         mainPane.add(saveButton, GBC.std());
         mainPane.add(cancelButton, GBC.eol());
+        
         setContent(mainPane);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -241,6 +300,9 @@ public class PresetEditorDialog extends ExtendedDialog {
 			return null;
 		}
 		preset.name = uiPresetName.getText();
+		if (iconPath!=null) {
+			preset.setIcon(iconPath);
+		}
 
 		// Add "Label"
 		Label label = new Label();

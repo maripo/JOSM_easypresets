@@ -195,6 +195,10 @@ public class EasyPresets {
 	private Element createpresetElement(Document doc, TaggingPreset obj) {
 		Element presetElement = doc.createElement("item");
 		presetElement.setAttribute("name", obj.name);
+		if (obj.iconName!=null && !obj.iconName.isEmpty()) {
+			presetElement.setAttribute("icon", obj.iconName);
+			
+		}
 		if (obj.types!=null && obj.types.size()>0) {
 			List<String> typeNames = new ArrayList<String>();
 			for (TaggingPresetType type: obj.types) {
