@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,6 +18,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -125,7 +127,9 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				delete();
+				if (confirmDelete()) {
+					delete();
+				}
 			}
 		});
 		deleteButton.setEnabled(false);
@@ -172,7 +176,27 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			dispose();
 		}
 	}
-	protected void delete() {
+
+    private boolean confirmDelete() {
+        ExtendedDialog dialog = new ExtendedDialog(
+                Main.parent,
+                tr("Delete"),
+                tr("Delete"), tr("Cancel")
+        );
+        dialog.setContent(tr("Are you sure you want to delete \"{0}\"?",selectedPreset.getName()));
+        dialog.setButtonIcons("ok", "cancel");
+        dialog.setModalityType(ModalityType.APPLICATION_MODAL);
+        dialog.setAlwaysOnTop(true);
+        dialog.setupDialog();
+        dialog.setVisible(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            	dialog.toFront();
+            }
+        });
+        return dialog.getValue() == 1;
+    }
+	private void delete() {
 		if (selectedPreset!=null) {
 			EasyPresets.getInstance().delete(selectedPreset);
 			refreshList();

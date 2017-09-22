@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-21 11:01+0900\n"
+"POT-Creation-Date: 2017-09-22 10:29+0900\n"
 "PO-Revision-Date: 2017-09-17 15:22+0900\n"
 "Last-Translator: Mariko GODA <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese\n"
@@ -79,24 +79,29 @@ msgstr "プリセットの名前"
 msgid "Applies to"
 msgstr "適用対象"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:133
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:116
+msgid "Tags"
+msgstr ""
+
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:135
 msgid "Add Tag"
 msgstr "タグを追加する"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:142
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:144
 msgid "Save"
 msgstr "保存"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:151
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:153
 #: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:56
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:183
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:238
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:240
 msgid "Preset name is empty."
 msgstr "プリセットに名前をつけてください。"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:258
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:260
 msgid "Tag list is empty."
 msgstr "タグが登録されていません。"
 
@@ -165,38 +170,45 @@ msgstr "カスタムプリセットの管理"
 msgid "List, Update Or Delete Custom Presets"
 msgstr "カスタムプリセットの一覧表示・編集・削除"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:39
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:41
 msgid "Manage Custom Presets"
 msgstr "カスタムプリセットの管理"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:73
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:76
 msgid "Export"
 msgstr "エクスポート"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:74
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:77
 msgid "Export custom presets as a local XML file"
 msgstr "カスタムプリセットをXMLファイルとしてローカルに保存"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:105
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:108
 msgid "Move up"
 msgstr "上に移動"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:106
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:109
 msgid "Move down"
 msgstr "下に移動"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:110
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:113
 msgid "Edit"
 msgstr "編集"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:121
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:124
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:182
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:183
 msgid "Delete"
 msgstr "削除"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:138
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:143
 msgid "Close"
 msgstr "閉じる"
 
-#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:158
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:163
 msgid "Save Presets"
 msgstr "プリセットを保存する"
+
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:185
+#, java-format
+msgid "Are you sure you want to delete \"{0}\"?"
+msgstr "\"{0}\" を削除しますか?"
