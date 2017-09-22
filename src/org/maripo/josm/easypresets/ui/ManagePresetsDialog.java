@@ -33,6 +33,8 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
 
+import javafx.scene.control.Label;
+
 public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener {
 	private JButton deleteButton;
 	private JButton editButton;
@@ -61,6 +63,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		@Override
 		public Component getListCellRendererComponent(JList<? extends TaggingPreset> list, TaggingPreset preset,
 				int index, boolean isSelected, boolean cellHasFocus) {
+			setIcon(preset.getIcon());
 			setText(preset.getName());
 			setOpaque(true);
 			setBackground((isSelected)?selectionBackground:textBackground);
@@ -92,7 +95,9 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 		    public void mouseClicked(MouseEvent evt) {
-				edit();
+				if (evt.getClickCount()==2) {
+					edit();
+				}
 			}
 		});
 		refreshList();
