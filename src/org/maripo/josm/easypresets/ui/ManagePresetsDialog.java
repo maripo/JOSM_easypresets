@@ -17,6 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -74,7 +75,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 	private void initUI() {
 		list = new JList();
-		list.setPreferredSize(new Dimension(320, 400));
 		list.setCellRenderer(new PresetRenderer());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		
@@ -92,6 +92,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		final JPanel buttons = new JPanel(new GridBagLayout());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addListSelectionListener(this);
+		
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 		    public void mouseClicked(MouseEvent evt) {
@@ -100,8 +101,11 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 				}
 			}
 		});
+		
 		refreshList();
-		listPane.add(list, GBC.std());
+		JScrollPane listScroll = new JScrollPane(list);
+		listScroll.setPreferredSize(new Dimension(320,420));
+		listPane.add(listScroll, GBC.std());
 		reorderUpButton = new JButton();
 		reorderUpButton.setIcon(ImageProvider.get("dialogs", "up"));
 		reorderUpButton.addActionListener(new ActionListener(){

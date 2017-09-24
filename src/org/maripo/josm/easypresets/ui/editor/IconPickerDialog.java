@@ -71,7 +71,7 @@ public class IconPickerDialog extends ExtendedDialog implements MouseListener {
 			
 		}
 		mainPane.add(iconsPane, GBC.eop());
-		JButton cancelButton = new JButton("Cancel");
+		JButton cancelButton = new JButton(tr("Cancel"));
 		cancelButton.addActionListener(new ActionListener() {
 			
 			@Override
