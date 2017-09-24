@@ -34,6 +34,7 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.gui.tagging.presets.items.Label;
+import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
 /**
@@ -44,11 +45,13 @@ import org.openstreetmap.josm.tools.ImageProvider;
 public class PresetEditorDialog extends ExtendedDialog {
 	
 	private JTextField uiPresetName;
+	JTextField urlTextField;
 	private Icon icon;
 	private String iconPath;
 
 	List<TargetType> targetTypes = new ArrayList<TargetType>();
 	String name;
+	String referenceURL;
 	private TaggingPreset presetToEdit;
 	protected Collection<TaggingPresetType> defaultTypes;
 	
@@ -78,6 +81,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	public PresetEditorDialog(TaggingPreset preset) {
 		super(Main.parent, tr("Preset Editor"));
 		name = preset.name;
+		referenceURL = findURL(preset);
 		icon = preset.getIcon();
 		iconPath = preset.iconName;
 		this.presetToEdit = preset;
@@ -93,6 +97,17 @@ public class PresetEditorDialog extends ExtendedDialog {
 		initUI(tagEditors);
 	}
 	
+	private String findURL(TaggingPreset preset) {
+		if (preset.data!=null) {
+			for (TaggingPresetItem item: preset.data) {
+				if (item instanceof Link) {
+					return ((Link)item).href;
+				}
+			}
+		}
+		return null;
+	}
+
 	TagsPane tagsPane;
 	JLabel errorMessageLabel;
 	private void initUI(List<TagEditor> tagEditors) {
@@ -168,7 +183,11 @@ public class PresetEditorDialog extends ExtendedDialog {
         
 		mainPane.add(new JLabel(tr("Applies to") + ":"), GBC.std().anchor(GBC.NORTHWEST));
         mainPane.add(typesPane, GBC.eol().insets(0, 0, 0, 5).anchor(GBC.NORTHWEST));
-        
+
+		mainPane.add(new JLabel(tr("Reference URL") + ":"), GBC.std().anchor(GBC.NORTHWEST));
+		urlTextField = new JTextField();
+		urlTextField.setText(referenceURL);
+		mainPane.add(urlTextField, GBC.eol().fill());
 
 
 		mainPane.add(new JLabel(tr("Tags") + ":"), GBC.eol().anchor(GBC.NORTHWEST));
@@ -317,6 +336,12 @@ public class PresetEditorDialog extends ExtendedDialog {
 				hasItem = true;
 				preset.data.add(item);
 			}
+		}
+		// Add link
+		if (urlTextField.getText()!=null && !urlTextField.getText().isEmpty()) {
+			Link link = new Link();
+			link.href = urlTextField.getText();
+			preset.data.add(link);
 		}
 		if (!hasItem) {
 			showErrorMessage(tr("Tag list is empty."));

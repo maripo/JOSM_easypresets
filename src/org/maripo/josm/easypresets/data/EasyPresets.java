@@ -32,6 +32,7 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPresets;
 import org.openstreetmap.josm.gui.tagging.presets.items.Combo;
 import org.openstreetmap.josm.gui.tagging.presets.items.Key;
 import org.openstreetmap.josm.gui.tagging.presets.items.Label;
+import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -235,6 +236,12 @@ public class EasyPresets {
 				comboElement.setAttribute("key", combo.key);
 				comboElement.setAttribute("values", combo.values);
 				presetElement.appendChild(comboElement);
+			}
+			else if (item instanceof Link) {
+				Link link = (Link)item;
+				Element linkItem = doc.createElement("link");
+				linkItem.setAttribute("href", link.href);
+				presetElement.appendChild(linkItem);
 			}
 		}
 		return presetElement;
