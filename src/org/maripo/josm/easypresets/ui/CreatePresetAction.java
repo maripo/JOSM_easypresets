@@ -24,7 +24,7 @@ import org.openstreetmap.josm.tools.Shortcut;
 public class CreatePresetAction extends JosmAction {
 
 	public CreatePresetAction () {
-        super(tr("Create Preset"), "easypresets.png",
+        super(tr("Create Preset"), "easypresets_add.png",
                 tr("Create or edit your custom preset based on tags from the current selection"),
                 Shortcut.registerShortcut(
                         "tools:easy_presets_create", tr("Tool: {0}", tr("Create Preset")), 
