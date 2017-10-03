@@ -190,7 +190,7 @@ public class EasyPresets {
         }
 	}
 
-	TaggingPresetMenu group;
+	private TaggingPresetMenu group;
 	/**
 	 * Create a preset group holding all custom presets
 	 * @return created group
