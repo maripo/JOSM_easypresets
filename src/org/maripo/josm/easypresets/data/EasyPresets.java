@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -28,6 +29,7 @@ import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.gui.JosmUserIdentityManager;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
+import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresets;
@@ -36,6 +38,7 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Key;
 import org.openstreetmap.josm.gui.tagging.presets.items.Label;
 import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
+import org.openstreetmap.josm.tools.ImageProvider;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -97,6 +100,7 @@ public class EasyPresets {
 		} catch (SAXException e) {
 			e.printStackTrace();
 		}
+		updatePresetListMenu();
 	}
 
 	/**
@@ -178,21 +182,29 @@ public class EasyPresets {
 	}
 	
 	private void updatePresetListMenu() {
-		// Hide if the preset list is empty
-		presetContainerMenu.setVisible(presets.size()>0);
-		presetContainerMenu.removeAll();
+		group.setEnabled(presets.size()>0);
         for (TaggingPreset preset: presets) {
             JMenuItem mi = new JMenuItem(preset);
             mi.setText(preset.getLocaleName());
-            presetContainerMenu.add(mi);
+            group.menu.add(mi);
         }
 	}
 
-	JMenu presetContainerMenu;
-	public JMenu createPresetListMenu() {
-		presetContainerMenu = new JMenu(tr("Custom Presets"));
-		updatePresetListMenu();
-		return presetContainerMenu;
+	TaggingPresetMenu group;
+	/**
+	 * Create a preset group holding all custom presets
+	 * @return created group
+	 */
+	public TaggingPresetMenu createGroupMenu() {
+		if (group==null) {
+			group = new TaggingPresetMenu();
+			group.name = tr("Custom Presets");
+			group.setIcon("easypresets.png");
+			JMenu menu = new JMenu(group);
+			group.menu = menu;
+			group.setDisplayName();
+		}
+		return group;
 	}
 
 	private Element createpresetElement(Document doc, TaggingPreset obj) {
@@ -200,7 +212,6 @@ public class EasyPresets {
 		presetElement.setAttribute("name", obj.name);
 		if (obj.iconName!=null && !obj.iconName.isEmpty()) {
 			presetElement.setAttribute("icon", obj.iconName);
-			
 		}
 		if (obj.types!=null && obj.types.size()>0) {
 			List<String> typeNames = new ArrayList<String>();
