@@ -16,6 +16,7 @@ Your custom presets can be exported to local XML files.
 	* Select "Textbox" if you want to make the value editable. You can set default values.
 	* Select "Selection" to create dropdown field with multiple options. ![Editing options](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/options.png)
 * You can select target types such as nodes, ways and multipolygons.![types](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/target_types.png)
+* Icons are customizable. Click "Select icon..." button.[Icon picker dialog](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/icon_picker.png)
 
 ## Use Presets
 * You can use custom preset in the same manner as normal presets.
@@ -26,16 +27,15 @@ Your custom presets can be exported to local XML files.
 * You can edit, delete and export data by "Presets > Manage custom presets" menu.
 * Exported XML files are compatible with JOSM preset files. If you want to share your cool presets with other users, please refer to official document because only a few tags and attributes are included. https://josm.openstreetmap.de/wiki/TaggingPresets
 
-![プリセットの管理](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/manager.png) 
+![Presets manager](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/manager.png) 
 
 ## Misc
 * This plugin stores the data to "EasyPresets.xml" in your JOSM user directory.
 * It is now under development and has only basic functionalities. I am plannning to implement more functionalities such as grouping, sorting and support of various preset types. 
 
 ## TODO
-* Grouping
-* Sorting
-* Localization
+* Grouping feature
+* Expert features for presets developers
 
 ## Developer
 Maripo GODA <goda.mariko@gmail.com>
