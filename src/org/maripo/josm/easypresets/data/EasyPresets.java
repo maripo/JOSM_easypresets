@@ -52,7 +52,10 @@ import jdk.internal.util.xml.impl.ReaderUTF8;
  */
 public class EasyPresets {
 	private static final String FILE_NAME = "EasyPresets.xml";
-	private static final String PRESET_FORMAT_URL = "https://josm.openstreetmap.de/wiki/TaggingPresets";
+	private static final String[] PRESET_FORMAT_URLS = {
+			"https://josm.openstreetmap.de/wiki/TaggingPresets",
+			"https://wiki.openstreetmap.org/wiki/Customising_JOSM_Presets"
+			};
 	public static final String PLUGIN_HELP_URL = "https://github.com/maripo/JOSM_easypresets/blob/master/README.md";
 
 	boolean isDirty = false;
@@ -166,8 +169,11 @@ public class EasyPresets {
 		comment.append("\n");
 		comment.append(tr("It supports just a few tags and attributes.\n"));
 		comment.append(tr("If you want to share your custom tags with other users, please look through the official document.\n"));
-		comment.append(PRESET_FORMAT_URL);
-		comment.append("\n");
+		for (String url : PRESET_FORMAT_URLS) {
+			comment.append(" * ");
+			comment.append(url);
+			comment.append("\n");
+		}
 		return comment.toString();
 	}
 
