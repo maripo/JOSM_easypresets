@@ -87,8 +87,13 @@ public class EasyPresets {
 	 */
 	public void load() {
 		ReaderUTF8 reader;
+		String path = EasyPresets.getInstance().getXMLPath();
+		File file = new File(path);
+		if (!file.exists()) {
+			return;
+		}
 		try {
-			reader = new ReaderUTF8(new FileInputStream(EasyPresets.getInstance().getXMLPath()));
+			reader = new ReaderUTF8(new FileInputStream(path));
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
 			return;
