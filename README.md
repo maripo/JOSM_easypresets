@@ -12,9 +12,11 @@ Your custom presets can be exported to local XML files.
 * Select nodes or ways and click "Presets > Create Preset" menu. It shows a dialog containing tags extracted from the selection.
 * If you want to exclude some of listed tags, please uncheck "Use" checkboxes.
 * This plugin supports three types of tags.  
-	* Select "Fixed value" to create a fixed key-value pair.
-	* Select "Textbox" if you want to make the value editable. You can set default values.
-	* Select "Selection" to create dropdown field with multiple options. ![Editing options](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/options.png)
+	* "Fixed value": Fixed key-value pair will be automatically applied. Fields of this type won't be shown explicitly on a preset dialog. 
+	* "Textbox" : Field to edit arbitrary text.
+	* "Selection" : Pull-down menu with multiple options. You can edit set of values. ![Editing options](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/options.png)
+	* "Multiselect" : List of values to select single or multiple options. 
+	* "Checkbox" : A checkbox to input "yes" or "no".
 * You can select target types such as nodes, ways and multipolygons.![types](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/target_types.png)
 * Icons are customizable. Click "Select icon..." button.[Icon picker dialog](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/icon_picker.png)
 
