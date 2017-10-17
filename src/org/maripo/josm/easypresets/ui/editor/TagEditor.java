@@ -21,16 +21,20 @@ import javax.swing.JTextField;
 import org.maripo.josm.easypresets.ui.editor.ValuesEditorDialog.ValuesEditorDialogListener;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
+import org.openstreetmap.josm.gui.tagging.presets.items.Check;
 import org.openstreetmap.josm.gui.tagging.presets.items.Combo;
+import org.openstreetmap.josm.gui.tagging.presets.items.ComboMultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Key;
 import org.openstreetmap.josm.gui.tagging.presets.items.KeyedItem;
+import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
 import org.openstreetmap.josm.tools.GBC;
 
 public class TagEditor {
 
 	/**
-	 * Key fields
+	 * Input field for individual field.
+	 * It supports key (fixed value), text, select, combobox, check and multiselect. 
 	 * @author maripo
 	 *
 	 */
@@ -77,6 +81,7 @@ public class TagEditor {
 		
 	}
 	
+	String inputValues[] = new String[]{};
 	/**
 	 * Value fields
 	 */
@@ -86,9 +91,11 @@ public class TagEditor {
 
 		public abstract void setVisibility(boolean isSelected);
 
-		public abstract void setDefaultValue(String... values);
+		public abstract void populateDefaultValue(String... values);
 
-		public abstract String[] getValues();
+		public abstract void applyEditedValues();
+
+		public abstract TaggingPresetItem createItem();
 	}
 	class ValueFieldFixed extends ValueField {
 		JTextField textField;
@@ -108,14 +115,27 @@ public class TagEditor {
 			
 		}
 		@Override
-		public void setDefaultValue(String... values) {
+		public void populateDefaultValue(String... values) {
 			if (values.length > 0) {
 				textField.setText(values[0]);
 			}
 		}
 		@Override
-		public String[] getValues() {
-			return new String[]{textField.getText()};
+		public void applyEditedValues() {
+			if (inputValues.length==0) {
+				inputValues = new String[1];
+			}
+			inputValues[0] = textField.getText();
+		}
+		@Override
+		public TaggingPresetItem createItem() {
+			Key item = new Key();
+			item.key = keyField.getKey();
+			item.text = keyField.getKey();
+			if (inputValues!=null && inputValues.length>0) {
+				item.value = inputValues[0];
+			}
+			return item;
 		}
 	}
 	class ValueFieldTextbox extends ValueField {
@@ -138,14 +158,27 @@ public class TagEditor {
 			labelDefault.setVisible(visible);
 		}
 		@Override
-		public void setDefaultValue(String... values) {
+		public void populateDefaultValue(String... values) {
 			if (values.length > 0) {
 				textField.setText(values[0]);
 			}
 		}
 		@Override
-		public String[] getValues() {
-			return new String[]{textField.getText()};
+		public void applyEditedValues() {
+			if (inputValues.length==0) {
+				inputValues = new String[1];
+			}
+			inputValues[0] = textField.getText();
+		}
+		@Override
+		public TaggingPresetItem createItem() {
+			Text item = new Text();
+			item.key = keyField.getKey();
+			item.text = keyField.getKey();
+			if (inputValues!=null && inputValues.length>0) {
+				item.default_ = inputValues[0];
+			}
+			return item;
 		}
 	}
 	class ValueFieldSelection extends ValueField implements ActionListener, ValuesEditorDialogListener {
@@ -176,7 +209,7 @@ public class TagEditor {
 			
 		}
 		@Override
-		public void setDefaultValue(String... values) {
+		public void populateDefaultValue(String... values) {
 			this.values = values;
 			if (values.length == 1) {
 				label.setText(values[0]);
@@ -187,31 +220,101 @@ public class TagEditor {
 			}
 		}
 		@Override
-		public String[] getValues() {
-			return values;
+		public void applyEditedValues() {
+			inputValues = values;
+		}
+		protected ComboMultiSelect createEmptyItem() {
+			return new Combo();
+		}
+		protected String getDefaultDelimiter() {
+			return ",";
+		}
+		@Override
+		public TaggingPresetItem createItem() {
+			ComboMultiSelect item = createEmptyItem();
+			item.key = keyField.getKey();
+			item.text = keyField.getKey();
+			// set delimiters
+			StringBuilder valueString = new StringBuilder();
+			item.delimiter = getDefaultDelimiter();
+			for (String value: inputValues) {
+				if (valueString.length() > 0) {
+					valueString.append(getDefaultDelimiter());
+				}
+				valueString.append(value.replace(",", "\\,"));
+			}
+			item.values = valueString.toString();
+			return item;
 		}
 		// Callback of ValuesEditorDialog
 		@Override
 		public void onInput(String[] values) {
-			setDefaultValue(values);
+			populateDefaultValue(values);
 		}
 		@Override
 		public void onCancel() {
 			// Nothing to do
 		}
+		
+	}
+	class ValueFieldMultiselect extends ValueFieldSelection {
+		@Override
+		protected ComboMultiSelect createEmptyItem() {
+			return new MultiSelect();
+		}
+		@Override
+		protected String getDefaultDelimiter() {
+			return ";";
+		}
+	}
+	class ValueFieldCheckbox extends ValueField {
+		public ValueFieldCheckbox () {
+			super();
+			
+		}
+		@Override
+		public void appendUI(JPanel pane) {
+		}
+
+		@Override
+		public void setVisibility(boolean isSelected) {
+		}
+
+		@Override
+		public void populateDefaultValue(String... values) {
+		}
+
+		@Override
+		public void applyEditedValues() {
+			// Do nothing
+		}
+		@Override
+		public TaggingPresetItem createItem() {
+			Check item = new Check();
+			item.key = keyField.getKey();
+			item.text = keyField.getKey();
+			return item;
+		}
+		
 	}
 
 	private static final String TYPE_FIXED;
 	private static final String TYPE_TEXTBOX;
 	private static final String TYPE_SELECTION;
+	private static final String TYPE_CHECKBOX;
+	private static final String TYPE_MULTISELECT;
+	
 	private static final String TYPE_DEFAULT;
 	private static final String[] TYPE_OPTIONS;
 	static {
 		TYPE_FIXED = tr("Fixed value");
 		TYPE_TEXTBOX = tr("Textbox");
 		TYPE_SELECTION = tr("Selection");
+		TYPE_CHECKBOX = tr("Checkbox");
+		TYPE_MULTISELECT = tr("Multiselect");
 		TYPE_DEFAULT = TYPE_FIXED;
-		TYPE_OPTIONS = new String[]{TYPE_FIXED, TYPE_TEXTBOX, TYPE_SELECTION};
+		TYPE_OPTIONS = new String[]{
+				TYPE_FIXED, TYPE_TEXTBOX, TYPE_SELECTION, TYPE_CHECKBOX, TYPE_MULTISELECT};
 	}
 
 	private JCheckBox uiInclude;
@@ -232,6 +335,8 @@ public class TagEditor {
 		fields.put(TYPE_FIXED, new ValueFieldFixed());
 		fields.put(TYPE_TEXTBOX, new ValueFieldTextbox());
 		fields.put(TYPE_SELECTION, new ValueFieldSelection());
+		fields.put(TYPE_CHECKBOX, new ValueFieldCheckbox());
+		fields.put(TYPE_MULTISELECT, new ValueFieldMultiselect());
 		for (String label: TYPE_OPTIONS) {
 			uiType.addItem(label);
 			fields.get(label).appendUI(valuePanel);
@@ -246,15 +351,14 @@ public class TagEditor {
 	}
 
 	private void switchType(String selectedType) {
-		
 		for (String type: TYPE_OPTIONS) {
 			boolean isSelected = type.equals(selectedType);
 			ValueField field = fields.get(type);
 			field.setVisibility(isSelected);
 		}
 		if (prevSelectedType!=null) {
-			String[] prevValues = fields.get(prevSelectedType).getValues();
-			getSelectedValueField().setDefaultValue(prevValues);
+			fields.get(prevSelectedType).applyEditedValues();
+			getSelectedValueField().populateDefaultValue(inputValues);
 		}
 		prevSelectedType = selectedType;
 		if (parentPane!=null) {
@@ -278,7 +382,7 @@ public class TagEditor {
 		instance.uiType.setSelectedItem(TYPE_DEFAULT);
 		if (!map.isEmpty()) {
 			String firstKey = map.keySet().iterator().next();
-			instance.getSelectedValueField().setDefaultValue(firstKey);
+			instance.getSelectedValueField().populateDefaultValue(firstKey);
 		}
 		instance.initUI();
 		return instance;
@@ -302,12 +406,16 @@ public class TagEditor {
 			type = TYPE_FIXED;
 		} else if (tag instanceof Combo) {
 			type = TYPE_SELECTION;
+		} else if (tag instanceof Check) {
+			type = TYPE_CHECKBOX;
+		} else if (tag instanceof MultiSelect) {
+			type = TYPE_MULTISELECT;
 		} else {
 			return null;
 		}
 		instance.uiType.setSelectedItem(type);
 		instance.switchType(type);
-		instance.getSelectedValueField().setDefaultValue(tag.getValues().toArray(new String[0]));
+		instance.getSelectedValueField().populateDefaultValue(tag.getValues().toArray(new String[0]));
 		instance.keyField = new KeyFieldFixed(tag.key);
 		instance.initUI();
 		return instance;
@@ -338,72 +446,14 @@ public class TagEditor {
 	public void _appendUI(JPanel pane) {
 	}
 
-	/**
-	 * Generate editable text field
-	 * @return "Key" type item 
-	 */
-	private TaggingPresetItem createTextItem() {
-		Text item = new Text();
-		item.key = keyField.getKey();
-		item.text = keyField.getKey();
-		String[] values = getSelectedValueField().getValues();
-		if (values!=null && values.length>0) {
-			item.default_ = values[0];
-		}
-		return item;
-	}
-	/**
-	 * Generate fixed key-value
-	 * @return "Key" type item
-	 */
-	private TaggingPresetItem createKeyItem() {
-		Key item = new Key();
-		item.key = keyField.getKey();
-		item.text = keyField.getKey();
-		String[] values = getSelectedValueField().getValues();
-		if (values!=null && values.length>0) {
-			item.value = values[0];
-		}
-		return item;
-	}
-	/**
-	 * Generate selection type with comma separated values
-	 * @return
-	 */
-	private TaggingPresetItem createSelectionItem() {
-		Combo item = new Combo();
-		item.key = keyField.getKey();
-		item.text = keyField.getKey();
-		// set delimiters
-		StringBuilder valueString = new StringBuilder();
-		item.delimiter = ",";
-		for (String value: getSelectedValueField().getValues()) {
-			if (valueString.length() > 0) {
-				valueString.append(",");
-			}
-			valueString.append(value.replace(",", "\\,"));
-		}
-		item.values = valueString.toString();
-		return item;
-	}
-
 	public TaggingPresetItem getTaggingPresetItem() {
 		if (!uiInclude.isSelected() || keyField.getKey().isEmpty()) {
 			return null;
 		}
-		if (TYPE_TEXTBOX.equals(uiType.getSelectedItem())) {
-			return createTextItem();
-		}
-		else if (TYPE_FIXED.equals(uiType.getSelectedItem())) {
-			return createKeyItem();
-		}
-		else if (TYPE_SELECTION.equals(uiType.getSelectedItem())) {
-			return createSelectionItem();
-		}
-		return null;
+		getSelectedValueField().applyEditedValues();
+		return getSelectedValueField().createItem();
 	}
 
-	
 	/* Getters of UI components */
 	public Component getUiInclude() {
 		return uiInclude;
@@ -420,6 +470,5 @@ public class TagEditor {
 	public Component getUiValue() {
 		return valuePanel;
 	}
-
 
 }

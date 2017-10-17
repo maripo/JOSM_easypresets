@@ -33,10 +33,12 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresets;
+import org.openstreetmap.josm.gui.tagging.presets.items.Check;
 import org.openstreetmap.josm.gui.tagging.presets.items.Combo;
 import org.openstreetmap.josm.gui.tagging.presets.items.Key;
 import org.openstreetmap.josm.gui.tagging.presets.items.Label;
 import org.openstreetmap.josm.gui.tagging.presets.items.Link;
+import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.w3c.dom.Document;
@@ -202,6 +204,7 @@ public class EasyPresets {
 	}
 
 	private TaggingPresetMenu group;
+	
 	/**
 	 * Create a preset group holding all custom presets
 	 * @return created group
@@ -232,18 +235,18 @@ public class EasyPresets {
 			presetElement.setAttribute("type", String.join(",", typeNames));
 		}
 		for (TaggingPresetItem item : obj.data) {
-			if (item instanceof Key) {
+			if (item instanceof Label) {
+				Label label = (Label)item;
+				Element labelElement = doc.createElement("label");
+				labelElement.setAttribute("text", label.text);
+				presetElement.appendChild(labelElement);
+			}
+			else if (item instanceof Key) {
 				Key key = (Key) item;
 				Element keyElement = doc.createElement("key");
 				keyElement.setAttribute("key", key.key);
 				keyElement.setAttribute("value", key.value);
 				presetElement.appendChild(keyElement);
-			}
-			else if (item instanceof Label) {
-				Label label = (Label)item;
-				Element labelElement = doc.createElement("label");
-				labelElement.setAttribute("text", label.text);
-				presetElement.appendChild(labelElement);
 			}
 			else if (item instanceof Text) {
 				Text text = (Text)item;
@@ -260,6 +263,21 @@ public class EasyPresets {
 				comboElement.setAttribute("key", combo.key);
 				comboElement.setAttribute("values", combo.values);
 				presetElement.appendChild(comboElement);
+			}
+			else if (item instanceof MultiSelect) {
+				MultiSelect multiselect = (MultiSelect)item;
+				Element multiselectElement = doc.createElement("multiselect");
+				multiselectElement.setAttribute("text", multiselect.text);
+				multiselectElement.setAttribute("key", multiselect.key);
+				multiselectElement.setAttribute("values", multiselect.values);
+				presetElement.appendChild(multiselectElement);
+			}
+			else if (item instanceof Check) {
+				Check key = (Check) item;
+				Element keyElement = doc.createElement("check");
+				keyElement.setAttribute("text", key.text);
+				keyElement.setAttribute("key", key.key);
+				presetElement.appendChild(keyElement);
 			}
 			else if (item instanceof Link) {
 				Link link = (Link)item;
