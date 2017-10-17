@@ -300,21 +300,21 @@ public class TagEditor {
 
 	private static final String TYPE_FIXED;
 	private static final String TYPE_TEXTBOX;
-	private static final String TYPE_SELECTION;
-	private static final String TYPE_CHECKBOX;
+	private static final String TYPE_SELECT;
 	private static final String TYPE_MULTISELECT;
+	private static final String TYPE_CHECKBOX;
 	
 	private static final String TYPE_DEFAULT;
 	private static final String[] TYPE_OPTIONS;
 	static {
 		TYPE_FIXED = tr("Fixed value");
 		TYPE_TEXTBOX = tr("Textbox");
-		TYPE_SELECTION = tr("Selection");
+		TYPE_SELECT = tr("Selection");
 		TYPE_CHECKBOX = tr("Checkbox");
 		TYPE_MULTISELECT = tr("Multiselect");
 		TYPE_DEFAULT = TYPE_FIXED;
 		TYPE_OPTIONS = new String[]{
-				TYPE_FIXED, TYPE_TEXTBOX, TYPE_SELECTION, TYPE_CHECKBOX, TYPE_MULTISELECT};
+				TYPE_FIXED, TYPE_TEXTBOX, TYPE_SELECT, TYPE_CHECKBOX, TYPE_MULTISELECT};
 	}
 
 	private JCheckBox uiInclude;
@@ -334,9 +334,9 @@ public class TagEditor {
 		fields = new HashMap<String, ValueField>();
 		fields.put(TYPE_FIXED, new ValueFieldFixed());
 		fields.put(TYPE_TEXTBOX, new ValueFieldTextbox());
-		fields.put(TYPE_SELECTION, new ValueFieldSelection());
-		fields.put(TYPE_CHECKBOX, new ValueFieldCheckbox());
+		fields.put(TYPE_SELECT, new ValueFieldSelection());
 		fields.put(TYPE_MULTISELECT, new ValueFieldMultiselect());
+		fields.put(TYPE_CHECKBOX, new ValueFieldCheckbox());
 		for (String label: TYPE_OPTIONS) {
 			uiType.addItem(label);
 			fields.get(label).appendUI(valuePanel);
@@ -405,11 +405,11 @@ public class TagEditor {
 		} else if (tag instanceof Key) {
 			type = TYPE_FIXED;
 		} else if (tag instanceof Combo) {
-			type = TYPE_SELECTION;
-		} else if (tag instanceof Check) {
-			type = TYPE_CHECKBOX;
+			type = TYPE_SELECT;
 		} else if (tag instanceof MultiSelect) {
 			type = TYPE_MULTISELECT;
+		} else if (tag instanceof Check) {
+			type = TYPE_CHECKBOX;
 		} else {
 			return null;
 		}
