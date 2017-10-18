@@ -34,8 +34,6 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
 
-import javafx.scene.control.Label;
-
 public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener {
 	private JButton deleteButton;
 	private JButton editButton;
