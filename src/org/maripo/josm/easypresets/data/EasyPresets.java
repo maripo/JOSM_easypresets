@@ -1,6 +1,7 @@
 package org.maripo.josm.easypresets.data;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
+import static org.openstreetmap.josm.tools.I18n.trc;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,11 +29,14 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
+import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader.Chunk;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresets;
 import org.openstreetmap.josm.gui.tagging.presets.items.Check;
 import org.openstreetmap.josm.gui.tagging.presets.items.Combo;
+import org.openstreetmap.josm.gui.tagging.presets.items.ComboMultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Key;
+import org.openstreetmap.josm.gui.tagging.presets.items.KeyedItem;
 import org.openstreetmap.josm.gui.tagging.presets.items.Label;
 import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
@@ -350,5 +354,47 @@ public class EasyPresets {
 		}
 		presets.remove(oldPreset);
 		presets.add(index, newPreset);
+	}
+	
+	public String getLabelFromExistingPresets (String key) {
+		Collection<TaggingPreset> existingPresets = TaggingPresets.getTaggingPresets();
+		for (TaggingPreset preset: existingPresets) {
+			for (TaggingPresetItem _item: preset.data) {
+				if (_item instanceof KeyedItem) {
+					KeyedItem item = (KeyedItem)_item;
+					if (key.equals(item.key)) {
+						String label = getLocaleLabel(item);
+						if (label!=null && !label.isEmpty()) {
+							return label;
+						}
+					}
+				}
+			}
+		}
+		return "";
+	}
+
+	static class DummyPresetClass extends Text {
+		public static String getLocaleText(String text, String textContext){
+			return getLocaleText(text, textContext, null);
+		}
+	}
+	private String getLocaleLabel(KeyedItem _item) {
+		if (_item instanceof Text) {
+			Text item = (Text)_item;
+			return (item.locale_text!=null)?
+					item.locale_text:DummyPresetClass.getLocaleText(item.text, item.text_context);
+		}
+		if (_item instanceof ComboMultiSelect) {
+			ComboMultiSelect item = (ComboMultiSelect)_item;
+			return (item.locale_text!=null)?
+					item.locale_text:DummyPresetClass.getLocaleText(item.text, item.text_context);
+		}
+		if (_item instanceof Check) {
+			Check item = (Check)_item;
+			return (item.locale_text!=null)?
+					item.locale_text:DummyPresetClass.getLocaleText(item.text, item.text_context);
+		}
+		return null;
 	}
 }

@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.ValuesEditorDialog.ValuesEditorDialogListener;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
@@ -369,6 +370,18 @@ public class TagEditor {
 	private ValueField getSelectedValueField () {
 		return fields.get(uiType.getSelectedItem());
 	}
+	
+	/**
+	 * Create empty config (called by clicking "New tag")
+	 * @return
+	 */
+	public static TagEditor create(ExtendedDialog baseDialog) {
+		TagEditor instance = new TagEditor(baseDialog);
+		instance.keyField = new KeyFieldEditable();
+		instance.switchType(TYPE_DEFAULT);
+		instance.initUI();
+		return instance;
+	}
 	/**
 	 * Init with key and value map
 	 * @param key
@@ -383,6 +396,7 @@ public class TagEditor {
 		instance.uiType.setSelectedItem(TYPE_DEFAULT);
 		if (!map.isEmpty()) {
 			String firstKey = map.keySet().iterator().next();
+			instance.uiLabel.setText(EasyPresets.getInstance().getLabelFromExistingPresets(key));
 			instance.getSelectedValueField().populateDefaultValue(firstKey);
 		}
 		instance.initUI();
@@ -432,17 +446,6 @@ public class TagEditor {
 		});
 	}
 
-	/**
-	 * Create empty config (called by clicking "New tag")
-	 * @return
-	 */
-	public static TagEditor create(ExtendedDialog baseDialog) {
-		TagEditor instance = new TagEditor(baseDialog);
-		instance.keyField = new KeyFieldEditable();
-		instance.switchType(TYPE_DEFAULT);
-		instance.initUI();
-		return instance;
-	}
 
 	public void _appendUI(JPanel pane) {
 	}
