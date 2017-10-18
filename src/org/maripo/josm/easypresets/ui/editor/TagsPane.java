@@ -39,11 +39,12 @@ public class TagsPane extends JPanel {
 
 	private void createHeader() {
 		// Header
-        this.add(new JLabel(tr("Use")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Type")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Key")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Value")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
-        this.add(new JLabel(tr("Order")), GBC.eol().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST).fill(GBC.HORIZONTAL));
+        add(new JLabel(tr("Use")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
+        add(new JLabel(tr("Type")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
+        add(new JLabel(tr("Key")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
+        add(new JLabel(tr("Label")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
+        add(new JLabel(tr("Value")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
+        add(new JLabel(tr("Order")), GBC.eol().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST).fill(GBC.HORIZONTAL));
 	}
 
 	// Container of data line
@@ -51,7 +52,7 @@ public class TagsPane extends JPanel {
 
 		private int index;
 		JButton upButton, downButton;
-		private JPanel containerInclude, containerType, containerKey, containerValue;
+		private JPanel containerInclude, containerType, containerKey, containerLabel, containerValue;
 		private TagEditor editor;
 		public Line(TagEditor editor, int index) {
 			this.index = index;
@@ -60,6 +61,7 @@ public class TagsPane extends JPanel {
 			containerInclude = new JPanel(new GridBagLayout());
 			containerType = new JPanel(new GridBagLayout());
 			containerKey = new JPanel(new GridBagLayout());
+			containerLabel = new JPanel(new GridBagLayout());
 			containerValue = new JPanel(new GridBagLayout());
 
 			renderEditor(editor);
@@ -67,6 +69,7 @@ public class TagsPane extends JPanel {
 			add(containerInclude, GBC.std().insets(0).anchor(GBC.WEST));
 			add(containerType, GBC.std().insets(0).anchor(GBC.WEST));
 			add(containerKey, GBC.std().insets(0).anchor(GBC.WEST));
+			add(containerLabel, GBC.std().insets(0).anchor(GBC.WEST));
 			add(containerValue, GBC.std().insets(0).anchor(GBC.WEST));
 			
 			JPanel orderButtonsPanel = new JPanel(new GridLayout(1, 2));
@@ -95,6 +98,7 @@ public class TagsPane extends JPanel {
 		public void removeUI() {
 			containerInclude.remove(0);
 			containerType.remove(0);
+			containerLabel.remove(0);
 			containerKey.remove(0);
 			containerValue.remove(0);
 		}
@@ -103,11 +107,13 @@ public class TagsPane extends JPanel {
 			containerInclude.add(editor.getUiInclude(), GBC.eol().insets(0));
 			containerType.add(editor.getUiType(), GBC.eol().insets(0));
 			containerKey.add(editor.getUiKey(), GBC.eol().insets(0));
+			containerLabel.add(editor.getUiLabel(), GBC.eol().insets(0));
 			containerValue.add(editor.getUiValue(), GBC.eol().insets(0));
 		}
 		public void revalidateComponents() {
 			containerInclude.revalidate();
 			containerType.revalidate();
+			containerLabel.revalidate();
 			containerKey.revalidate();
 			containerValue.revalidate();
 		}

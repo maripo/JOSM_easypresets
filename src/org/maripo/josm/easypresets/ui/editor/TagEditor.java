@@ -92,11 +92,15 @@ public class TagEditor {
 
 		public abstract void applyEditedValues();
 
-		public abstract TaggingPresetItem createItem();
+		public abstract KeyedItem createItem();
+
+		public boolean hasLabel() {
+			return true;
+		}
 	}
 	class ValueFieldFixed extends ValueField {
 		JTextField textField;
-		private static final int DEFAULT_COLUMNS = 12;
+		private static final int DEFAULT_COLUMNS = 10;
 		public ValueFieldFixed () {
 			super();
 			textField = new JTextField(DEFAULT_COLUMNS);
@@ -105,6 +109,10 @@ public class TagEditor {
 		public void appendUI(JPanel pane) {
 			pane.add(textField);
 			
+		}
+		@Override
+		public boolean hasLabel() {
+			return false;
 		}
 		@Override
 		public void setVisibility(boolean visible) {
@@ -125,10 +133,8 @@ public class TagEditor {
 			inputValues[0] = textField.getText();
 		}
 		@Override
-		public TaggingPresetItem createItem() {
+		public KeyedItem createItem() {
 			Key item = new Key();
-			item.key = keyField.getKey();
-			item.text = keyField.getKey();
 			if (inputValues!=null && inputValues.length>0) {
 				item.value = inputValues[0];
 			}
@@ -138,7 +144,7 @@ public class TagEditor {
 	class ValueFieldTextbox extends ValueField {
 		JTextField textField;
 		JLabel labelDefault;
-		private static final int DEFAULT_COLUMNS = 12;
+		private static final int DEFAULT_COLUMNS = 10;
 		public ValueFieldTextbox () {
 			super();
 			textField = new JTextField(DEFAULT_COLUMNS);
@@ -168,10 +174,8 @@ public class TagEditor {
 			inputValues[0] = textField.getText();
 		}
 		@Override
-		public TaggingPresetItem createItem() {
+		public KeyedItem createItem() {
 			Text item = new Text();
-			item.key = keyField.getKey();
-			item.text = keyField.getKey();
 			if (inputValues!=null && inputValues.length>0) {
 				item.default_ = inputValues[0];
 			}
@@ -227,10 +231,8 @@ public class TagEditor {
 			return ",";
 		}
 		@Override
-		public TaggingPresetItem createItem() {
+		public KeyedItem createItem() {
 			ComboMultiSelect item = createEmptyItem();
-			item.key = keyField.getKey();
-			item.text = keyField.getKey();
 			// set delimiters
 			StringBuilder valueString = new StringBuilder();
 			item.delimiter = getDefaultDelimiter();
@@ -286,10 +288,8 @@ public class TagEditor {
 			// Do nothing
 		}
 		@Override
-		public TaggingPresetItem createItem() {
+		public KeyedItem createItem() {
 			Check item = new Check();
-			item.key = keyField.getKey();
-			item.text = keyField.getKey();
 			return item;
 		}
 		
@@ -323,6 +323,7 @@ public class TagEditor {
 
 	
 	public TagEditor(ExtendedDialog baseDialog) {
+		uiLabel = new JTextField(8);
 		this.baseDialog = baseDialog;
 		uiInclude = new JCheckBox();
 		uiInclude.setSelected(true);
@@ -353,10 +354,12 @@ public class TagEditor {
 			ValueField field = fields.get(type);
 			field.setVisibility(isSelected);
 		}
+		ValueField selectedValueField = getSelectedValueField();
 		if (prevSelectedType!=null) {
 			fields.get(prevSelectedType).applyEditedValues();
-			getSelectedValueField().populateDefaultValue(inputValues);
+			selectedValueField.populateDefaultValue(inputValues);
 		}
+		uiLabel.setVisible(selectedValueField.hasLabel());
 		prevSelectedType = selectedType;
 		if (parentPane!=null) {
 			parentPane.revalidate();
@@ -375,6 +378,7 @@ public class TagEditor {
 	public static TagEditor create(ExtendedDialog baseDialog, String key, Map<String, Integer> map) {
 		TagEditor instance = new TagEditor(baseDialog);
 		instance.keyField = new KeyFieldFixed(key);
+		// TODO fill with candidate from existing presets
 		instance.switchType(TYPE_DEFAULT);
 		instance.uiType.setSelectedItem(TYPE_DEFAULT);
 		if (!map.isEmpty()) {
@@ -397,6 +401,7 @@ public class TagEditor {
 		}
 		KeyedItem tag = (KeyedItem)item;
 		String type;
+		instance.uiLabel.setText(tag.text);
 		if (tag instanceof Text) {
 			type = TYPE_TEXTBOX;
 		} else if (tag instanceof Key) {
@@ -420,7 +425,6 @@ public class TagEditor {
 
 	private void initUI() {
 		uiType.addActionListener(new ActionListener(){
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				onSelectedTypeChange();
@@ -448,7 +452,14 @@ public class TagEditor {
 			return null;
 		}
 		getSelectedValueField().applyEditedValues();
-		return getSelectedValueField().createItem();
+		KeyedItem item = getSelectedValueField().createItem();
+		item.key = keyField.getKey();
+		if (getSelectedValueField().hasLabel()) {
+			if (!uiLabel.getText().isEmpty()) {
+				item.text = uiLabel.getText();
+			}
+		}
+		return item;
 	}
 
 	/* Getters of UI components */
@@ -466,6 +477,10 @@ public class TagEditor {
 
 	public Component getUiValue() {
 		return valuePanel;
+	}
+	JTextField uiLabel;
+	public Component getUiLabel() {
+		return uiLabel;
 	}
 
 }
