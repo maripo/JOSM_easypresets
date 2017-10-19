@@ -2,6 +2,7 @@ package org.maripo.josm.easypresets.ui.editor;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -328,10 +329,11 @@ public class TagEditor {
 	public TagEditor(ExtendedDialog baseDialog) {
 		uiLabel = new JTextField(8);
 		uiLabelNA = new JLabel("("+tr("Unavailable")+")");
+		uiLabelNA.setToolTipText(tr("A field of this type doesn't have a label."));
+		uiLabelNA.setForeground(Color.GRAY);
 		uiLabelWrapper = new JPanel(new GridBagLayout());
-		uiLabelWrapper.setPreferredSize(new Dimension(108,28));
+		//uiLabelWrapper.setPreferredSize(new Dimension(108,28));
 		uiLabelWrapper.add(uiLabelNA);
-		// uiLabelWrapper.setBackground(Color.CYAN);
 		uiLabelWrapper.add(uiLabel, GBC.std().insets(0, 0, 0, 0).grid(0, 0));
 		uiLabel.setText(uiLabel.getSize().toString());
 		this.baseDialog = baseDialog;

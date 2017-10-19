@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-19 19:06+0900\n"
+"POT-Creation-Date: 2017-10-19 22:33+0900\n"
 "PO-Revision-Date: 2017-09-17 15:22+0900\n"
 "Last-Translator: Mariko GODA <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese\n"
@@ -119,42 +119,46 @@ msgstr "プリセットに名前をつけてください。"
 msgid "Tag list is empty."
 msgstr "タグが登録されていません。"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:155
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:156
 msgid "Default"
 msgstr "デフォルト"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:195
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:196
 msgid "Edit options"
 msgstr "選択肢を編集"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:223
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:224
 #, java-format
 msgid "{0} options"
 msgstr "{0}個の選択肢"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:310
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:311
 msgid "Fixed value"
 msgstr "固定値"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:311
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:312
 msgid "Textbox"
 msgstr "テキストボックス"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:312
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:313
 msgid "Selection"
 msgstr "選択式 (単一選択)"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:313
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:314
 msgid "Checkbox"
 msgstr "チェックボックス"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:314
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:315
 msgid "Multiselect"
 msgstr "選択式 (複数選択)"
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:330
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:331
 msgid "Unavailable"
-msgstr ""
+msgstr "設定できません"
+
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:332
+msgid "A field of this type doesn't have a label."
+msgstr "このタイプのフィールドにはラベルをつけられません"
 
 #: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:42
 msgid "Use"
@@ -169,14 +173,12 @@ msgid "Key"
 msgstr "キー"
 
 #: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:45
-#, fuzzy
-msgid "Optional"
-msgstr "選択肢"
+msgid "Label"
+msgstr "ラベル"
 
 #: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:45
-#, fuzzy
-msgid "Label("
-msgstr "ラベル"
+msgid "Optional"
+msgstr "任意"
 
 #: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:46
 msgid "Value"

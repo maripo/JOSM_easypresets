@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-19 19:06+0900\n"
+"POT-Creation-Date: 2017-10-19 22:33+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,41 +113,45 @@ msgstr ""
 msgid "Tag list is empty."
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:155
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:156
 msgid "Default"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:195
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:196
 msgid "Edit options"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:223
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:224
 #, java-format
 msgid "{0} options"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:310
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:311
 msgid "Fixed value"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:311
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:312
 msgid "Textbox"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:312
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:313
 msgid "Selection"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:313
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:314
 msgid "Checkbox"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:314
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:315
 msgid "Multiselect"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:330
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:331
 msgid "Unavailable"
+msgstr ""
+
+#: src/org/maripo/josm/easypresets/ui/editor/TagEditor.java:332
+msgid "A field of this type doesn't have a label."
 msgstr ""
 
 #: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:42
@@ -163,11 +167,11 @@ msgid "Key"
 msgstr ""
 
 #: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:45
-msgid "Optional"
+msgid "Label"
 msgstr ""
 
 #: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:45
-msgid "Label("
+msgid "Optional"
 msgstr ""
 
 #: src/org/maripo/josm/easypresets/ui/editor/TagsPane.java:46

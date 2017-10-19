@@ -364,7 +364,7 @@ public class EasyPresets {
 					KeyedItem item = (KeyedItem)_item;
 					if (key.equals(item.key)) {
 						String label = getLocaleLabel(item);
-						if (label!=null && !label.isEmpty()) {
+						if (label!=null && !label.isEmpty() && !label.equals(key)) {
 							return label;
 						}
 					}

@@ -42,7 +42,7 @@ public class TagsPane extends JPanel {
         add(new JLabel(tr("Use")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
         add(new JLabel(tr("Type")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
         add(new JLabel(tr("Key")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
-        add(new JLabel(tr("Label" + "(" + tr("Optional") +")")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
+        add(new JLabel(tr("Label") + "(" + tr("Optional") +")"), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
         add(new JLabel(tr("Value")), GBC.std().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST));
         add(new JLabel(tr("Order")), GBC.eol().insets(5, 0, 5, 0).anchor(GridBagConstraints.NORTHWEST).fill(GBC.HORIZONTAL));
 	}
