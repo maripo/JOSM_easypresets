@@ -3,7 +3,9 @@ package org.maripo.josm.easypresets.ui.editor;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Key;
 import org.openstreetmap.josm.gui.tagging.presets.items.KeyedItem;
 import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
+import org.openstreetmap.josm.tools.GBC;
 
 public class TagEditor {
 
@@ -270,7 +273,6 @@ public class TagEditor {
 	class ValueFieldCheckbox extends ValueField {
 		public ValueFieldCheckbox () {
 			super();
-			
 		}
 		@Override
 		public void appendUI(JPanel pane) {
@@ -325,6 +327,13 @@ public class TagEditor {
 	
 	public TagEditor(ExtendedDialog baseDialog) {
 		uiLabel = new JTextField(8);
+		uiLabelNA = new JLabel("("+tr("Unavailable")+")");
+		uiLabelWrapper = new JPanel(new GridBagLayout());
+		uiLabelWrapper.setPreferredSize(new Dimension(108,28));
+		uiLabelWrapper.add(uiLabelNA);
+		// uiLabelWrapper.setBackground(Color.CYAN);
+		uiLabelWrapper.add(uiLabel, GBC.std().insets(0, 0, 0, 0).grid(0, 0));
+		uiLabel.setText(uiLabel.getSize().toString());
 		this.baseDialog = baseDialog;
 		uiInclude = new JCheckBox();
 		uiInclude.setSelected(true);
@@ -361,6 +370,10 @@ public class TagEditor {
 			selectedValueField.populateDefaultValue(inputValues);
 		}
 		uiLabel.setVisible(selectedValueField.hasLabel());
+		uiLabelNA.setVisible(!selectedValueField.hasLabel());
+		if (uiLabel.getParent()!=null) {
+			uiLabel.getParent().revalidate();
+		}
 		prevSelectedType = selectedType;
 		if (parentPane!=null) {
 			parentPane.revalidate();
@@ -391,7 +404,6 @@ public class TagEditor {
 	public static TagEditor create(ExtendedDialog baseDialog, String key, Map<String, Integer> map) {
 		TagEditor instance = new TagEditor(baseDialog);
 		instance.keyField = new KeyFieldFixed(key);
-		// TODO fill with candidate from existing presets
 		instance.switchType(TYPE_DEFAULT);
 		instance.uiType.setSelectedItem(TYPE_DEFAULT);
 		if (!map.isEmpty()) {
@@ -481,9 +493,11 @@ public class TagEditor {
 	public Component getUiValue() {
 		return valuePanel;
 	}
-	JTextField uiLabel;
+	JTextField uiLabel; // Input field for label
+	JLabel uiLabelNA; // Appears when label is not supported
+	JPanel uiLabelWrapper;
 	public Component getUiLabel() {
-		return uiLabel;
+		return uiLabelWrapper;
 	}
 
 }
