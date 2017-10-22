@@ -126,7 +126,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		mainPane.add(new JLabel(tr("Preset Name") + ":"),  GBC.std().insets(0, 0, 0, 10).anchor(GBC.WEST));
-		uiPresetName = new JTextField(20);
+		uiPresetName = new JTextField(16);
 		uiPresetName.setText(name);
 		
 		uiIncludeName = new JCheckBox();
