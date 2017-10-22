@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-19 22:33+0900\n"
+"POT-Creation-Date: 2017-10-22 23:07+0900\n"
 "PO-Revision-Date: 2017-09-17 19:34+0900\n"
 "Last-Translator: Mariko GODA <EMAIL@ADDRESS>\n"
 "Language-Team: English\n"
@@ -65,56 +65,60 @@ msgid ""
 msgstr ""
 
 #: src/org/maripo/josm/easypresets/ui/editor/IconPickerDialog.java:51
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:136
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:153
 msgid "Icon"
 msgstr ""
 
 #: src/org/maripo/josm/easypresets/ui/editor/IconPickerDialog.java:74
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:229
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:246
 #: src/org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:56
 #: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:198
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:64
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:81
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:65
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:82
 msgid "Preset Editor"
 msgstr "Preset Editor"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:120
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:128
 #, fuzzy
 msgid "Preset Name"
 msgstr "Preset name is empty."
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:146
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:135
+msgid "Show the name on the dialog"
+msgstr ""
+
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:163
 msgid "Select icon"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:183
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:200
 msgid "Applies to"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:186
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:203
 msgid "Reference URL"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:192
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:209
 msgid "Tags"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:211
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:228
 msgid "Add Tag"
 msgstr ""
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:220
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:237
 msgid "Save"
 msgstr "Save"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:317
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:334
 msgid "Preset name is empty."
 msgstr "Preset name is empty."
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:346
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:365
 msgid "Tag list is empty."
 msgstr "Tag list is empty."
 
