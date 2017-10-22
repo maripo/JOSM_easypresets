@@ -44,13 +44,14 @@ import org.openstreetmap.josm.tools.ImageProvider;
 public class PresetEditorDialog extends ExtendedDialog {
 	
 	private JTextField uiPresetName;
-	JTextField urlTextField;
+	private JTextField uiURL;
+	private JCheckBox uiIncludeName; // Check to include name label
 	private Icon icon;
 	private String iconPath;
 
-	List<TargetType> targetTypes = new ArrayList<TargetType>();
-	String name;
-	String referenceURL;
+	private List<TargetType> targetTypes = new ArrayList<TargetType>();
+	private String name;
+	private String referenceURL;
 	private TaggingPreset presetToEdit;
 	protected Collection<TaggingPresetType> defaultTypes;
 	
@@ -94,6 +95,13 @@ public class PresetEditorDialog extends ExtendedDialog {
 			}
 		}
 		initUI(tagEditors);
+		boolean containsLabel = false;
+		for (TaggingPresetItem field : preset.data) {
+			if (field instanceof Label) {
+				containsLabel = true;
+			}
+		}
+		uiIncludeName.setSelected(containsLabel);
 	}
 	
 	private String findURL(TaggingPreset preset) {
@@ -120,7 +128,16 @@ public class PresetEditorDialog extends ExtendedDialog {
 		mainPane.add(new JLabel(tr("Preset Name") + ":"),  GBC.std().insets(0, 0, 0, 10).anchor(GBC.WEST));
 		uiPresetName = new JTextField(20);
 		uiPresetName.setText(name);
-		mainPane.add(uiPresetName, GBC.eol().insets(0, 0, 0, 10));
+		
+		uiIncludeName = new JCheckBox();
+		uiIncludeName.setSelected(true);
+		
+		JLabel label = new JLabel(tr("Show the name on the dialog"));
+		label.setLabelFor(uiIncludeName);
+
+		mainPane.add(uiPresetName, GBC.std().insets(0, 0, 0, 10));
+		mainPane.add(uiIncludeName, GBC.std().insets(0, 0, 0, 10));
+		mainPane.add(label, GBC.eol().insets(0, 0, 0, 10));
 		
 		// Types pane
 		final JPanel typesPane = new JPanel(new GridBagLayout());
@@ -184,9 +201,9 @@ public class PresetEditorDialog extends ExtendedDialog {
         mainPane.add(typesPane, GBC.eol().insets(0, 0, 0, 5).anchor(GBC.NORTHWEST));
 
 		mainPane.add(new JLabel(tr("Reference URL") + ":"), GBC.std().anchor(GBC.NORTHWEST));
-		urlTextField = new JTextField();
-		urlTextField.setText(referenceURL);
-		mainPane.add(urlTextField, GBC.eol().fill());
+		uiURL = new JTextField();
+		uiURL.setText(referenceURL);
+		mainPane.add(uiURL, GBC.eol().fill());
 
 
 		mainPane.add(new JLabel(tr("Tags") + ":"), GBC.eol().anchor(GBC.NORTHWEST));
@@ -323,9 +340,11 @@ public class PresetEditorDialog extends ExtendedDialog {
 		}
 
 		// Add "Label"
-		Label label = new Label();
-		label.text = uiPresetName.getText();
-		preset.data.add(label);
+		if (uiIncludeName.isSelected()) {
+			Label label = new Label();
+			label.text = uiPresetName.getText();
+			preset.data.add(label);
+		}
 		
 		boolean hasItem = false;
 		List<TagEditor> tagEditors = tagsPane.getTagEditors();
@@ -337,9 +356,9 @@ public class PresetEditorDialog extends ExtendedDialog {
 			}
 		}
 		// Add link
-		if (urlTextField.getText()!=null && !urlTextField.getText().isEmpty()) {
+		if (uiURL.getText()!=null && !uiURL.getText().isEmpty()) {
 			Link link = new Link();
-			link.href = urlTextField.getText();
+			link.href = uiURL.getText();
 			preset.data.add(link);
 		}
 		if (!hasItem) {
