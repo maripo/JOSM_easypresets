@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -28,6 +29,7 @@ import org.openstreetmap.josm.gui.JosmUserIdentityManager;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
+import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetNameTemplateList;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader.Chunk;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
@@ -192,6 +194,7 @@ public class EasyPresets {
 	public void save() {
 		saveTo(new File(EasyPresets.getInstance().getXMLPath()));
 		isDirty = false;
+		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 	
 	private void updatePresetListMenu() {
@@ -338,22 +341,6 @@ public class EasyPresets {
 		presets.add(index-1, presetToMove);
 		isDirty = true;
 		
-	}
-
-	/**
-	 * Replace existing preset with another preset
-	 * @param oldPreset
-	 * @param newPreset
-	 */
-	public void replace(TaggingPreset oldPreset, TaggingPreset newPreset) {
-		int index = presets.indexOf(oldPreset);
-		if (index < -1) {
-			// Not found.
-			presets.add(newPreset);
-			return;
-		}
-		presets.remove(oldPreset);
-		presets.add(index, newPreset);
 	}
 	
 	public String getLabelFromExistingPresets (String key) {

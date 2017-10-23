@@ -287,18 +287,20 @@ public class PresetEditorDialog extends ExtendedDialog {
 	
 	protected void save () {
 		showErrorMessage("");
-		TaggingPreset newPreset = createPreset();
-		if (newPreset!=null) {
-			if (presetToEdit!=null) {
-				// Replace old preset
-				EasyPresets.getInstance().replace(presetToEdit, newPreset);
-			} else {
-				// Add new preset
-				EasyPresets.getInstance().add(newPreset);
-			}
-			EasyPresets.getInstance().save();
-			close();
+		List<String> errors = validateInput();
+		if (!errors.isEmpty()) {
+			showErrorMessage(errors.get(0));
+			// TODO support multiple errors
+			return;
 		}
+		if (presetToEdit!=null) {
+			applyToPreset(presetToEdit);
+		} else {
+			// New preset
+			EasyPresets.getInstance().add(createPreset());
+		}
+		EasyPresets.getInstance().save();
+		close();
 	}
 
 	private class TargetType {
@@ -324,46 +326,52 @@ public class PresetEditorDialog extends ExtendedDialog {
 		}
 		
 	}
+	private List<String> validateInput () {
+		List<String> errors = new ArrayList<String>();
+		if (uiPresetName.getText().isEmpty()) {
+			errors.add(tr("Preset name is empty."));
+		}
+		boolean hasItem = false;
+		List<TagEditor> tagEditors = tagsPane.getTagEditors();
+		for (TagEditor editor : tagEditors) {
+			if (editor.getTaggingPresetItem()==null) {
+				hasItem = true;
+			}
+		}
+		if (hasItem) {
+			errors.add(tr("Tag list is empty."));
+		}
+		return errors;
+	}
 	/**
 	 * Generate new TaggingPreset
+	 * @param preset 
 	 * @return
 	 */
 	private TaggingPreset createPreset () {
-		TaggingPreset preset = new TaggingPreset();
-		if (uiPresetName.getText().isEmpty()) {
-			showErrorMessage(tr("Preset name is empty."));
-			return null;
-		}
+		return applyToPreset(new TaggingPreset());
+	}
+	private TaggingPreset applyToPreset(final TaggingPreset preset) {
 		preset.name = uiPresetName.getText();
+		preset.data.clear();
 		if (iconPath!=null) {
 			preset.setIcon(iconPath);
 		}
-
 		// Add "Label"
 		if (uiIncludeName.isSelected()) {
 			Label label = new Label();
 			label.text = uiPresetName.getText();
 			preset.data.add(label);
 		}
-		
-		boolean hasItem = false;
 		List<TagEditor> tagEditors = tagsPane.getTagEditors();
 		for (TagEditor editor : tagEditors) {
-			TaggingPresetItem item = editor.getTaggingPresetItem();
-			if (item!=null) {
-				hasItem = true;
-				preset.data.add(item);
-			}
+			preset.data.add(editor.getTaggingPresetItem());
 		}
 		// Add link
 		if (uiURL.getText()!=null && !uiURL.getText().isEmpty()) {
 			Link link = new Link();
 			link.href = uiURL.getText();
 			preset.data.add(link);
-		}
-		if (!hasItem) {
-			showErrorMessage(tr("Tag list is empty."));
-			return null;
 		}
 		preset.setDisplayName();
 		if (preset.types==null) {
