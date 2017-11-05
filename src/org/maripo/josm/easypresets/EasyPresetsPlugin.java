@@ -6,7 +6,7 @@ import javax.swing.JSeparator;
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.CreatePresetAction;
 import org.maripo.josm.easypresets.ui.ManagePresetsAction;
-import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MainMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
 import org.openstreetmap.josm.plugins.Plugin;
@@ -19,7 +19,7 @@ public class EasyPresetsPlugin extends Plugin {
 		super(info);
 
         // Add custom presets to "Presets" menu
-        JMenu menu = Main.main.menu.presetsMenu;
+		JMenu menu = MainApplication.getMenu().presetsMenu;
         menu.add(new JSeparator());
         MainMenu.add(menu, new CreatePresetAction());
         MainMenu.add(menu, new ManagePresetsAction());
