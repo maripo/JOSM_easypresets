@@ -338,7 +338,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 				hasItem = true;
 			}
 		}
-		if (hasItem) {
+		if (!hasItem) {
 			errors.add(tr("Tag list is empty."));
 		}
 		return errors;
