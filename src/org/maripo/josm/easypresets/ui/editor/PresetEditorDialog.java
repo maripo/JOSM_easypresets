@@ -404,5 +404,6 @@ public class PresetEditorDialog extends ExtendedDialog {
 
 	public void showDialog(PresetEditorDialogListener dialogListener) {
 		this.dialogListener = dialogListener;
+		this.showDialog();
 	}
 }

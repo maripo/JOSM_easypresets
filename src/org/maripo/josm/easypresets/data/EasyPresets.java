@@ -196,6 +196,7 @@ public class EasyPresets {
 	
 	private void updatePresetListMenu() {
 		group.setEnabled(presets.size()>0);
+		group.menu.removeAll();
         for (TaggingPreset preset: presets) {
             JMenuItem mi = new JMenuItem(preset);
             mi.setText(preset.getLocaleName());
