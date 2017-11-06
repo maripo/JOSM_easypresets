@@ -43,6 +43,10 @@ import org.openstreetmap.josm.tools.ImageProvider;
  */
 public class PresetEditorDialog extends ExtendedDialog {
 	
+	public static interface PresetEditorDialogListener {
+		public void onCancel();
+		public void onSave();
+	}
 	private JTextField uiPresetName;
 	private JTextField uiURL;
 	private JCheckBox uiIncludeName; // Check to include name label
@@ -78,7 +82,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	 * Edit existing preset (Initialize with existing TaggingPreset object)
 	 * @param selectedPreset
 	 */
-	public PresetEditorDialog(TaggingPreset preset) {
+	public PresetEditorDialog (TaggingPreset preset) {
 		super(Main.parent, tr("Preset Editor"));
 		name = preset.name;
 		referenceURL = findURL(preset);
@@ -117,6 +121,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 
 	TagsPane tagsPane;
 	JLabel errorMessageLabel;
+	private PresetEditorDialogListener dialogListener;
 	private void initUI(List<TagEditor> tagEditors) {
 		targetTypes.add(new TargetType(TaggingPresetType.NODE));
 		targetTypes.add(new TargetType(TaggingPresetType.WAY));
@@ -248,6 +253,9 @@ public class PresetEditorDialog extends ExtendedDialog {
         cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (dialogListener != null) {
+					dialogListener.onCancel();
+				}
 				close();
 			}
 		});
@@ -300,6 +308,9 @@ public class PresetEditorDialog extends ExtendedDialog {
 			EasyPresets.getInstance().add(createPreset());
 		}
 		EasyPresets.getInstance().save();
+		if (dialogListener != null) {
+			dialogListener.onSave();
+		}
 		close();
 	}
 
@@ -334,7 +345,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		boolean hasItem = false;
 		List<TagEditor> tagEditors = tagsPane.getTagEditors();
 		for (TagEditor editor : tagEditors) {
-			if (editor.getTaggingPresetItem()==null) {
+			if (editor.getTaggingPresetItem()!=null) {
 				hasItem = true;
 			}
 		}
@@ -389,5 +400,9 @@ public class PresetEditorDialog extends ExtendedDialog {
 			}
 		}
 		return types;
+	}
+
+	public void showDialog(PresetEditorDialogListener dialogListener) {
+		this.dialogListener = dialogListener;
 	}
 }

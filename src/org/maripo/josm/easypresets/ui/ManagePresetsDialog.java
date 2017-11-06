@@ -28,13 +28,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
+import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog.PresetEditorDialogListener;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
 
-public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener {
+public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener,
+	PresetEditorDialogListener {
 	private JButton deleteButton;
 	private JButton editButton;
 	private JButton reorderUpButton;
@@ -187,7 +189,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		// Open 
 		if (selectedPreset!=null) {
 			new PresetEditorDialog(selectedPreset).showDialog();
-			dispose();
+			//dispose();
 		}
 	}
 
@@ -266,5 +268,16 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		EasyPresets.getInstance().moveDown(index);
 		refreshList();
 		list.setSelectedIndex(index+1);
+	}
+
+	/* Implementation of ManagePresetsDialogListener */
+	@Override
+	public void onCancel() {
+		// Do nothing
+	}
+
+	@Override
+	public void onSave() {
+		refreshList();
 	}
 }
