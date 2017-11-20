@@ -18,7 +18,7 @@ Your custom presets can be exported to local XML files.
 	* "Multiselect" : List of values to select single or multiple options. 
 	* "Checkbox" : A checkbox to input "yes" or "no".
 * You can select target types such as nodes, ways and multipolygons.![types](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/target_types.png)
-* Icons are customizable. Click "Select icon..." button.[Icon picker dialog](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/icon_picker.png)
+* Icons are customizable. Click "Select icon..." button.![Icon picker dialog](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/icon_picker.png)
 
 ## Use Presets
 * You can use custom preset in the same manner as normal presets.
