@@ -394,7 +394,7 @@ public class EasyPresets {
 
 	private TaggingPreset clonePreset(TaggingPreset fromPreset) {
 		TaggingPreset preset = new TaggingPreset();
-		preset.name = "Copy of " + fromPreset.name;
+		preset.name = tr("Copy of {0}", fromPreset.name);
 		preset.setIcon(fromPreset.iconName);
 		for (TaggingPresetItem fromItem: fromPreset.data) {
 			TaggingPresetItem item = clonePresetTag(fromItem);
