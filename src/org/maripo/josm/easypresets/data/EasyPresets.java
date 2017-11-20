@@ -7,7 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -304,7 +306,6 @@ public class EasyPresets {
 
 	public void remove(TaggingPreset presetToRemove) {
 		presets.remove(presetToRemove);
-		
 	}
 
 	public void delete(TaggingPreset presetToDelete) {
@@ -379,6 +380,84 @@ public class EasyPresets {
 			Check item = (Check)_item;
 			return (item.locale_text!=null)?
 					item.locale_text:DummyPresetClass.getLocaleText(item.text, item.text_context);
+		}
+		return null;
+	}
+
+	public TaggingPreset duplicate(TaggingPreset fromPreset) {
+		int index = presets.indexOf(fromPreset);
+		TaggingPreset toPreset = clonePreset(fromPreset); 
+		presets.add(index+1, toPreset);
+		return toPreset;
+		
+	}
+
+	private TaggingPreset clonePreset(TaggingPreset fromPreset) {
+		TaggingPreset preset = new TaggingPreset();
+		preset.name = "Copy of " + fromPreset.name;
+		preset.setIcon(fromPreset.iconName);
+		for (TaggingPresetItem fromItem: fromPreset.data) {
+			TaggingPresetItem item = clonePresetTag(fromItem);
+			if (item != null) {
+				preset.data.add(item);
+			}
+		}
+		preset.types = EnumSet.noneOf(TaggingPresetType.class);
+		preset.types.addAll(fromPreset.types);
+		isDirty = true;
+		return preset;
+	}
+
+	private TaggingPresetItem clonePresetTag(TaggingPresetItem itemFrom) {
+		if (itemFrom instanceof Label) {
+			Label itemTo = new Label(); 
+			itemTo.text = ((Label) itemFrom).text;
+			return itemTo;
+		}
+		else if (itemFrom instanceof Key) {
+			Key key = (Key) itemFrom;
+			Key itemTo = new Key();
+			itemTo.key = key.key;
+			itemTo.value = key.value;
+			return itemTo;
+		}
+		else if (itemFrom instanceof Text) {
+			Text text = (Text)itemFrom;
+			Text itemTo = new Text();
+			itemTo.text = text.text;
+			itemTo.key = text.key;
+			itemTo.default_ = text.default_;
+			return itemTo;
+		}
+		else if (itemFrom instanceof Combo) {
+			Combo combo = (Combo)itemFrom;
+			Combo itemTo = new Combo();
+			itemTo.text = combo.text;
+			itemTo.key = combo.key;
+			itemTo.values = combo.values;
+			return itemTo;
+		}
+		else if (itemFrom instanceof MultiSelect) {
+			MultiSelect multiselect = (MultiSelect)itemFrom;
+			MultiSelect itemTo = new MultiSelect();
+			itemTo.text = multiselect.text;
+			itemTo.key = multiselect.key;
+			itemTo.values = multiselect.values;
+			return itemTo;
+		}
+		else if (itemFrom instanceof Check) {
+			Check key = (Check) itemFrom;
+			Check itemTo = new Check();
+			itemTo.text = key.text;
+			itemTo.key = key.key;
+			return itemTo;
+		}
+		else if (itemFrom instanceof Link) {
+			Link link = (Link)itemFrom;
+			Link itemTo = new Link();
+			itemTo.href = link.href;
+
+			return itemTo;
 		}
 		return null;
 	}

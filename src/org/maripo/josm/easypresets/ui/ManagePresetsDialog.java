@@ -37,8 +37,9 @@ import org.openstreetmap.josm.tools.ImageProvider;
 
 public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener,
 	PresetEditorDialogListener {
-	private JButton deleteButton;
 	private JButton editButton;
+	private JButton copyButton;
+	private JButton deleteButton;
 	private JButton reorderUpButton;
 	private JButton reorderDownButton;
 
@@ -106,6 +107,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		JScrollPane listScroll = new JScrollPane(list);
 		listScroll.setPreferredSize(new Dimension(320,420));
 		listPane.add(listScroll, GBC.std());
+		
 		reorderUpButton = new JButton();
 		reorderUpButton.setIcon(ImageProvider.get("dialogs", "up"));
 		reorderUpButton.addActionListener(new ActionListener(){
@@ -113,6 +115,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			public void actionPerformed(ActionEvent e) {
 				reorderUp();
 			}});
+		
 		reorderDownButton = new JButton();
 		reorderDownButton.setIcon(ImageProvider.get("dialogs", "down"));
 		reorderDownButton.addActionListener(new ActionListener(){
@@ -120,6 +123,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			public void actionPerformed(ActionEvent e) {
 				reorderDown();
 			}});
+		
 		reorderUpButton.setEnabled(false);
 		reorderDownButton.setEnabled(false);
 		reorderUpButton.setToolTipText(tr("Move up"));
@@ -136,6 +140,19 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			}
 		});
 		editButton.setEnabled(false);
+		
+		copyButton = new JButton();
+		copyButton.setToolTipText(tr("Copy"));
+		copyButton.setIcon(ImageProvider.get("copy"));
+		copyButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				copy();
+			}
+			
+		});
+		copyButton.setEnabled(false);
+		
 
 		deleteButton = new JButton();
 		deleteButton.setToolTipText(tr("Delete"));
@@ -153,6 +170,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		buttons.add(reorderUpButton, GBC.eol());
 		buttons.add(reorderDownButton, GBC.eol());
 		buttons.add(editButton, GBC.eol());
+		buttons.add(copyButton, GBC.eol());
 		buttons.add(deleteButton, GBC.eol());
 		listPane.add(buttons, GBC.eol().fill());
 		mainPane.add(listPane, GBC.eol().fill());
@@ -192,6 +210,17 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 	}
 
+    private boolean copy() {
+    	if (selectedPreset!=null) {
+    		TaggingPreset copiedPreset = EasyPresets.getInstance().duplicate(selectedPreset);
+			refreshList();
+        	return true;
+    		
+    	} else {
+    		return false;
+    	}
+    }
+
     private boolean confirmDelete() {
         ExtendedDialog dialog = new ExtendedDialog(
                 Main.parent,
@@ -211,6 +240,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
         });
         return dialog.getValue() == 1;
     }
+    
+    
 	private void delete() {
 		if (selectedPreset!=null) {
 			EasyPresets.getInstance().delete(selectedPreset);
@@ -231,6 +262,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	boolean isSelectionValid () {
 		return !(list.getSelectedIndex() < 0 || list.getSelectedIndex() >= presets.length); 
 	}
+	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		reorderUpButton.setEnabled(e.getFirstIndex()>0);
@@ -243,13 +275,14 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
+		copyButton.setEnabled(true);
 		select(presets[e.getFirstIndex()]);
 	}
 
 	private void select(TaggingPreset preset) {
 		this.selectedPreset = preset;
-		
 	}
+	
 	private void reorderUp () {
 		if (!isSelectionValid()) {
 			return;
@@ -259,6 +292,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		refreshList();
 		list.setSelectedIndex(index-1);
 	}
+	
 	private void reorderDown () {
 		if (!isSelectionValid()) {
 			return;
