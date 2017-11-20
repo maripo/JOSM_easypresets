@@ -234,6 +234,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
         dialog.setupDialog();
         dialog.setVisible(true);
         SwingUtilities.invokeLater(new Runnable() {
+        	@Override
             public void run() {
             	dialog.toFront();
             }
