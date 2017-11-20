@@ -184,6 +184,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		});
 
 		mainPane.add(cancelButton, GBC.eol());
+		
 		setContent(mainPane);
 	}
 
@@ -215,7 +216,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
     		TaggingPreset copiedPreset = EasyPresets.getInstance().duplicate(selectedPreset);
 			refreshList();
         	return true;
-    		
     	} else {
     		return false;
     	}
@@ -264,9 +264,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 	
 	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		reorderUpButton.setEnabled(e.getFirstIndex()>0);
-		reorderDownButton.setEnabled(e.getFirstIndex()<presets.length-1);
+	public void valueChanged(ListSelectionEvent evt) {
+		int index = list.getSelectedIndex();
+		reorderUpButton.setEnabled(index>0);
+		reorderDownButton.setEnabled(index<presets.length-1);
 		
 		if (!isSelectionValid()) {
 			editButton.setEnabled(false);
@@ -276,11 +277,11 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
 		copyButton.setEnabled(true);
-		select(presets[e.getFirstIndex()]);
+		select(presets[index]);
 	}
 
 	private void select(TaggingPreset preset) {
-		this.selectedPreset = preset;
+		selectedPreset = preset;
 	}
 	
 	private void reorderUp () {
