@@ -126,11 +126,21 @@ public class EasyPresets {
 		TaggingPresets.addTaggingPresets(toAdd);
 	}
 
+
 	/**
-	 * Save all custom presets to specified file
+	 * Save all presets to specified file
+	 * @param presets
 	 * @param file
 	 */
-	public void saveTo(File file) {
+	public void saveAllPresetsTo(File file) {
+		saveTo(presets, file);
+	}
+	/**
+	 * Save presets to specified file
+	 * @param presetsToSave
+	 * @param file
+	 */
+	public void saveTo(List<TaggingPreset> presetsToSave, File file) {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -144,7 +154,7 @@ public class EasyPresets {
 			rootElement.setAttribute("shortdescription", "");
 			doc.appendChild(rootElement);
 			rootElement.appendChild(doc.createComment(getComment()));
-			for (TaggingPreset preset: presets) {
+			for (TaggingPreset preset: presetsToSave) {
 				Element presetElement = createpresetElement(doc, preset);
 				rootElement.appendChild(presetElement);
 			}
@@ -191,7 +201,7 @@ public class EasyPresets {
 		}
 	}
 	public void save() {
-		saveTo(new File(EasyPresets.getInstance().getXMLPath()));
+		saveAllPresetsTo(new File(EasyPresets.getInstance().getXMLPath()));
 		isDirty = false;
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
