@@ -195,15 +195,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 
 	private void export() {
-		/*
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle(tr("Save Presets"));
-        chooser.setFileFilter(new FileNameExtensionFilter("XML File", "xml"));
-        int returnVal = chooser.showSaveDialog(this);
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-        	EasyPresets.getInstance().saveTo(chooser.getSelectedFile());
-        }
-        */
 		new ExportDialog().showDialog();
 	}
 			
