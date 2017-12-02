@@ -46,7 +46,7 @@ public class ExportDialog extends ExtendedDialog {
 		initUI();
 	}
 	JLabel alertLabel;
-	class  PresetWrapper {
+	static class PresetWrapper {
 		JCheckBox checkbox;
 		JLabel  label;
 		TaggingPreset preset;
@@ -133,6 +133,7 @@ public class ExportDialog extends ExtendedDialog {
 		
 		setContent(mainPane);
         SwingUtilities.invokeLater(new Runnable() {
+        	@Override
             public void run() {
                 toFront();
             }

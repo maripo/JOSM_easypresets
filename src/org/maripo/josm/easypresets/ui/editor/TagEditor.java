@@ -86,7 +86,7 @@ public class TagEditor {
 	/**
 	 * Value fields
 	 */
-	abstract class ValueField {
+	abstract static class ValueField {
 
 		public abstract void appendUI(JPanel pane);
 
@@ -270,7 +270,7 @@ public class TagEditor {
 			return ";";
 		}
 	}
-	class ValueFieldCheckbox extends ValueField {
+	static class ValueFieldCheckbox extends ValueField {
 		public ValueFieldCheckbox () {
 			super();
 		}

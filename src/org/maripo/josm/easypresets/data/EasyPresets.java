@@ -41,6 +41,7 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Label;
 import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
+import org.openstreetmap.josm.spi.preferences.Config;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -66,7 +67,7 @@ public class EasyPresets {
 	 * @return Full path of preset data file
 	 */
 	public String getXMLPath() {
-		return Main.pref.getUserDataDirectory() + "/" + FILE_NAME;
+		return Config.getDirs().getUserDataDirectory(true) + "/" + FILE_NAME;
 	}
 
 	private static EasyPresets instance;

@@ -68,6 +68,7 @@ public class ValuesEditorDialog extends ExtendedDialog {
 		mainPanel.add(cancelButton);
 		setContent(mainPanel);
         SwingUtilities.invokeLater(new Runnable() {
+        	@Override
             public void run() {
                 toFront();
             }

@@ -269,6 +269,7 @@ public class PresetEditorDialog extends ExtendedDialog {
         
         setContent(mainPane);
         SwingUtilities.invokeLater(new Runnable() {
+        	@Override
             public void run() {
                 toFront();
             }

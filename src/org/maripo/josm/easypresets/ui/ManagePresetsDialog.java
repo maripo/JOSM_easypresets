@@ -75,7 +75,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	}
 	private void initUI() {
-		list = new JList();
+		list = new JList<TaggingPreset>();
 		list.setCellRenderer(new PresetRenderer());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		

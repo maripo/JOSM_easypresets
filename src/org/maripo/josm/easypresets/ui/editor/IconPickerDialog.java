@@ -30,7 +30,7 @@ public class IconPickerDialog extends ExtendedDialog implements MouseListener {
 	}
 	IconPickerDialogListener listener;
 	JPanel mainPane;
-	private class Icon {
+	private static class Icon {
 
 		private ImageIcon icon;
 		private String name;

@@ -94,7 +94,7 @@ public class CreatePresetAction extends JosmAction {
 			allTags.put(key, new HashMap<String, Integer>());
 			Map<String, Integer> valueCountMap = allTags.get(key);
 			int count = (valueCountMap.containsKey(value)) ? valueCountMap.get(value).intValue() : 0;
-			valueCountMap.put(value, new Integer(count+1));
+			valueCountMap.put(value, Integer.valueOf(count+1));
 		}
 	}
 
