@@ -25,7 +25,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.openstreetmap.josm.Main;
-import org.openstreetmap.josm.gui.JosmUserIdentityManager;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
@@ -148,7 +147,7 @@ public class EasyPresets {
 			Document doc = docBuilder.newDocument();
 			Element rootElement = doc.createElement("presets");
 			rootElement.setAttribute("xmlns", "http://josm.openstreetmap.de/tagging-preset-1.0");
-			rootElement.setAttribute("author", JosmUserIdentityManager.getInstance().getUserName());
+			rootElement.setAttribute("author", "");
 			rootElement.setAttribute("version", "");
 			rootElement.setAttribute("description", "");
 			rootElement.setAttribute("shortdescription", "");
