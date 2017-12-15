@@ -377,7 +377,10 @@ public class PresetEditorDialog extends ExtendedDialog {
 		}
 		List<TagEditor> tagEditors = tagsPane.getTagEditors();
 		for (TagEditor editor : tagEditors) {
-			preset.data.add(editor.getTaggingPresetItem());
+			TaggingPresetItem item = editor.getTaggingPresetItem();
+			if (item!=null) {
+				preset.data.add(item);
+			}
 		}
 		// Add link
 		if (uiURL.getText()!=null && !uiURL.getText().isEmpty()) {
