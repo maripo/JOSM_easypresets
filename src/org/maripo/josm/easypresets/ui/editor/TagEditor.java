@@ -327,6 +327,7 @@ public class TagEditor {
 	
 	public TagEditor(ExtendedDialog baseDialog) {
 		uiLabel = new JTextField(8);
+
 		uiLabelNA = new JLabel("("+tr("Unavailable")+")");
 		uiLabelNA.setToolTipText(tr("A field of this type doesn't have a label."));
 		uiLabelNA.setForeground(Color.GRAY);
@@ -334,7 +335,6 @@ public class TagEditor {
 		//uiLabelWrapper.setPreferredSize(new Dimension(108,28));
 		uiLabelWrapper.add(uiLabelNA);
 		uiLabelWrapper.add(uiLabel, GBC.std().insets(0, 0, 0, 0).grid(0, 0));
-		uiLabel.setText(uiLabel.getSize().toString());
 		this.baseDialog = baseDialog;
 		uiInclude = new JCheckBox();
 		uiInclude.setSelected(true);
