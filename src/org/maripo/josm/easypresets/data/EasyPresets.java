@@ -8,7 +8,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JMenu;
@@ -354,6 +356,7 @@ public class EasyPresets {
 	
 	public String getLabelFromExistingPresets (String key) {
 		Collection<TaggingPreset> existingPresets = TaggingPresets.getTaggingPresets();
+		Map<String, Integer> labelCountMap = new HashMap<String, Integer>();
 		for (TaggingPreset preset: existingPresets) {
 			for (TaggingPresetItem _item: preset.data) {
 				if (_item instanceof KeyedItem) {
@@ -361,13 +364,27 @@ public class EasyPresets {
 					if (key.equals(item.key)) {
 						String label = getLocaleLabel(item);
 						if (label!=null && !label.isEmpty() && !label.equals(key)) {
-							return label;
+							int count;
+							if (labelCountMap.containsKey(label)) {
+								count = labelCountMap.get(label).intValue() + 1;
+							} else {
+								count = 1;
+							}
+							labelCountMap.put(label, count);
 						}
 					}
 				}
 			}
 		}
-		return "";
+		int maxCount = 0;
+		String mostFrequentLabel = "";
+		for (String label: labelCountMap.keySet()) {
+			if (labelCountMap.get(label) > maxCount) {
+				mostFrequentLabel = label;
+				maxCount = labelCountMap.get(label); 
+			}
+		}
+		return mostFrequentLabel;
 	}
 
 	static class DummyPresetClass extends Text {
