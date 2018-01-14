@@ -1,5 +1,7 @@
 # JOSM EasyPresets Plugin
 
+[日本語](https://github.com/maripo/JOSM_easypresets/blob/master/README-ja.md)
+
 EasyPresets plugin helps you create and use custom presets.
 You can easily create presets according to selected objects. 
 Some functionalities will be added to "Preset" menu.
