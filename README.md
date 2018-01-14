@@ -16,11 +16,14 @@ Your custom presets can be exported to local XML files.
 * This plugin supports three types of tags.  
 	* "Fixed value": Fixed key-value pair will be automatically applied. Fields of this type won't be shown explicitly on a preset dialog. 
 	* "Textbox" : Field to edit arbitrary text.
-	* "Selection" : Pull-down menu with multiple options. You can edit set of values. ![Editing options](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/options.png)
+	* "Selection" : Pull-down menu with multiple options. You can edit set of values.  
+	![Editing options](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/options.png)
 	* "Multiselect" : List of values to select single or multiple options. 
 	* "Checkbox" : A checkbox to input "yes" or "no".
-* You can select target types such as nodes, ways and multipolygons.![types](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/target_types.png)
-* Icons are customizable. Click "Select icon..." button.![Icon picker dialog](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/icon_picker.png)
+* You can select target types such as nodes, ways and multipolygons.  
+![types](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/target_types.png)
+* Icons are customizable. Click "Select icon..." button.  
+![Icon picker dialog](https://github.com/maripo/JOSM_easypresets/blob/master/doc/img/en/icon_picker.png)
 
 ## Use Presets
 * You can use custom preset in the same manner as normal presets.
@@ -35,7 +38,7 @@ Your custom presets can be exported to local XML files.
 
 ## Misc
 * This plugin stores the data to "EasyPresets.xml" in your JOSM user directory.
-* It is now under development and has only basic functionalities. I am plannning to implement more functionalities such as grouping, sorting and support of various preset types. 
+* It is now under development and has only basic functionalities. I am planning to implement more functionalities such as grouping, sorting and support of various preset types. 
 
 ## TODO
 * Grouping feature
