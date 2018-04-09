@@ -15,7 +15,10 @@ import java.util.TreeMap;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
+import org.openstreetmap.josm.data.osm.IPrimitive;
+import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
+import org.openstreetmap.josm.data.osm.Relation;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
@@ -48,11 +51,13 @@ public class CreatePresetAction extends JosmAction {
         List<TaggingPresetType> targetTypes = findTypesFromSelection(selected);
         new PresetEditorDialog(tagMap, targetTypes).showDialog();
 	}
+	
 
 	private List<TaggingPresetType> findTypesFromSelection(Collection<OsmPrimitive> selected) {
 		List<TaggingPresetType> types = new ArrayList<TaggingPresetType>();
-        for (OsmPrimitive primitive: selected) {
-        	TaggingPresetType type = TaggingPresetType.forPrimitive(primitive);
+		
+		for (OsmPrimitive primitive: selected) {
+			TaggingPresetType type = TaggingPresetType.forPrimitiveType(primitive.getDisplayType());
         	if (!types.contains(type)) {
         		types.add(type);
         	}
