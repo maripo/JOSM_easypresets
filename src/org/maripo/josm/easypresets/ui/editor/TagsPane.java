@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
+import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 import org.openstreetmap.josm.tools.ImageResource;
 
 public class TagsPane extends JPanel {
@@ -76,8 +77,8 @@ public class TagsPane extends JPanel {
 			JPanel orderButtonsPanel = new JPanel(new GridLayout(1, 2));
 			upButton = new JButton();
 			downButton = new JButton();
-			upButton.setIcon(ImageProvider.get("dialogs", "up", ImageProvider.ImageSizes.SMALLICON));
-			downButton.setIcon(ImageProvider.get("dialogs", "down", ImageProvider.ImageSizes.SMALLICON));
+			upButton.setIcon(ImageProvider.get("dialogs", "up", ImageSizes.LARGEICON));
+			downButton.setIcon(ImageProvider.get("dialogs", "down", ImageSizes.LARGEICON));
 			upButton.addActionListener(this);
 			downButton.addActionListener(this);
 			orderButtonsPanel.add(upButton);

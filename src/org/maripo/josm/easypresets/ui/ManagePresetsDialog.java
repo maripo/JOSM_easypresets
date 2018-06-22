@@ -34,6 +34,7 @@ import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
+import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 
 public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener,
 	PresetEditorDialogListener {
@@ -109,7 +110,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		listPane.add(listScroll, GBC.std());
 		
 		reorderUpButton = new JButton();
-		reorderUpButton.setIcon(ImageProvider.get("dialogs", "up"));
+		reorderUpButton.setIcon(ImageProvider.get("dialogs", "up", ImageSizes.LARGEICON));
 		reorderUpButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -117,7 +118,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			}});
 		
 		reorderDownButton = new JButton();
-		reorderDownButton.setIcon(ImageProvider.get("dialogs", "down"));
+		reorderDownButton.setIcon(ImageProvider.get("dialogs", "down", ImageSizes.LARGEICON));
 		reorderDownButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -132,7 +133,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		
 		editButton = new JButton();
 		editButton.setToolTipText(tr("Edit"));
-		editButton.setIcon(ImageProvider.get("dialogs", "edit"));
+		editButton.setIcon(ImageProvider.get("dialogs", "edit", ImageSizes.LARGEICON));
 		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -143,7 +144,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		
 		copyButton = new JButton();
 		copyButton.setToolTipText(tr("Copy"));
-		copyButton.setIcon(ImageProvider.get("copy"));
+		copyButton.setIcon(ImageProvider.get("copy", ImageSizes.LARGEICON));
 		copyButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -156,7 +157,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 
 		deleteButton = new JButton();
 		deleteButton.setToolTipText(tr("Delete"));
-		deleteButton.setIcon(ImageProvider.get("dialogs", "delete"));
+		deleteButton.setIcon(ImageProvider.get("dialogs", "delete", ImageSizes.LARGEICON));
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

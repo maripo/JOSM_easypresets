@@ -36,6 +36,7 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Label;
 import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
+import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 /**
  * Editor dialog to create or edit a custom preset
  * @author maripo
@@ -231,7 +232,7 @@ public class PresetEditorDialog extends ExtendedDialog {
         mainPane.add(scroll, GBC.eol().fill(GBC.HORIZONTAL).insets(0, 0, 0, 0));
 
         JButton addTagButton = new JButton(tr("Add Tag"));
-        addTagButton.setIcon(ImageProvider.get("dialogs", "add"));
+        addTagButton.setIcon(ImageProvider.get("dialogs", "add", ImageSizes.LARGEICON));
         addTagButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -240,7 +241,7 @@ public class PresetEditorDialog extends ExtendedDialog {
         mainPane.add(addTagButton, GBC.eol().insets(0, 0, 0, 15));
 
         JButton saveButton = new JButton(tr("Save"));
-        saveButton.setIcon(ImageProvider.get("ok"));
+        saveButton.setIcon(ImageProvider.get("ok", ImageSizes.LARGEICON));
         saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -249,7 +250,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		});
 
         JButton cancelButton = new JButton(tr("Cancel"));
-        cancelButton.setIcon(ImageProvider.get("cancel"));
+        cancelButton.setIcon(ImageProvider.get("cancel", ImageSizes.LARGEICON));
         cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
