@@ -5,6 +5,10 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -44,11 +48,10 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
 import org.openstreetmap.josm.spi.preferences.Config;
+import org.openstreetmap.josm.tools.Logging;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
-import jdk.internal.util.xml.impl.ReaderUTF8;
 
 /**
  * Container of custom presets
@@ -91,29 +94,22 @@ public class EasyPresets {
 	 * Load custom presets from local XML (if exists)
 	 */
 	public void load() {
-		ReaderUTF8 reader;
-		String path = EasyPresets.getInstance().getXMLPath();
-		File file = new File(path);
-		if (!file.exists()) {
-			return;
-		}
-		try {
-			reader = new ReaderUTF8(new FileInputStream(path));
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-			return;
-		}
-		presets = new ArrayList<TaggingPreset>();
-		try {
-			Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
-			if (readResult!=null) {
-				presets.addAll(readResult);
+		final File file = new File(EasyPresets.getInstance().getXMLPath());
+		if (file.exists() && file.canRead()) {
+			try (Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
+				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
+				if (readResult != null) {
+					presets.addAll(readResult);
+				}
+				TaggingPresets.addTaggingPresets(readResult);
+			} catch (FileNotFoundException e) {
+				Logging.debug("File not found: " + file.getAbsolutePath());
+				return;
+			} catch (SAXException | IOException e) {
+				Logging.warn(e);
 			}
-			TaggingPresets.addTaggingPresets(readResult);
-		} catch (SAXException e) {
-			e.printStackTrace();
+			updatePresetListMenu();
 		}
-		updatePresetListMenu();
 	}
 
 	/**
