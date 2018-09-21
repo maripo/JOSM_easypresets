@@ -11,7 +11,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -26,7 +25,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.openstreetmap.josm.Main;
+import jdk.internal.util.xml.impl.ReaderUTF8;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
@@ -47,8 +46,6 @@ import org.openstreetmap.josm.spi.preferences.Config;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
-import jdk.internal.util.xml.impl.ReaderUTF8;
 
 /**
  * Container of custom presets
@@ -131,7 +128,6 @@ public class EasyPresets {
 
 	/**
 	 * Save all presets to specified file
-	 * @param presets
 	 * @param file
 	 */
 	public void saveAllPresetsTo(File file) {

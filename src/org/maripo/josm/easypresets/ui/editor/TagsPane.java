@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
-import org.openstreetmap.josm.tools.ImageResource;
 
 public class TagsPane extends JPanel {
 	private List<TagEditor> tagEditors;
