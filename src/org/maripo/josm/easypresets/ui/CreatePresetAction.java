@@ -13,13 +13,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
-import org.openstreetmap.josm.data.osm.IPrimitive;
-import org.openstreetmap.josm.data.osm.Node;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
-import org.openstreetmap.josm.data.osm.Relation;
 import org.openstreetmap.josm.gui.ExtendedDialog;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.tools.Shortcut;
@@ -104,7 +101,7 @@ public class CreatePresetAction extends JosmAction {
 	}
 
 	private void showAlertDialog(String string) {
-        final ExtendedDialog dialog = new ExtendedDialog(Main.parent, "EasyPresets", "OK")
+        final ExtendedDialog dialog = new ExtendedDialog(MainApplication.getMainFrame(), "EasyPresets", "OK")
         		.setContent(string);
         dialog.showDialog();
 	}

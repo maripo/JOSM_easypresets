@@ -27,8 +27,8 @@ import javax.swing.SwingUtilities;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.IconPickerDialog.IconPickerDialogListener;
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.ExtendedDialog;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
@@ -67,7 +67,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	 */
 	public PresetEditorDialog (Map<String, Map<String, Integer>> tagMap, 
 			List<TaggingPresetType> presetTypes) {
-		super(Main.parent, tr("Preset Editor"));
+		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.defaultTypes = presetTypes;
 
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
@@ -81,10 +81,10 @@ public class PresetEditorDialog extends ExtendedDialog {
 
 	/**
 	 * Edit existing preset (Initialize with existing TaggingPreset object)
-	 * @param selectedPreset
+	 * @param preset
 	 */
 	public PresetEditorDialog (TaggingPreset preset) {
-		super(Main.parent, tr("Preset Editor"));
+		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		name = preset.name;
 		referenceURL = findURL(preset);
 		icon = preset.getIcon();
@@ -358,7 +358,6 @@ public class PresetEditorDialog extends ExtendedDialog {
 	}
 	/**
 	 * Generate new TaggingPreset
-	 * @param preset 
 	 * @return
 	 */
 	private TaggingPreset createPreset () {

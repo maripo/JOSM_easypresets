@@ -13,7 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -24,13 +23,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog.PresetEditorDialogListener;
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.ExtendedDialog;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
@@ -45,23 +43,23 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	private JButton reorderDownButton;
 
 	public ManagePresetsDialog () {
-		super(Main.parent, tr("Manage Custom Presets"));
+		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
 		initUI();
 	}
 	TaggingPreset[] presets;
 	private TaggingPreset selectedPreset;
 	JList<TaggingPreset> list;
 	private static class PresetRenderer extends JLabel implements ListCellRenderer<TaggingPreset> {
-	    private final static Color selectionForeground;
-	    private final static Color selectionBackground;
-	    private final static Color textForeground;
-	    private final static Color textBackground;
-	    static {
-	        selectionForeground = UIManager.getColor("Tree.selectionForeground");
-	        selectionBackground = UIManager.getColor("Tree.selectionBackground");
-	        textForeground = UIManager.getColor("Tree.textForeground");
-	        textBackground = UIManager.getColor("Tree.textBackground");
-	    }
+		private final static Color selectionForeground;
+		private final static Color selectionBackground;
+		private final static Color textForeground;
+		private final static Color textBackground;
+		static {
+			selectionForeground = UIManager.getColor("Tree.selectionForeground");
+			selectionBackground = UIManager.getColor("Tree.selectionBackground");
+			textForeground = UIManager.getColor("Tree.textForeground");
+			textBackground = UIManager.getColor("Tree.textBackground");
+		}
 
 		@Override
 		public Component getListCellRendererComponent(JList<? extends TaggingPreset> list, TaggingPreset preset,
@@ -97,7 +95,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		
 		list.addMouseListener(new MouseAdapter() {
 			@Override
-		    public void mouseClicked(MouseEvent evt) {
+			public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount()==2) {
 					edit();
 				}
@@ -206,38 +204,34 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 	}
 
-    private boolean copy() {
-    	if (selectedPreset!=null) {
-    		TaggingPreset copiedPreset = EasyPresets.getInstance().duplicate(selectedPreset);
+	private boolean copy() {
+		if (selectedPreset!=null) {
+			TaggingPreset copiedPreset = EasyPresets.getInstance().duplicate(selectedPreset);
 			refreshList();
-        	return true;
-    	} else {
-    		return false;
-    	}
-    }
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    private boolean confirmDelete() {
-        ExtendedDialog dialog = new ExtendedDialog(
-                Main.parent,
-                tr("Delete"),
-                tr("Delete"), tr("Cancel")
-        );
-        dialog.setContent(tr("Are you sure you want to delete \"{0}\"?",selectedPreset.getName()));
-        dialog.setButtonIcons("ok", "cancel");
-        dialog.setModalityType(ModalityType.APPLICATION_MODAL);
-        dialog.setAlwaysOnTop(true);
-        dialog.setupDialog();
-        dialog.setVisible(true);
-        SwingUtilities.invokeLater(new Runnable() {
-        	@Override
-            public void run() {
-            	dialog.toFront();
-            }
-        });
-        return dialog.getValue() == 1;
-    }
-    
-    
+	private boolean confirmDelete() {
+		ExtendedDialog dialog = new ExtendedDialog(
+			MainApplication.getMainFrame(),
+			tr("Delete"),
+			tr("Delete"),
+			tr("Cancel")
+		);
+		dialog.setContent(tr("Are you sure you want to delete \"{0}\"?",selectedPreset.getName()));
+		dialog.setButtonIcons("ok", "cancel");
+		dialog.setModalityType(ModalityType.APPLICATION_MODAL);
+		dialog.setAlwaysOnTop(true);
+		dialog.setupDialog();
+		dialog.setVisible(true);
+		SwingUtilities.invokeLater(dialog::toFront);
+		return dialog.getValue() == 1;
+	}
+	
+	
 	private void delete() {
 		if (selectedPreset!=null) {
 			EasyPresets.getInstance().delete(selectedPreset);
