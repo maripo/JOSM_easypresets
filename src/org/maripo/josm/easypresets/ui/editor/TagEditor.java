@@ -231,8 +231,8 @@ public class TagEditor {
 		protected ComboMultiSelect createEmptyItem() {
 			return new Combo();
 		}
-		protected String getDefaultDelimiter() {
-			return ",";
+		protected char getDefaultDelimiter() {
+			return ',';
 		}
 		@Override
 		public KeyedItem createItem() {
@@ -266,8 +266,8 @@ public class TagEditor {
 			return new MultiSelect();
 		}
 		@Override
-		protected String getDefaultDelimiter() {
-			return ";";
+		protected char getDefaultDelimiter() {
+			return ';';
 		}
 	}
 	static class ValueFieldCheckbox extends ValueField {
