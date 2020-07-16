@@ -209,7 +209,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	protected void edit() {
 		// Open 
 		if (selectedPreset!=null) {
-			new PresetEditorDialog(selectedPreset).showDialog(this);
+			int index = list.getSelectedIndex();
+			new PresetEditorDialog(selectedPreset, index).showDialog(this);
 		}
 	}
 

@@ -117,6 +117,11 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 		TaggingPresets.addTaggingPresets(toAdd);
 	}
 	
+	@Override
+	public void setElementAt(TaggingPreset element, int index) {
+		super.setElementAt(element, index);
+	}
+	
 	/**
 	 * Save all presets to specified file
 	 * @param file

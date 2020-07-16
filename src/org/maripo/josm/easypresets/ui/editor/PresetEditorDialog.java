@@ -60,6 +60,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	private String referenceURL;
 	private TaggingPreset presetToEdit;
 	protected Collection<TaggingPresetType> defaultTypes;
+	private int index = -1;
 	
 	/**
 	 * Create new preset (Initialize with tags and types extracted from selection)
@@ -84,8 +85,9 @@ public class PresetEditorDialog extends ExtendedDialog {
 	 * Edit existing preset (Initialize with existing TaggingPreset object)
 	 * @param preset
 	 */
-	public PresetEditorDialog (TaggingPreset preset) {
+	public PresetEditorDialog (TaggingPreset preset, int index) {
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
+		this.index = index;
 		name = preset.name;
 		referenceURL = findURL(preset);
 		icon = preset.getIcon();
@@ -306,6 +308,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		}
 		if (presetToEdit!=null) {
 			applyToPreset(presetToEdit);
+			EasyPresets.getInstance().setElementAt(presetToEdit, index);
 		} else {
 			// New preset
 			EasyPresets.getInstance().addElement(createPreset());
