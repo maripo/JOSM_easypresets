@@ -54,7 +54,6 @@ public class ExportDialog extends ExtendedDialog {
 		public Component getLabel() {
 			return label;
 		}
-		
 	}
 
 	List<PresetWrapper> wrappers = new ArrayList<PresetWrapper>();
@@ -65,8 +64,9 @@ public class ExportDialog extends ExtendedDialog {
 
 		final JPanel list = new JPanel(new GridBagLayout());
 		list.setBackground(Color.WHITE);
-		for (TaggingPreset preset: EasyPresets.getInstance().getPresets()) {
-			PresetWrapper wrapper = new PresetWrapper(preset);
+		TaggingPreset[] array = (TaggingPreset[]) EasyPresets.getInstance().toArray();
+        for (int i = 0; i < array.length; i++) {
+			PresetWrapper wrapper = new PresetWrapper(array[i]);
 			list.add(wrapper.getCheckbox());
 			list.add(wrapper.getLabel(), GBC.eol().fill());
 			wrappers.add(wrapper);
@@ -142,7 +142,6 @@ public class ExportDialog extends ExtendedDialog {
 				selectedPresets.add(wrapper.preset);
 			}
 		}
-		
 		
 		if (selectedPresets.isEmpty()) {
 			alertLabel.setText(tr("No presets are selected."));

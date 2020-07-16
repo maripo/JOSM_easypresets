@@ -16,6 +16,7 @@ public class ManagePresetsAction extends JosmAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new ManagePresetsDialog().showDialog();
+		ManagePresetsDialog dialog = new ManagePresetsDialog();
+		dialog.showDialog();
 	}
 }

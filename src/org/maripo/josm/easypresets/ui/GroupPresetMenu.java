@@ -27,9 +27,10 @@ public class GroupPresetMenu extends TaggingPresetMenu {
 	public void updatePresetListMenu(EasyPresets presets) {
 		setEnabled(presets.size()>0);
 		menu.removeAll();
-        for (TaggingPreset preset: presets) {
-            JMenuItem mi = new JMenuItem(preset);
-            mi.setText(preset.getLocaleName());
+		TaggingPreset[] array = (TaggingPreset[]) presets.toArray();
+        for (int i = 0; i < array.length; i++) {
+            JMenuItem mi = new JMenuItem(array[i]);
+            mi.setText(array[i].getLocaleName());
             menu.add(mi);
         }
 	}

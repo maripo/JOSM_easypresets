@@ -108,7 +108,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			}
 		});
 		
-		refreshList();
+		//refreshList();
+		//list.clearSelection();
+		//list.setModel(model);
+
 		JScrollPane listScroll = new JScrollPane(list);
 		listScroll.setPreferredSize(new Dimension(320,420));
 		listPane.add(listScroll, GBC.std());
@@ -154,7 +157,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			public void actionPerformed(ActionEvent e) {
 				copy();
 			}
-			
 		});
 		copyButton.setEnabled(false);
 		
@@ -195,7 +197,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 
 	private void refreshList() {
 		//presets = EasyPresets.getInstance().getPresets().toArray(new TaggingPresEasyPresetsPluginet[0]);
-		list.clearSelection();
+		System.out.printf("%s", list.toString());
+		//list.clearSelection();
 		//list.setListData(presets);
 	}
 
@@ -243,7 +246,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	private void delete() {
 		if (selectedPreset!=null) {
-			EasyPresets model = EasyPresets.getInstance();
+			//EasyPresets model = EasyPresets.getInstance();
 			model.removeElement(selectedPreset);
 			model.save();
 			EasyPresetsPlugin.groupMenu.updatePresetListMenu(model);
@@ -253,7 +256,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 
 	@Override
 	public void dispose() {
-		EasyPresets.getInstance().saveIfNeeded();
+		model.saveIfNeeded();
 		super.dispose();
 	}
 	
@@ -262,11 +265,13 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 
 	boolean isSelectionValid () {
+		//EasyPresets model = EasyPresets.getInstance();
 		return !(list.getSelectedIndex() < 0 || list.getSelectedIndex() >= model.size()); 
 	}
 	
 	@Override
 	public void valueChanged(ListSelectionEvent evt) {
+		//EasyPresets model = EasyPresets.getInstance();
 		int index = list.getSelectedIndex();
 		reorderUpButton.setEnabled(index>0);
 		reorderDownButton.setEnabled(index<model.size()-1);
@@ -291,7 +296,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			return;
 		}
 		int index = list.getSelectedIndex();
-		EasyPresets.getInstance().moveUp(index);
+		model.moveUp(index);
 		refreshList();
 		list.setSelectedIndex(index-1);
 	}
@@ -301,7 +306,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			return;
 		}
 		int index = list.getSelectedIndex();
-		EasyPresets.getInstance().moveDown(index);
+		model.moveDown(index);
 		refreshList();
 		list.setSelectedIndex(index+1);
 	}

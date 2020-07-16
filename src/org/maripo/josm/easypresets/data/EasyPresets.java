@@ -11,7 +11,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +53,7 @@ import org.xml.sax.SAXException;
  *
  */
 @SuppressWarnings("serial")
-public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iterable<TaggingPreset> {
+public class EasyPresets extends DefaultListModel<TaggingPreset> {
 	private static final String FILE_NAME = "EasyPresets.xml";
 	private static final String[] PRESET_FORMAT_URLS = {
 			"https://josm.openstreetmap.de/wiki/TaggingPresets",
@@ -84,8 +83,6 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iter
 		return instance;
 	}
 
-	List<TaggingPreset> list = new ArrayList<TaggingPreset>();
-
 	/**
 	 * Load custom presets from local XML (if exists)
 	 */
@@ -95,7 +92,7 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iter
 			try (Reader reader = UTFInputStreamReader.create(new FileInputStream(file))) {
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
-					list.addAll(readResult);
+					this.addAll(readResult);
 				}
 				TaggingPresets.addTaggingPresets(readResult);
 			} catch (FileNotFoundException e) {
@@ -113,33 +110,26 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iter
 	 */
 	@Override
 	public void addElement(TaggingPreset preset) {
-		list.add(preset);
+		this.addElement(preset);
 		Collection<TaggingPreset> toAdd = new ArrayList<TaggingPreset>();
 		toAdd.add(preset);
 		// New preset will be able to find F3 menu
 		TaggingPresets.addTaggingPresets(toAdd);
 	}
 	
-	@Override
-	public int size() {
-		return list.size();
-	}
-
-
 	/**
 	 * Save all presets to specified file
 	 * @param file
 	 */
 	public void saveAllPresetsTo(File file) {
+		List<TaggingPreset> list = new ArrayList<TaggingPreset>();
+		for (TaggingPreset preset: list) {
+			list.add(preset);
+		}
 		saveTo(list, file);
 	}
 	
-	/**
-	 * Save presets to specified file
-	 * @param presetsToSave
-	 * @param file
-	 */
-	public void saveTo(List<TaggingPreset> presetsToSave, File file) {
+	public void saveTo(List<TaggingPreset> list, File file) {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -153,7 +143,7 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iter
 			rootElement.setAttribute("shortdescription", "");
 			doc.appendChild(rootElement);
 			rootElement.appendChild(doc.createComment(getComment()));
-			for (TaggingPreset preset: presetsToSave) {
+			for (TaggingPreset preset: list) {
 				Element presetElement = createpresetElement(doc, preset);
 				rootElement.appendChild(presetElement);
 			}
@@ -166,7 +156,6 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iter
 			// Write to local XML
 			StreamResult result = new StreamResult(file);
 			transformer.transform(source, result);
-			
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (TransformerConfigurationException e) {
@@ -273,19 +262,10 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iter
 
 	@Override
 	public TaggingPreset lastElement() {
-		if (list.isEmpty()) {
+		if (isEmpty()) {
 			return null;
 		}
-		return list.get(list.size()-1);
-	}
-
-	public Collection<TaggingPreset> getPresets() {
-		return list;
-	}
-
-	@Override
-	public boolean removeElement(Object presetToRemove) {
-		return list.remove(presetToRemove);
+		return getElementAt(size()-1);
 	}
 
 	/**
@@ -293,11 +273,11 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iter
 	 * @param index
 	 */
 	public void moveDown(int index) {
-		if (index >= list.size()-1) {
+		if (index >= size()-1) {
 			return;
 		}
-		TaggingPreset presetToMove = list.remove(index);
-		list.add(index+1, presetToMove);
+		TaggingPreset presetToMove = remove(index);
+		add(index+1, presetToMove);
 		isDirty = true;
 	}
 
@@ -309,8 +289,8 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iter
 		if (index <= 0) {
 			return;
 		}
-		TaggingPreset presetToMove = list.remove(index);
-		list.add(index-1, presetToMove);
+		TaggingPreset presetToMove = remove(index);
+		add(index-1, presetToMove);
 		isDirty = true;
 	}
 	
@@ -369,10 +349,5 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iter
 					item.locale_text:DummyPresetClass.getLocaleText(item.text, item.text_context);
 		}
 		return null;
-	}
-
-	@Override
-	public Iterator<TaggingPreset> iterator() {
-		return list.iterator();
 	}
 }
