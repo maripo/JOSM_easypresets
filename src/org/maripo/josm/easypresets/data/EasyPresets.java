@@ -110,7 +110,7 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 	 */
 	@Override
 	public void addElement(TaggingPreset preset) {
-		this.addElement(preset);
+		super.addElement(preset);
 		Collection<TaggingPreset> toAdd = new ArrayList<TaggingPreset>();
 		toAdd.add(preset);
 		// New preset will be able to find F3 menu
@@ -266,6 +266,15 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 			return null;
 		}
 		return getElementAt(size()-1);
+	}
+	
+	@Override
+	public TaggingPreset[] toArray() {
+		ArrayList<TaggingPreset> list = new ArrayList<TaggingPreset>();
+		for (int i = 0; i < getSize(); i++) {
+			list.add(getElementAt(i));
+		}
+		return list.toArray(new TaggingPreset[getSize()]);
 	}
 
 	/**
