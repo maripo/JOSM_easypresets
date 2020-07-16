@@ -122,11 +122,14 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 	 * @param file
 	 */
 	public void saveAllPresetsTo(File file) {
+		TaggingPreset[] arr = this.toArray();
 		List<TaggingPreset> list = new ArrayList<TaggingPreset>();
-		for (TaggingPreset preset: list) {
+		for (TaggingPreset preset: arr) {
 			list.add(preset);
 		}
-		saveTo(list, file);
+		if (!list.isEmpty()) {
+			saveTo(list, file);
+		}
 	}
 	
 	public void saveTo(List<TaggingPreset> list, File file) {
