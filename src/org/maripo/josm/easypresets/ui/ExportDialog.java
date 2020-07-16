@@ -27,11 +27,13 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
 
 public class ExportDialog extends ExtendedDialog {
-
+	private static final long serialVersionUID = -1147760276640641360L;
+	
 	public ExportDialog () {
 		super(MainApplication.getMainFrame(), tr("Export"));
 		initUI();
 	}
+
 	JLabel alertLabel;
 	static class PresetWrapper {
 		JCheckBox checkbox;
@@ -54,6 +56,7 @@ public class ExportDialog extends ExtendedDialog {
 		}
 		
 	}
+
 	List<PresetWrapper> wrappers = new ArrayList<PresetWrapper>();
 	private void initUI() {
 		JPanel listPane = new JPanel(new GridBagLayout());

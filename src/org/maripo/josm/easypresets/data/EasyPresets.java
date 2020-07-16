@@ -10,11 +10,11 @@ import org.openstreetmap.josm.io.UTFInputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.xml.parsers.DocumentBuilder;
@@ -55,7 +55,8 @@ import org.xml.sax.SAXException;
  * @author maripo
  *
  */
-public class EasyPresets {
+@SuppressWarnings("serial")
+public class EasyPresets extends DefaultListModel<TaggingPreset> {
 	private static final String FILE_NAME = "EasyPresets.xml";
 	private static final String[] PRESET_FORMAT_URLS = {
 			"https://josm.openstreetmap.de/wiki/TaggingPresets",
@@ -63,7 +64,7 @@ public class EasyPresets {
 			};
 	public static final String PLUGIN_HELP_URL = "https://github.com/maripo/JOSM_easypresets/blob/master/README.md";
 
-	boolean isDirty = false;
+	public boolean isDirty = false;
 	/**
 	 * Get file path of custom preset data file
 	 * @return Full path of preset data file
@@ -113,7 +114,8 @@ public class EasyPresets {
 	 * Add new tagging preset
 	 * @param preset
 	 */
-	public void add (TaggingPreset preset) {
+	@Override
+	public void addElement(TaggingPreset preset) {
 		presets.add(preset);
 		Collection<TaggingPreset> toAdd = new ArrayList<TaggingPreset>();
 		toAdd.add(preset);
@@ -129,6 +131,7 @@ public class EasyPresets {
 	public void saveAllPresetsTo(File file) {
 		saveTo(presets, file);
 	}
+	
 	/**
 	 * Save presets to specified file
 	 * @param presetsToSave
@@ -296,24 +299,25 @@ public class EasyPresets {
 		return presetElement;
 	}
 
-	public TaggingPreset getLastItem() {
-		if (presets.size()==0) {
+	@Override
+	public TaggingPreset lastElement() {
+		if (presets.isEmpty()) {
 			return null;
 		}
-		Object[] objs = presets.toArray();
-		return (TaggingPreset)objs[objs.length-1];
+		return presets.get(presets.size()-1);
 	}
 
 	public Collection<TaggingPreset> getPresets() {
 		return presets;
 	}
 
-	public void remove(TaggingPreset presetToRemove) {
-		presets.remove(presetToRemove);
+	@Override
+	public boolean removeElement(Object presetToRemove) {
+		return presets.remove(presetToRemove);
 	}
 
 	public void delete(TaggingPreset presetToDelete) {
-		remove(presetToDelete);
+		removeElement(presetToDelete);
 		save();
 		updatePresetListMenu();
 	}
@@ -343,7 +347,6 @@ public class EasyPresets {
 		TaggingPreset presetToMove = presets.remove(index);
 		presets.add(index-1, presetToMove);
 		isDirty = true;
-		
 	}
 	
 	public String getLabelFromExistingPresets (String key) {
@@ -399,84 +402,6 @@ public class EasyPresets {
 			Check item = (Check)_item;
 			return (item.locale_text!=null)?
 					item.locale_text:DummyPresetClass.getLocaleText(item.text, item.text_context);
-		}
-		return null;
-	}
-
-	public TaggingPreset duplicate(TaggingPreset fromPreset) {
-		int index = presets.indexOf(fromPreset);
-		TaggingPreset toPreset = clonePreset(fromPreset); 
-		presets.add(index+1, toPreset);
-		return toPreset;
-		
-	}
-
-	private TaggingPreset clonePreset(TaggingPreset fromPreset) {
-		TaggingPreset preset = new TaggingPreset();
-		preset.name = tr("Copy of {0}", fromPreset.name);
-		preset.setIcon(fromPreset.iconName);
-		for (TaggingPresetItem fromItem: fromPreset.data) {
-			TaggingPresetItem item = clonePresetTag(fromItem);
-			if (item != null) {
-				preset.data.add(item);
-			}
-		}
-		preset.types = EnumSet.noneOf(TaggingPresetType.class);
-		preset.types.addAll(fromPreset.types);
-		isDirty = true;
-		return preset;
-	}
-
-	private TaggingPresetItem clonePresetTag(TaggingPresetItem itemFrom) {
-		if (itemFrom instanceof Label) {
-			Label itemTo = new Label(); 
-			itemTo.text = ((Label) itemFrom).text;
-			return itemTo;
-		}
-		else if (itemFrom instanceof Key) {
-			Key key = (Key) itemFrom;
-			Key itemTo = new Key();
-			itemTo.key = key.key;
-			itemTo.value = key.value;
-			return itemTo;
-		}
-		else if (itemFrom instanceof Text) {
-			Text text = (Text)itemFrom;
-			Text itemTo = new Text();
-			itemTo.text = text.text;
-			itemTo.key = text.key;
-			itemTo.default_ = text.default_;
-			return itemTo;
-		}
-		else if (itemFrom instanceof Combo) {
-			Combo combo = (Combo)itemFrom;
-			Combo itemTo = new Combo();
-			itemTo.text = combo.text;
-			itemTo.key = combo.key;
-			itemTo.values = combo.values;
-			return itemTo;
-		}
-		else if (itemFrom instanceof MultiSelect) {
-			MultiSelect multiselect = (MultiSelect)itemFrom;
-			MultiSelect itemTo = new MultiSelect();
-			itemTo.text = multiselect.text;
-			itemTo.key = multiselect.key;
-			itemTo.values = multiselect.values;
-			return itemTo;
-		}
-		else if (itemFrom instanceof Check) {
-			Check key = (Check) itemFrom;
-			Check itemTo = new Check();
-			itemTo.text = key.text;
-			itemTo.key = key.key;
-			return itemTo;
-		}
-		else if (itemFrom instanceof Link) {
-			Link link = (Link)itemFrom;
-			Link itemTo = new Link();
-			itemTo.href = link.href;
-
-			return itemTo;
 		}
 		return null;
 	}

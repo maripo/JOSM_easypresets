@@ -14,7 +14,6 @@ import org.openstreetmap.josm.plugins.PluginInformation;
 
 public class EasyPresetsPlugin extends Plugin {
 
-	@SuppressWarnings("deprecation")
 	public EasyPresetsPlugin (PluginInformation info) {
 		super(info);
 

@@ -42,6 +42,7 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
  * @author maripo
  *
  */
+@SuppressWarnings("serial")
 public class PresetEditorDialog extends ExtendedDialog {
 	
 	public static interface PresetEditorDialogListener {
@@ -307,7 +308,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 			applyToPreset(presetToEdit);
 		} else {
 			// New preset
-			EasyPresets.getInstance().add(createPreset());
+			EasyPresets.getInstance().addElement(createPreset());
 		}
 		EasyPresets.getInstance().save();
 		if (dialogListener != null) {
