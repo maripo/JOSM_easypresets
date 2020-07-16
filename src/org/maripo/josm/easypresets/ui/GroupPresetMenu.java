@@ -20,7 +20,7 @@ public class GroupPresetMenu extends TaggingPresetMenu {
 		super();
 		name = tr("Custom Presets");
 		setIcon("easypresets.png");
-		menu = new JMenu(group);
+		menu = new JMenu(name);
 		setDisplayName();
 	}
 
@@ -30,9 +30,7 @@ public class GroupPresetMenu extends TaggingPresetMenu {
         for (TaggingPreset preset: presets) {
             JMenuItem mi = new JMenuItem(preset);
             mi.setText(preset.getLocaleName());
-            mi.setEnabled(true);
             menu.add(mi);
-            menu.setEnabled(true);
         }
 	}
 	
