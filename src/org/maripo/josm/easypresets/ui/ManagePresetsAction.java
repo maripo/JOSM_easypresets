@@ -1,11 +1,10 @@
 package org.maripo.josm.easypresets.ui;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
-
 import java.awt.event.ActionEvent;
-
 import org.openstreetmap.josm.actions.JosmAction;
 
+@SuppressWarnings("serial")
 public class ManagePresetsAction extends JosmAction {
 
 	public ManagePresetsAction () {
@@ -14,9 +13,9 @@ public class ManagePresetsAction extends JosmAction {
                 null, true);
 		
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		new ManagePresetsDialog().showDialog();
 	}
-
 }

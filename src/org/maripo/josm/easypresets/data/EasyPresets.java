@@ -11,12 +11,11 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,7 +29,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
-import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetNameTemplateList;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
@@ -56,7 +54,7 @@ import org.xml.sax.SAXException;
  *
  */
 @SuppressWarnings("serial")
-public class EasyPresets extends DefaultListModel<TaggingPreset> {
+public class EasyPresets extends DefaultListModel<TaggingPreset> implements Iterable<TaggingPreset> {
 	private static final String FILE_NAME = "EasyPresets.xml";
 	private static final String[] PRESET_FORMAT_URLS = {
 			"https://josm.openstreetmap.de/wiki/TaggingPresets",
@@ -86,18 +84,18 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 		return instance;
 	}
 
-	List<TaggingPreset> presets = new ArrayList<TaggingPreset>();
+	List<TaggingPreset> list = new ArrayList<TaggingPreset>();
 
 	/**
 	 * Load custom presets from local XML (if exists)
 	 */
 	public void load() {
-		final File file = new File(EasyPresets.getInstance().getXMLPath());
+		final File file = new File(this.getXMLPath());
 		if (file.exists() && file.canRead()) {
 			try (Reader reader = UTFInputStreamReader.create(new FileInputStream(file))) {
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
-					presets.addAll(readResult);
+					list.addAll(readResult);
 				}
 				TaggingPresets.addTaggingPresets(readResult);
 			} catch (FileNotFoundException e) {
@@ -106,7 +104,6 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 			} catch (SAXException | IOException e) {
 				Logging.warn(e);
 			}
-			updatePresetListMenu();
 		}
 	}
 
@@ -116,11 +113,16 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 	 */
 	@Override
 	public void addElement(TaggingPreset preset) {
-		presets.add(preset);
+		list.add(preset);
 		Collection<TaggingPreset> toAdd = new ArrayList<TaggingPreset>();
 		toAdd.add(preset);
 		// New preset will be able to find F3 menu
 		TaggingPresets.addTaggingPresets(toAdd);
+	}
+	
+	@Override
+	public int size() {
+		return list.size();
 	}
 
 
@@ -129,7 +131,7 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 	 * @param file
 	 */
 	public void saveAllPresetsTo(File file) {
-		saveTo(presets, file);
+		saveTo(list, file);
 	}
 	
 	/**
@@ -172,8 +174,6 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
-		updatePresetListMenu();
-		
 	}
 
 	private String getComment() {
@@ -203,34 +203,6 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 	
-	private void updatePresetListMenu() {
-		group.setEnabled(presets.size()>0);
-		group.menu.removeAll();
-        for (TaggingPreset preset: presets) {
-            JMenuItem mi = new JMenuItem(preset);
-            mi.setText(preset.getLocaleName());
-            group.menu.add(mi);
-        }
-	}
-
-	private TaggingPresetMenu group;
-	
-	/**
-	 * Create a preset group holding all custom presets
-	 * @return created group
-	 */
-	public TaggingPresetMenu createGroupMenu() {
-		if (group==null) {
-			group = new TaggingPresetMenu();
-			group.name = tr("Custom Presets");
-			group.setIcon("easypresets.png");
-			JMenu menu = new JMenu(group);
-			group.menu = menu;
-			group.setDisplayName();
-		}
-		return group;
-	}
-
 	private Element createpresetElement(Document doc, TaggingPreset obj) {
 		Element presetElement = doc.createElement("item");
 		presetElement.setAttribute("name", obj.name);
@@ -301,38 +273,31 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 
 	@Override
 	public TaggingPreset lastElement() {
-		if (presets.isEmpty()) {
+		if (list.isEmpty()) {
 			return null;
 		}
-		return presets.get(presets.size()-1);
+		return list.get(list.size()-1);
 	}
 
 	public Collection<TaggingPreset> getPresets() {
-		return presets;
+		return list;
 	}
 
 	@Override
 	public boolean removeElement(Object presetToRemove) {
-		return presets.remove(presetToRemove);
+		return list.remove(presetToRemove);
 	}
-
-	public void delete(TaggingPreset presetToDelete) {
-		removeElement(presetToDelete);
-		save();
-		updatePresetListMenu();
-	}
-
 
 	/**
 	 * Reorder presets
 	 * @param index
 	 */
 	public void moveDown(int index) {
-		if (index >= presets.size()-1) {
+		if (index >= list.size()-1) {
 			return;
 		}
-		TaggingPreset presetToMove = presets.remove(index);
-		presets.add(index+1, presetToMove);
+		TaggingPreset presetToMove = list.remove(index);
+		list.add(index+1, presetToMove);
 		isDirty = true;
 	}
 
@@ -344,8 +309,8 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 		if (index <= 0) {
 			return;
 		}
-		TaggingPreset presetToMove = presets.remove(index);
-		presets.add(index-1, presetToMove);
+		TaggingPreset presetToMove = list.remove(index);
+		list.add(index-1, presetToMove);
 		isDirty = true;
 	}
 	
@@ -404,5 +369,10 @@ public class EasyPresets extends DefaultListModel<TaggingPreset> {
 					item.locale_text:DummyPresetClass.getLocaleText(item.text, item.text_context);
 		}
 		return null;
+	}
+
+	@Override
+	public Iterator<TaggingPreset> iterator() {
+		return list.iterator();
 	}
 }

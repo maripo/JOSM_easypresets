@@ -24,6 +24,7 @@ import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.maripo.josm.easypresets.EasyPresetsPlugin;
 import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
@@ -193,7 +194,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 
 	private void refreshList() {
-		//presets = EasyPresets.getInstance().getPresets().toArray(new TaggingPreset[0]);
+		//presets = EasyPresets.getInstance().getPresets().toArray(new TaggingPresEasyPresetsPluginet[0]);
 		list.clearSelection();
 		//list.setListData(presets);
 	}
@@ -242,11 +243,14 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	private void delete() {
 		if (selectedPreset!=null) {
-			EasyPresets.getInstance().delete(selectedPreset);
+			EasyPresets model = EasyPresets.getInstance();
+			model.removeElement(selectedPreset);
+			model.save();
+			EasyPresetsPlugin.groupMenu.updatePresetListMenu(model);
 			refreshList();
 		}
 	}
-	
+
 	@Override
 	public void dispose() {
 		EasyPresets.getInstance().saveIfNeeded();
