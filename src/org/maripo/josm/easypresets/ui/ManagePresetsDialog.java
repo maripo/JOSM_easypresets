@@ -51,7 +51,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		initUI();
 	}
 	
-	private TaggingPreset selectedPreset;
 	private EasyPresets presets;
 	JList<TaggingPreset> list;
 
@@ -108,10 +107,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			}
 		});
 		
-		//refreshList();
-		//list.clearSelection();
-		//list.setModel(model);
-
 		JScrollPane listScroll = new JScrollPane(list);
 		listScroll.setPreferredSize(new Dimension(320,420));
 		listPane.add(listScroll, GBC.std());
@@ -195,9 +190,9 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		setContent(mainPane);
 	}
 
-	private void refreshList() {
+	private void refreshList(String msg) {
 		//presets = EasyPresets.getInstance().getPresets().toArray(new TaggingPresEasyPresetsPluginet[0]);
-		System.out.printf("%s", list.toString());
+		System.out.println(msg);
 		//list.clearSelection();
 		//list.setListData(presets);
 	}
@@ -208,19 +203,19 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			
 	protected void edit() {
 		// Open 
-		if (selectedPreset!=null) {
+		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
-			new PresetEditorDialog(selectedPreset, index).showDialog(this);
+			new PresetEditorDialog(getSelectedPreset(), index).showDialog(this);
 		}
 	}
 
 	private boolean copy() {
-		if (selectedPreset!=null) {
+		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
-			TaggingPreset copiedPreset = EasyPreset.copy(selectedPreset);
+			TaggingPreset copiedPreset = EasyPreset.copy(getSelectedPreset());
 			presets.getModel().insertElementAt(copiedPreset, index);
 			//presets.isDirty = true;
-			refreshList();
+			refreshList("ManagePresetsDialog->copy()");
 			return true;
 		} else {
 			return false;
@@ -234,7 +229,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			tr("Delete"),
 			tr("Cancel")
 		);
-		dialog.setContent(tr("Are you sure you want to delete \"{0}\"?",selectedPreset.getName()));
+		dialog.setContent(tr("Are you sure you want to delete \"{0}\"?",getSelectedPreset().getName()));
 		dialog.setButtonIcons("ok", "cancel");
 		dialog.setModalityType(ModalityType.APPLICATION_MODAL);
 		dialog.setAlwaysOnTop(true);
@@ -246,12 +241,11 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	
 	private void delete() {
-		if (selectedPreset!=null) {
-			//EasyPresets model = EasyPresets.getInstance();
-			presets.getModel().removeElement(selectedPreset);
+		if (isSelectionValid()) {
+			presets.getModel().removeElement(getSelectedPreset());
 			presets.save();
 			EasyPresetsPlugin.groupMenu.updatePresetListMenu(presets);
-			refreshList();
+			refreshList("ManagePresetsDialog->delete()");
 		}
 	}
 
@@ -266,13 +260,11 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 
 	boolean isSelectionValid () {
-		//EasyPresets model = EasyPresets.getInstance();
 		return !(list.getSelectedIndex() < 0 || list.getSelectedIndex() >= presets.getModel().getSize()); 
 	}
 	
 	@Override
 	public void valueChanged(ListSelectionEvent evt) {
-		//EasyPresets model = EasyPresets.getInstance();
 		int index = list.getSelectedIndex();
 		reorderUpButton.setEnabled(index>0);
 		reorderDownButton.setEnabled(index < presets.getModel().getSize()-1);
@@ -285,11 +277,14 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
 		copyButton.setEnabled(true);
-		select(presets.getModel().elementAt(index));
 	}
-
-	private void select(TaggingPreset preset) {
-		selectedPreset = preset;
+	
+	TaggingPreset getSelectedPreset() {
+		if (isSelectionValid()) {
+			int index = list.getSelectedIndex();
+			return presets.getModel().elementAt(index);
+		}
+		return null;
 	}
 	
 	private void reorderUp () {
@@ -298,7 +293,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 		int index = list.getSelectedIndex();
 		presets.moveUp(index);
-		refreshList();
+		refreshList("ManagePresetsDialog->reorderUp()");
 		list.setSelectedIndex(index-1);
 	}
 	
@@ -308,7 +303,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 		int index = list.getSelectedIndex();
 		presets.moveDown(index);
-		refreshList();
+		refreshList("ManagePresetsDialog->reorderDown()");
 		list.setSelectedIndex(index+1);
 	}
 
@@ -316,11 +311,11 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	@Override
 	public void onCancel() {
 		// Do nothing
-		refreshList();
+		refreshList("ManagePresetsDialog->onCancel()");
 	}
 
 	@Override
 	public void onSave() {
-		refreshList();
+		refreshList("ManagePresetsDialog->onSave()");
 	}
 }
