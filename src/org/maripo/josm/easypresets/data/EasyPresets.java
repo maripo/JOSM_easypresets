@@ -60,8 +60,6 @@ public class EasyPresets {
 			};
 	public static final String PLUGIN_HELP_URL = "https://github.com/maripo/JOSM_easypresets/blob/master/README.md";
 
-	boolean isDirty = false;
-	
 	/**
 	 * Get file path of custom preset data file
 	 * @return Full path of preset data file
@@ -148,7 +146,7 @@ public class EasyPresets {
 	 * Save all presets to specified file
 	 * @param file
 	 */
-	public void saveAllPresetsTo(File file) {
+	private void saveAllPresetsTo(File file) {
 		List<TaggingPreset> list = getPresets();
 		if (!list.isEmpty()) {
 			saveTo(list, file);
@@ -207,14 +205,8 @@ public class EasyPresets {
 		return comment.toString();
 	}
 
-	public void saveIfNeeded() {
-		if (isDirty) {
-			save();
-		}
-	}
 	public void save() {
 		saveAllPresetsTo(new File(EasyPresets.getInstance().getXMLPath()));
-		isDirty = false;
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 	
@@ -296,7 +288,6 @@ public class EasyPresets {
 		}
 		TaggingPreset presetToMove = model.remove(index);
 		model.add(index+1, presetToMove);
-		isDirty = true;
 	}
 
 	/**
@@ -309,7 +300,6 @@ public class EasyPresets {
 		}
 		TaggingPreset presetToMove = model.remove(index);
 		model.add(index-1, presetToMove);
-		isDirty = true;
 	}
 	
 	public String getLabelFromExistingPresets (String key) {

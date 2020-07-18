@@ -195,6 +195,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		System.out.println(msg);
 		//list.clearSelection();
 		//list.setListData(presets);
+		EasyPresetsPlugin.groupMenu.updatePresetListMenu(presets);
 	}
 
 	private void export() {
@@ -244,14 +245,12 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		if (isSelectionValid()) {
 			presets.getModel().removeElement(getSelectedPreset());
 			presets.save();
-			EasyPresetsPlugin.groupMenu.updatePresetListMenu(presets);
 			refreshList("ManagePresetsDialog->delete()");
 		}
 	}
 
 	@Override
 	public void dispose() {
-		presets.saveIfNeeded();
 		super.dispose();
 	}
 	

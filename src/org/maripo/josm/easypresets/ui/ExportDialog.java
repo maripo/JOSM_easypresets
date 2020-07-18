@@ -158,12 +158,6 @@ public class ExportDialog extends ExtendedDialog {
         }
 	}
 	
-	@Override
-	public void dispose() {
-		EasyPresets.getInstance().saveIfNeeded();
-		super.dispose();
-	}
-	
 	protected void cancel() {
 		dispose();
 	}

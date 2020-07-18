@@ -48,7 +48,9 @@ public class EasyPreset extends TaggingPreset implements Cloneable {
 			}
 		}
 		preset.types = EnumSet.noneOf(TaggingPresetType.class);
-		preset.types.addAll(src.types);
+		if (src.types != null) {
+			preset.types.addAll(src.types);
+		}
 		return preset;
 	}
 	
