@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.IconPickerDialog.IconPickerDialogListener;
 import org.openstreetmap.josm.gui.ExtendedDialog;
@@ -306,9 +307,20 @@ public class PresetEditorDialog extends ExtendedDialog {
 			// TODO support multiple errors
 			return;
 		}
-		if (presetToEdit!=null) {
-			applyToPreset(presetToEdit);
-			EasyPresets.getInstance().setElementAt(presetToEdit, index);
+		
+		if (presetToEdit != null) {
+			String str = uiPresetName.getText().trim();
+			if ((str == null) || (str.length() < 1)) {
+				uiPresetName.setText(presetToEdit.getName());
+			}
+
+			TaggingPreset preset = applyToPreset(presetToEdit);
+
+			System.out.printf("\nname: %s\n", name);
+			System.out.printf("uiPresetName: %s\n", uiPresetName.getText());
+			System.out.printf("preset: %s\n", preset.getName());
+			
+			EasyPresets.getInstance().setElementAt(preset, index);
 		} else {
 			// New preset
 			EasyPresets.getInstance().addElement(createPreset());
@@ -367,7 +379,8 @@ public class PresetEditorDialog extends ExtendedDialog {
 	private TaggingPreset createPreset () {
 		return applyToPreset(new TaggingPreset());
 	}
-	private TaggingPreset applyToPreset(final TaggingPreset preset) {
+	private TaggingPreset applyToPreset(final TaggingPreset src) {
+		EasyPreset preset = EasyPreset.clone(src);
 		preset.name = uiPresetName.getText();
 		preset.data.clear();
 		if (iconPath!=null) {
