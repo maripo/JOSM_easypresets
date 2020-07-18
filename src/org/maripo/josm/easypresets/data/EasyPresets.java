@@ -28,7 +28,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
-import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetNameTemplateList;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresets;
@@ -112,7 +111,6 @@ public class EasyPresets {
 				if (readResult != null) {
 					model.addAll(readResult);
 				}
-				TaggingPresets.addTaggingPresets(readResult);
 			} catch (FileNotFoundException e) {
 				Logging.debug("File not found: " + file.getAbsolutePath());
 				return;
@@ -134,8 +132,6 @@ public class EasyPresets {
 		model.addElement(preset);
 		Collection<TaggingPreset> toAdd = new ArrayList<TaggingPreset>();
 		toAdd.add(preset);
-		// New preset will be able to find F3 menu
-		TaggingPresets.addTaggingPresets(toAdd);
 	}
 	
 	public void setElementAt(TaggingPreset element, int index) {
@@ -207,7 +203,7 @@ public class EasyPresets {
 
 	public void save() {
 		saveAllPresetsTo(new File(EasyPresets.getInstance().getXMLPath()));
-		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
+		//TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 	
 	private Element createpresetElement(Document doc, TaggingPreset obj) {
