@@ -27,11 +27,13 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
 
 public class ExportDialog extends ExtendedDialog {
-
+	private static final long serialVersionUID = -1147760276640641360L;
+	
 	public ExportDialog () {
 		super(MainApplication.getMainFrame(), tr("Export"));
 		initUI();
 	}
+
 	JLabel alertLabel;
 	static class PresetWrapper {
 		JCheckBox checkbox;
@@ -52,8 +54,8 @@ public class ExportDialog extends ExtendedDialog {
 		public Component getLabel() {
 			return label;
 		}
-		
 	}
+
 	List<PresetWrapper> wrappers = new ArrayList<PresetWrapper>();
 	private void initUI() {
 		JPanel listPane = new JPanel(new GridBagLayout());
@@ -62,8 +64,9 @@ public class ExportDialog extends ExtendedDialog {
 
 		final JPanel list = new JPanel(new GridBagLayout());
 		list.setBackground(Color.WHITE);
-		for (TaggingPreset preset: EasyPresets.getInstance().getPresets()) {
-			PresetWrapper wrapper = new PresetWrapper(preset);
+		TaggingPreset[] array = (TaggingPreset[]) EasyPresets.getInstance().toArray();
+        for (int i = 0; i < array.length; i++) {
+			PresetWrapper wrapper = new PresetWrapper(array[i]);
 			list.add(wrapper.getCheckbox());
 			list.add(wrapper.getLabel(), GBC.eol().fill());
 			wrappers.add(wrapper);
@@ -140,7 +143,6 @@ public class ExportDialog extends ExtendedDialog {
 			}
 		}
 		
-		
 		if (selectedPresets.isEmpty()) {
 			alertLabel.setText(tr("No presets are selected."));
 			return;
@@ -154,12 +156,6 @@ public class ExportDialog extends ExtendedDialog {
         if(returnVal == JFileChooser.APPROVE_OPTION) {
         	EasyPresets.getInstance().saveTo(selectedPresets, chooser.getSelectedFile());
         }
-	}
-	
-	@Override
-	public void dispose() {
-		EasyPresets.getInstance().saveIfNeeded();
-		super.dispose();
 	}
 	
 	protected void cancel() {

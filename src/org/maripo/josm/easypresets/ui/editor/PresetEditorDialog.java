@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.IconPickerDialog.IconPickerDialogListener;
 import org.openstreetmap.josm.gui.ExtendedDialog;
@@ -42,6 +43,7 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
  * @author maripo
  *
  */
+@SuppressWarnings("serial")
 public class PresetEditorDialog extends ExtendedDialog {
 	
 	public static interface PresetEditorDialogListener {
@@ -59,6 +61,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	private String referenceURL;
 	private TaggingPreset presetToEdit;
 	protected Collection<TaggingPresetType> defaultTypes;
+	private int index = -1;
 	
 	/**
 	 * Create new preset (Initialize with tags and types extracted from selection)
@@ -83,8 +86,9 @@ public class PresetEditorDialog extends ExtendedDialog {
 	 * Edit existing preset (Initialize with existing TaggingPreset object)
 	 * @param preset
 	 */
-	public PresetEditorDialog (TaggingPreset preset) {
+	public PresetEditorDialog (TaggingPreset preset, int index) {
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
+		this.index = index;
 		name = preset.name;
 		referenceURL = findURL(preset);
 		icon = preset.getIcon();
@@ -303,11 +307,23 @@ public class PresetEditorDialog extends ExtendedDialog {
 			// TODO support multiple errors
 			return;
 		}
-		if (presetToEdit!=null) {
-			applyToPreset(presetToEdit);
+		
+		if (presetToEdit != null) {
+			String str = uiPresetName.getText().trim();
+			if ((str == null) || (str.length() < 1)) {
+				uiPresetName.setText(presetToEdit.getName());
+			}
+
+			TaggingPreset preset = applyToPreset(presetToEdit);
+
+			System.out.printf("\nname: %s\n", name);
+			System.out.printf("uiPresetName: %s\n", uiPresetName.getText());
+			System.out.printf("preset: %s\n", preset.getName());
+			
+			EasyPresets.getInstance().setElementAt(preset, index);
 		} else {
 			// New preset
-			EasyPresets.getInstance().add(createPreset());
+			EasyPresets.getInstance().addElement(createPreset());
 		}
 		EasyPresets.getInstance().save();
 		if (dialogListener != null) {
@@ -363,7 +379,8 @@ public class PresetEditorDialog extends ExtendedDialog {
 	private TaggingPreset createPreset () {
 		return applyToPreset(new TaggingPreset());
 	}
-	private TaggingPreset applyToPreset(final TaggingPreset preset) {
+	private TaggingPreset applyToPreset(final TaggingPreset src) {
+		EasyPreset preset = EasyPreset.clone(src);
 		preset.name = uiPresetName.getText();
 		preset.data.clear();
 		if (iconPath!=null) {

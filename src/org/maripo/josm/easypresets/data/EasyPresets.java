@@ -10,13 +10,11 @@ import org.openstreetmap.josm.io.UTFInputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import javax.swing.DefaultListModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,7 +28,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
-import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetNameTemplateList;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
@@ -63,7 +60,6 @@ public class EasyPresets {
 			};
 	public static final String PLUGIN_HELP_URL = "https://github.com/maripo/JOSM_easypresets/blob/master/README.md";
 
-	boolean isDirty = false;
 	/**
 	 * Get file path of custom preset data file
 	 * @return Full path of preset data file
@@ -73,9 +69,11 @@ public class EasyPresets {
 	}
 
 	private static EasyPresets instance;
+	private DefaultListModel<TaggingPreset> model;
 
 	private EasyPresets() {
 		super();
+		model = new DefaultListModel<TaggingPreset>();
 	}
 
 	public static EasyPresets getInstance() {
@@ -84,19 +82,35 @@ public class EasyPresets {
 		}
 		return instance;
 	}
-
-	List<TaggingPreset> presets = new ArrayList<TaggingPreset>();
+	
+	public DefaultListModel<TaggingPreset> getModel() {
+		return this.model;
+	}
+	
+	public List<TaggingPreset> getPresets() {
+		List<TaggingPreset> list = new ArrayList<TaggingPreset>();
+		for (int i = 0; i < model.getSize(); i++) {
+			TaggingPreset e = model.getElementAt(i);
+			list.add(e);
+		}
+		return list;
+	}
+	
+	public TaggingPreset[] toArray() {
+		List<TaggingPreset> list = getPresets();
+		return (TaggingPreset[])list.toArray(new TaggingPreset[list.size()]);
+	}
 
 	/**
 	 * Load custom presets from local XML (if exists)
 	 */
 	public void load() {
-		final File file = new File(EasyPresets.getInstance().getXMLPath());
+		final File file = new File(this.getXMLPath());
 		if (file.exists() && file.canRead()) {
 			try (Reader reader = UTFInputStreamReader.create(new FileInputStream(file))) {
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
-					presets.addAll(readResult);
+					model.addAll(readResult);
 				}
 				TaggingPresets.addTaggingPresets(readResult);
 			} catch (FileNotFoundException e) {
@@ -105,36 +119,41 @@ public class EasyPresets {
 			} catch (SAXException | IOException e) {
 				Logging.warn(e);
 			}
-			updatePresetListMenu();
 		}
+	}
+	
+	public int size() {
+		return getModel().getSize();
 	}
 
 	/**
 	 * Add new tagging preset
 	 * @param preset
 	 */
-	public void add (TaggingPreset preset) {
-		presets.add(preset);
+	public void addElement(TaggingPreset preset) {
+		model.addElement(preset);
 		Collection<TaggingPreset> toAdd = new ArrayList<TaggingPreset>();
 		toAdd.add(preset);
 		// New preset will be able to find F3 menu
 		TaggingPresets.addTaggingPresets(toAdd);
 	}
-
-
+	
+	public void setElementAt(TaggingPreset element, int index) {
+		model.setElementAt(element, index);
+	}
+	
 	/**
 	 * Save all presets to specified file
 	 * @param file
 	 */
-	public void saveAllPresetsTo(File file) {
-		saveTo(presets, file);
+	private void saveAllPresetsTo(File file) {
+		List<TaggingPreset> list = getPresets();
+		if (!list.isEmpty()) {
+			saveTo(list, file);
+		}
 	}
-	/**
-	 * Save presets to specified file
-	 * @param presetsToSave
-	 * @param file
-	 */
-	public void saveTo(List<TaggingPreset> presetsToSave, File file) {
+	
+	public void saveTo(List<TaggingPreset> list, File file) {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -148,7 +167,7 @@ public class EasyPresets {
 			rootElement.setAttribute("shortdescription", "");
 			doc.appendChild(rootElement);
 			rootElement.appendChild(doc.createComment(getComment()));
-			for (TaggingPreset preset: presetsToSave) {
+			for (TaggingPreset preset: list) {
 				Element presetElement = createpresetElement(doc, preset);
 				rootElement.appendChild(presetElement);
 			}
@@ -161,7 +180,6 @@ public class EasyPresets {
 			// Write to local XML
 			StreamResult result = new StreamResult(file);
 			transformer.transform(source, result);
-			
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (TransformerConfigurationException e) {
@@ -169,8 +187,6 @@ public class EasyPresets {
 		} catch (TransformerException e) {
 			e.printStackTrace();
 		}
-		updatePresetListMenu();
-		
 	}
 
 	private String getComment() {
@@ -189,45 +205,11 @@ public class EasyPresets {
 		return comment.toString();
 	}
 
-	public void saveIfNeeded() {
-		if (isDirty) {
-			save();
-		}
-	}
 	public void save() {
 		saveAllPresetsTo(new File(EasyPresets.getInstance().getXMLPath()));
-		isDirty = false;
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 	
-	private void updatePresetListMenu() {
-		group.setEnabled(presets.size()>0);
-		group.menu.removeAll();
-        for (TaggingPreset preset: presets) {
-            JMenuItem mi = new JMenuItem(preset);
-            mi.setText(preset.getLocaleName());
-            group.menu.add(mi);
-        }
-	}
-
-	private TaggingPresetMenu group;
-	
-	/**
-	 * Create a preset group holding all custom presets
-	 * @return created group
-	 */
-	public TaggingPresetMenu createGroupMenu() {
-		if (group==null) {
-			group = new TaggingPresetMenu();
-			group.name = tr("Custom Presets");
-			group.setIcon("easypresets.png");
-			JMenu menu = new JMenu(group);
-			group.menu = menu;
-			group.setDisplayName();
-		}
-		return group;
-	}
-
 	private Element createpresetElement(Document doc, TaggingPreset obj) {
 		Element presetElement = doc.createElement("item");
 		presetElement.setAttribute("name", obj.name);
@@ -296,40 +278,16 @@ public class EasyPresets {
 		return presetElement;
 	}
 
-	public TaggingPreset getLastItem() {
-		if (presets.size()==0) {
-			return null;
-		}
-		Object[] objs = presets.toArray();
-		return (TaggingPreset)objs[objs.length-1];
-	}
-
-	public Collection<TaggingPreset> getPresets() {
-		return presets;
-	}
-
-	public void remove(TaggingPreset presetToRemove) {
-		presets.remove(presetToRemove);
-	}
-
-	public void delete(TaggingPreset presetToDelete) {
-		remove(presetToDelete);
-		save();
-		updatePresetListMenu();
-	}
-
-
 	/**
 	 * Reorder presets
 	 * @param index
 	 */
 	public void moveDown(int index) {
-		if (index >= presets.size()-1) {
+		if (index >= model.getSize() - 1) {
 			return;
 		}
-		TaggingPreset presetToMove = presets.remove(index);
-		presets.add(index+1, presetToMove);
-		isDirty = true;
+		TaggingPreset presetToMove = model.remove(index);
+		model.add(index+1, presetToMove);
 	}
 
 	/**
@@ -340,10 +298,8 @@ public class EasyPresets {
 		if (index <= 0) {
 			return;
 		}
-		TaggingPreset presetToMove = presets.remove(index);
-		presets.add(index-1, presetToMove);
-		isDirty = true;
-		
+		TaggingPreset presetToMove = model.remove(index);
+		model.add(index-1, presetToMove);
 	}
 	
 	public String getLabelFromExistingPresets (String key) {
@@ -399,84 +355,6 @@ public class EasyPresets {
 			Check item = (Check)_item;
 			return (item.locale_text!=null)?
 					item.locale_text:DummyPresetClass.getLocaleText(item.text, item.text_context);
-		}
-		return null;
-	}
-
-	public TaggingPreset duplicate(TaggingPreset fromPreset) {
-		int index = presets.indexOf(fromPreset);
-		TaggingPreset toPreset = clonePreset(fromPreset); 
-		presets.add(index+1, toPreset);
-		return toPreset;
-		
-	}
-
-	private TaggingPreset clonePreset(TaggingPreset fromPreset) {
-		TaggingPreset preset = new TaggingPreset();
-		preset.name = tr("Copy of {0}", fromPreset.name);
-		preset.setIcon(fromPreset.iconName);
-		for (TaggingPresetItem fromItem: fromPreset.data) {
-			TaggingPresetItem item = clonePresetTag(fromItem);
-			if (item != null) {
-				preset.data.add(item);
-			}
-		}
-		preset.types = EnumSet.noneOf(TaggingPresetType.class);
-		preset.types.addAll(fromPreset.types);
-		isDirty = true;
-		return preset;
-	}
-
-	private TaggingPresetItem clonePresetTag(TaggingPresetItem itemFrom) {
-		if (itemFrom instanceof Label) {
-			Label itemTo = new Label(); 
-			itemTo.text = ((Label) itemFrom).text;
-			return itemTo;
-		}
-		else if (itemFrom instanceof Key) {
-			Key key = (Key) itemFrom;
-			Key itemTo = new Key();
-			itemTo.key = key.key;
-			itemTo.value = key.value;
-			return itemTo;
-		}
-		else if (itemFrom instanceof Text) {
-			Text text = (Text)itemFrom;
-			Text itemTo = new Text();
-			itemTo.text = text.text;
-			itemTo.key = text.key;
-			itemTo.default_ = text.default_;
-			return itemTo;
-		}
-		else if (itemFrom instanceof Combo) {
-			Combo combo = (Combo)itemFrom;
-			Combo itemTo = new Combo();
-			itemTo.text = combo.text;
-			itemTo.key = combo.key;
-			itemTo.values = combo.values;
-			return itemTo;
-		}
-		else if (itemFrom instanceof MultiSelect) {
-			MultiSelect multiselect = (MultiSelect)itemFrom;
-			MultiSelect itemTo = new MultiSelect();
-			itemTo.text = multiselect.text;
-			itemTo.key = multiselect.key;
-			itemTo.values = multiselect.values;
-			return itemTo;
-		}
-		else if (itemFrom instanceof Check) {
-			Check key = (Check) itemFrom;
-			Check itemTo = new Check();
-			itemTo.text = key.text;
-			itemTo.key = key.key;
-			return itemTo;
-		}
-		else if (itemFrom instanceof Link) {
-			Link link = (Link)itemFrom;
-			Link itemTo = new Link();
-			itemTo.href = link.href;
-
-			return itemTo;
 		}
 		return null;
 	}
