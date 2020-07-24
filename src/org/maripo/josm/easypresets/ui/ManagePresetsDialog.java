@@ -24,7 +24,6 @@ import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.maripo.josm.easypresets.EasyPresetsPlugin;
 import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
@@ -190,14 +189,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		setContent(mainPane);
 	}
 
-	private void refreshList(String msg) {
-		//presets = EasyPresets.getInstance().getPresets().toArray(new TaggingPresEasyPresetsPluginet[0]);
-		System.out.println(msg);
-		//list.clearSelection();
-		//list.setListData(presets);
-		//EasyPresetsPlugin.groupMenu.updatePresetListMenu(presets);
-	}
-
 	private void export() {
 		new ExportDialog().showDialog();
 	}
@@ -215,8 +206,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			int index = list.getSelectedIndex();
 			EasyPreset copiedPreset = EasyPreset.copy(getSelectedPreset());
 			presets.insertElementAt(copiedPreset, index);
-			//presets.isDirty = true;
-			refreshList("ManagePresetsDialog->copy()");
 			return true;
 		} else {
 			return false;
@@ -245,7 +234,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		if (isSelectionValid()) {
 			presets.removeElement(getSelectedPreset());
 			presets.save();
-			refreshList("ManagePresetsDialog->delete()");
 		}
 	}
 
@@ -292,7 +280,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 		int index = list.getSelectedIndex();
 		presets.moveUp(index);
-		refreshList("ManagePresetsDialog->reorderUp()");
 		list.setSelectedIndex(index-1);
 	}
 	
@@ -302,19 +289,18 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 		int index = list.getSelectedIndex();
 		presets.moveDown(index);
-		refreshList("ManagePresetsDialog->reorderDown()");
 		list.setSelectedIndex(index+1);
 	}
 
-	/* Implementation of ManagePresetsDialogListener */
+	/* Implementation of PresetEditorDialogListener */
 	@Override
 	public void onCancel() {
 		// Do nothing
-		refreshList("ManagePresetsDialog->onCancel()");
 	}
 
+	/* Implementation of PresetEditorDialogListener */
 	@Override
 	public void onSave() {
-		refreshList("ManagePresetsDialog->onSave()");
+		// Do nothing
 	}
 }
