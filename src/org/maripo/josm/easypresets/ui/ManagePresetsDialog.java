@@ -195,7 +195,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		System.out.println(msg);
 		//list.clearSelection();
 		//list.setListData(presets);
-		EasyPresetsPlugin.groupMenu.updatePresetListMenu(presets);
+		//EasyPresetsPlugin.groupMenu.updatePresetListMenu(presets);
 	}
 
 	private void export() {

@@ -19,9 +19,6 @@ public class EasyPresetsPlugin extends Plugin {
 	public EasyPresetsPlugin (PluginInformation info) {
 		super(info);
 		
-		presets = EasyPresets.getInstance();
-        presets.load();
-
         // Add custom presets to "Presets" menu
 		JMenu menu = MainApplication.getMenu().presetsMenu;
         menu.add(new JSeparator());
@@ -29,9 +26,9 @@ public class EasyPresetsPlugin extends Plugin {
         MainMenu.add(menu, new ManagePresetsAction());
         
         // Group for all custom presets
-        groupMenu = new GroupPresetMenu();
-        groupMenu.updatePresetListMenu(presets);
+		presets = EasyPresets.getInstance();
+        groupMenu = new GroupPresetMenu(presets);
         menu.add(groupMenu.menu);
+        presets.load();
 	}
-	
 }
