@@ -51,7 +51,8 @@ import org.xml.sax.SAXException;
  * @author maripo
  *
  */
-public class EasyPresets {
+@SuppressWarnings("serial")
+public class EasyPresets extends DefaultListModel<EasyPreset> {
 	private static final String FILE_NAME = "EasyPresets.xml";
 	private static final String[] PRESET_FORMAT_URLS = {
 			"https://josm.openstreetmap.de/wiki/TaggingPresets",
@@ -67,37 +68,32 @@ public class EasyPresets {
 		return Config.getDirs().getUserDataDirectory(true) + "/" + FILE_NAME;
 	}
 
-	private static EasyPresets instance;
-	private DefaultListModel<TaggingPreset> model;
+	private static EasyPresets model;
 
 	private EasyPresets() {
 		super();
-		model = new DefaultListModel<TaggingPreset>();
 	}
 
 	public static EasyPresets getInstance() {
-		if (instance == null) {
-			instance = new EasyPresets();
+		if (model == null) {
+			model = new EasyPresets();
 		}
-		return instance;
+		return model;
 	}
 	
-	public DefaultListModel<TaggingPreset> getModel() {
-		return this.model;
-	}
-	
-	public List<TaggingPreset> getPresets() {
-		List<TaggingPreset> list = new ArrayList<TaggingPreset>();
+	public List<EasyPreset> getPresets() {
+		List<EasyPreset> list = new ArrayList<EasyPreset>();
 		for (int i = 0; i < model.getSize(); i++) {
-			TaggingPreset e = model.getElementAt(i);
+			EasyPreset e = model.getElementAt(i);
 			list.add(e);
 		}
 		return list;
 	}
 	
-	public TaggingPreset[] toArray() {
-		List<TaggingPreset> list = getPresets();
-		return (TaggingPreset[])list.toArray(new TaggingPreset[list.size()]);
+	@Override
+	public EasyPreset[] toArray() {
+		List<EasyPreset> list = getPresets();
+		return (EasyPreset[])list.toArray(new EasyPreset[list.size()]);
 	}
 
 	/**
@@ -120,32 +116,41 @@ public class EasyPresets {
 		}
 	}
 	
-	public int size() {
-		return getModel().getSize();
+	public void addAll(@SuppressWarnings("rawtypes") Collection c) {
+		if (c != null) {
+			for (Object preset : c) {
+				super.addElement((EasyPreset)preset);
+			}
+		}
 	}
-
+	
 	/**
 	 * Add new tagging preset
 	 * @param preset
 	 */
-	public void addElement(TaggingPreset preset) {
-		model.addElement(preset);
-		Collection<TaggingPreset> toAdd = new ArrayList<TaggingPreset>();
-		toAdd.add(preset);
+	public void addElement(EasyPreset preset) {
+		super.addElement(preset);
 	}
 	
-	public void setElementAt(TaggingPreset element, int index) {
-		model.setElementAt(element, index);
+	public void setElementAt(EasyPreset element, int index) {
+		super.setElementAt(element, index);
 	}
 	
 	/**
-	 * Save all presets to specified file
+	 * Save all TaggingPresets to specified file
+	 * 
 	 * @param file
 	 */
 	private void saveAllPresetsTo(File file) {
-		List<TaggingPreset> list = getPresets();
-		if (!list.isEmpty()) {
-			saveTo(list, file);
+		List<EasyPreset> list = getPresets();
+		List<TaggingPreset> tags = new ArrayList<TaggingPreset>();
+		for (EasyPreset preset : list) {
+			if (preset instanceof TaggingPreset) {
+				tags.add(preset);
+			}
+		}
+		if (!tags.isEmpty()) {
+			saveTo(tags, file);
 		}
 	}
 	
@@ -282,7 +287,7 @@ public class EasyPresets {
 		if (index >= model.getSize() - 1) {
 			return;
 		}
-		TaggingPreset presetToMove = model.remove(index);
+		EasyPreset presetToMove = model.remove(index);
 		model.add(index+1, presetToMove);
 	}
 
@@ -294,7 +299,7 @@ public class EasyPresets {
 		if (index <= 0) {
 			return;
 		}
-		TaggingPreset presetToMove = model.remove(index);
+		EasyPreset presetToMove = model.remove(index);
 		model.add(index-1, presetToMove);
 	}
 	

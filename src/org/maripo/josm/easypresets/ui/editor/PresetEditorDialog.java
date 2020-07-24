@@ -38,9 +38,10 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
+
 /**
  * Editor dialog to create or edit a custom preset
- * @author maripo
+ * @author maripo, hayashi
  *
  */
 @SuppressWarnings("serial")
@@ -59,7 +60,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	private List<TargetType> targetTypes = new ArrayList<TargetType>();
 	private String name;
 	private String referenceURL;
-	private TaggingPreset presetToEdit;
+	private EasyPreset presetToEdit;
 	protected Collection<TaggingPresetType> defaultTypes;
 	private int index = -1;
 	
@@ -86,7 +87,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	 * Edit existing preset (Initialize with existing TaggingPreset object)
 	 * @param preset
 	 */
-	public PresetEditorDialog (TaggingPreset preset, int index) {
+	public PresetEditorDialog (EasyPreset preset, int index) {
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.index = index;
 		name = preset.name;
@@ -314,7 +315,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 				uiPresetName.setText(presetToEdit.getName());
 			}
 
-			TaggingPreset preset = applyToPreset(presetToEdit);
+			EasyPreset preset = applyToPreset(presetToEdit);
 
 			System.out.printf("\nname: %s\n", name);
 			System.out.printf("uiPresetName: %s\n", uiPresetName.getText());
@@ -376,10 +377,10 @@ public class PresetEditorDialog extends ExtendedDialog {
 	 * Generate new TaggingPreset
 	 * @return
 	 */
-	private TaggingPreset createPreset () {
-		return applyToPreset(new TaggingPreset());
+	private EasyPreset createPreset () {
+		return applyToPreset(new EasyPreset());
 	}
-	private TaggingPreset applyToPreset(final TaggingPreset src) {
+	private EasyPreset applyToPreset(final EasyPreset src) {
 		EasyPreset preset = EasyPreset.clone(src);
 		preset.name = uiPresetName.getText();
 		preset.data.clear();

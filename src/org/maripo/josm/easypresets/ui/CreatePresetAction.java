@@ -21,6 +21,7 @@ import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.tools.Shortcut;
 
+@SuppressWarnings("serial")
 public class CreatePresetAction extends JosmAction {
 
 	public CreatePresetAction () {

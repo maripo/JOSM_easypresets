@@ -52,7 +52,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 	
 	private EasyPresets presets;
-	JList<TaggingPreset> list;
+	JList<EasyPreset> list;
 
 	private static class PresetRenderer extends JLabel implements ListCellRenderer<TaggingPreset> {
 		private final static Color selectionForeground;
@@ -79,7 +79,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	}
 	private void initUI() {
-		list = new JList<TaggingPreset>(EasyPresets.getInstance().getModel());
+		list = new JList<EasyPreset>(EasyPresets.getInstance());
 		list.setCellRenderer(new PresetRenderer());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		
@@ -213,8 +213,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	private boolean copy() {
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
-			TaggingPreset copiedPreset = EasyPreset.copy(getSelectedPreset());
-			presets.getModel().insertElementAt(copiedPreset, index);
+			EasyPreset copiedPreset = EasyPreset.copy(getSelectedPreset());
+			presets.insertElementAt(copiedPreset, index);
 			//presets.isDirty = true;
 			refreshList("ManagePresetsDialog->copy()");
 			return true;
@@ -243,7 +243,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	private void delete() {
 		if (isSelectionValid()) {
-			presets.getModel().removeElement(getSelectedPreset());
+			presets.removeElement(getSelectedPreset());
 			presets.save();
 			refreshList("ManagePresetsDialog->delete()");
 		}
@@ -259,14 +259,14 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 
 	boolean isSelectionValid () {
-		return !(list.getSelectedIndex() < 0 || list.getSelectedIndex() >= presets.getModel().getSize()); 
+		return !(list.getSelectedIndex() < 0 || list.getSelectedIndex() >= presets.getSize()); 
 	}
 	
 	@Override
 	public void valueChanged(ListSelectionEvent evt) {
 		int index = list.getSelectedIndex();
 		reorderUpButton.setEnabled(index>0);
-		reorderDownButton.setEnabled(index < presets.getModel().getSize()-1);
+		reorderDownButton.setEnabled(index < presets.getSize()-1);
 		
 		if (!isSelectionValid()) {
 			editButton.setEnabled(false);
@@ -278,10 +278,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		copyButton.setEnabled(true);
 	}
 	
-	TaggingPreset getSelectedPreset() {
+	EasyPreset getSelectedPreset() {
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
-			return presets.getModel().elementAt(index);
+			return presets.elementAt(index);
 		}
 		return null;
 	}

@@ -21,6 +21,7 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresets;
 import org.openstreetmap.josm.tools.GBC;
 
+@SuppressWarnings("serial")
 public class IconPickerDialog extends ExtendedDialog implements MouseListener {
 
 	public interface IconPickerDialogListener {
