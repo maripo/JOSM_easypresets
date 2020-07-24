@@ -68,23 +68,14 @@ public class EasyPresets extends DefaultListModel<EasyPreset> {
 		return Config.getDirs().getUserDataDirectory(true) + "/" + FILE_NAME;
 	}
 
-	private static EasyPresets model;
-
-	private EasyPresets() {
+	public EasyPresets() {
 		super();
 	}
 
-	public static EasyPresets getInstance() {
-		if (model == null) {
-			model = new EasyPresets();
-		}
-		return model;
-	}
-	
 	public List<EasyPreset> getPresets() {
 		List<EasyPreset> list = new ArrayList<EasyPreset>();
-		for (int i = 0; i < model.getSize(); i++) {
-			EasyPreset e = model.getElementAt(i);
+		for (int i = 0; i < getSize(); i++) {
+			EasyPreset e = getElementAt(i);
 			list.add(e);
 		}
 		return list;
@@ -105,7 +96,7 @@ public class EasyPresets extends DefaultListModel<EasyPreset> {
 			try (Reader reader = UTFInputStreamReader.create(new FileInputStream(file))) {
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
-					model.addAll(readResult);
+					addAll(readResult);
 				}
 			} catch (FileNotFoundException e) {
 				Logging.debug("File not found: " + file.getAbsolutePath());
@@ -207,7 +198,7 @@ public class EasyPresets extends DefaultListModel<EasyPreset> {
 	}
 
 	public void save() {
-		saveAllPresetsTo(new File(EasyPresets.getInstance().getXMLPath()));
+		saveAllPresetsTo(new File(getXMLPath()));
 		//TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 	
@@ -284,11 +275,11 @@ public class EasyPresets extends DefaultListModel<EasyPreset> {
 	 * @param index
 	 */
 	public void moveDown(int index) {
-		if (index >= model.getSize() - 1) {
+		if (index >= getSize() - 1) {
 			return;
 		}
-		EasyPreset presetToMove = model.remove(index);
-		model.add(index+1, presetToMove);
+		EasyPreset presetToMove = remove(index);
+		add(index+1, presetToMove);
 	}
 
 	/**
@@ -299,8 +290,8 @@ public class EasyPresets extends DefaultListModel<EasyPreset> {
 		if (index <= 0) {
 			return;
 		}
-		EasyPreset presetToMove = model.remove(index);
-		model.add(index-1, presetToMove);
+		EasyPreset presetToMove = this.remove(index);
+		this.add(index-1, presetToMove);
 	}
 	
 	public String getLabelFromExistingPresets (String key) {

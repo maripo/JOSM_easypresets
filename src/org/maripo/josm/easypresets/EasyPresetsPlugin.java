@@ -13,22 +13,22 @@ import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
 public class EasyPresetsPlugin extends Plugin {
-	public static EasyPresets presets;
+	public static EasyPresets root;
 	public static GroupPresetMenu groupMenu;
 
 	public EasyPresetsPlugin (PluginInformation info) {
 		super(info);
+		root = new EasyPresets();
+        root.load();
 		
         // Add custom presets to "Presets" menu
 		JMenu menu = MainApplication.getMenu().presetsMenu;
         menu.add(new JSeparator());
         MainMenu.add(menu, new CreatePresetAction());
-        MainMenu.add(menu, new ManagePresetsAction());
+        MainMenu.add(menu, new ManagePresetsAction(root));
         
         // Group for all custom presets
-		presets = EasyPresets.getInstance();
-        groupMenu = new GroupPresetMenu(presets);
+        groupMenu = new GroupPresetMenu(root);
         menu.add(groupMenu.menu);
-        presets.load();
 	}
 }

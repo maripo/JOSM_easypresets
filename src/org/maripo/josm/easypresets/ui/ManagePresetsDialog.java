@@ -42,9 +42,9 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	private JButton reorderUpButton;
 	private JButton reorderDownButton;
 
-	public ManagePresetsDialog () {
+	public ManagePresetsDialog (EasyPresets presets) {
 		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
-		presets = EasyPresets.getInstance();
+		this.presets = presets;
 		initUI();
 	}
 	
@@ -76,7 +76,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	}
 	private void initUI() {
-		list = new JList<EasyPreset>(EasyPresets.getInstance());
+		list = new JList<EasyPreset>(presets);
 		list.setCellRenderer(new PresetRenderer());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		
@@ -192,10 +192,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 			
 	protected void edit() {
-		// Open 
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
-			new PresetEditorDialog(getSelectedPreset(), index).showDialog();
+			EasyPreset preset = getSelectedPreset();
+			new PresetEditorDialog(preset, index).showDialog();
 		}
 	}
 

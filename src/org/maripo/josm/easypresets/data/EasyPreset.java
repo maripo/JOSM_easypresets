@@ -15,7 +15,7 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
 
-public class EasyPreset extends TaggingPreset implements Cloneable {
+public class EasyPreset extends TaggingPreset  {
 	private static final long serialVersionUID = -7626914563011340418L;
 
 	public EasyPreset() {
@@ -28,10 +28,6 @@ public class EasyPreset extends TaggingPreset implements Cloneable {
 		return preset;
 	}
 
-	public static EasyPreset getInstance(TaggingPreset src) {
-		return EasyPreset.clone(src);
-	}
-	
 	@Override
 	public EasyPreset clone() {
 		return EasyPreset.clone(this);
