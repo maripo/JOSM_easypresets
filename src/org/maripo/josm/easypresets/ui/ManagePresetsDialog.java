@@ -27,7 +27,6 @@ import javax.swing.event.ListSelectionListener;
 import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
-import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog.PresetEditorDialogListener;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
@@ -36,8 +35,7 @@ import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 
 @SuppressWarnings("serial")
-public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener,
-	PresetEditorDialogListener {
+public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener {
 	private JButton editButton;
 	private JButton copyButton;
 	private JButton deleteButton;
@@ -197,7 +195,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		// Open 
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
-			new PresetEditorDialog(getSelectedPreset(), index).showDialog(this);
+			new PresetEditorDialog(getSelectedPreset(), index).showDialog();
 		}
 	}
 
@@ -290,17 +288,5 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		int index = list.getSelectedIndex();
 		presets.moveDown(index);
 		list.setSelectedIndex(index+1);
-	}
-
-	/* Implementation of PresetEditorDialogListener */
-	@Override
-	public void onCancel() {
-		// Do nothing
-	}
-
-	/* Implementation of PresetEditorDialogListener */
-	@Override
-	public void onSave() {
-		// Do nothing
 	}
 }

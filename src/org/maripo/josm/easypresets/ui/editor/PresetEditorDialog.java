@@ -47,10 +47,6 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 @SuppressWarnings("serial")
 public class PresetEditorDialog extends ExtendedDialog {
 	
-	public static interface PresetEditorDialogListener {
-		public void onCancel();
-		public void onSave();
-	}
 	private JTextField uiPresetName;
 	private JTextField uiURL;
 	private JCheckBox uiIncludeName; // Check to include name label
@@ -127,7 +123,6 @@ public class PresetEditorDialog extends ExtendedDialog {
 
 	TagsPane tagsPane;
 	JLabel errorMessageLabel;
-	private PresetEditorDialogListener dialogListener;
 	private void initUI(List<TagEditor> tagEditors) {
 		targetTypes.add(new TargetType(TaggingPresetType.NODE));
 		targetTypes.add(new TargetType(TaggingPresetType.WAY));
@@ -259,9 +254,6 @@ public class PresetEditorDialog extends ExtendedDialog {
         cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (dialogListener != null) {
-					dialogListener.onCancel();
-				}
 				close();
 			}
 		});
@@ -327,9 +319,6 @@ public class PresetEditorDialog extends ExtendedDialog {
 			EasyPresets.getInstance().addElement(createPreset());
 		}
 		EasyPresets.getInstance().save();
-		if (dialogListener != null) {
-			dialogListener.onSave();
-		}
 		close();
 	}
 
@@ -422,10 +411,5 @@ public class PresetEditorDialog extends ExtendedDialog {
 			}
 		}
 		return types;
-	}
-
-	public void showDialog(PresetEditorDialogListener dialogListener) {
-		this.dialogListener = dialogListener;
-		this.showDialog();
 	}
 }
