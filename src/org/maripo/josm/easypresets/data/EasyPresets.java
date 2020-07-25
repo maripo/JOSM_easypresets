@@ -2,6 +2,9 @@ package org.maripo.josm.easypresets.data;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -52,7 +55,7 @@ import org.xml.sax.SAXException;
  *
  */
 @SuppressWarnings("serial")
-public class EasyPresets extends DefaultListModel<EasyPreset> {
+public class EasyPresets extends DefaultListModel<EasyPreset> implements PropertyChangeListener {
 	private static final String FILE_NAME = "EasyPresets.xml";
 	private static final String[] PRESET_FORMAT_URLS = {
 			"https://josm.openstreetmap.de/wiki/TaggingPresets",
@@ -132,19 +135,6 @@ public class EasyPresets extends DefaultListModel<EasyPreset> {
 	 * 
 	 * @param file
 	 */
-	private void saveAllPresetsTo(File file) {
-		List<EasyPreset> list = getPresets();
-		List<TaggingPreset> tags = new ArrayList<TaggingPreset>();
-		for (EasyPreset preset : list) {
-			if (preset instanceof TaggingPreset) {
-				tags.add(preset);
-			}
-		}
-		if (!tags.isEmpty()) {
-			saveTo(tags, file);
-		}
-	}
-	
 	public void saveTo(List<TaggingPreset> list, File file) {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -197,11 +187,6 @@ public class EasyPresets extends DefaultListModel<EasyPreset> {
 		return comment.toString();
 	}
 
-	public void save() {
-		saveAllPresetsTo(new File(getXMLPath()));
-		//TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
-	}
-	
 	private Element createpresetElement(Document doc, TaggingPreset obj) {
 		Element presetElement = doc.createElement("item");
 		presetElement.setAttribute("name", obj.name);
@@ -349,5 +334,20 @@ public class EasyPresets extends DefaultListModel<EasyPreset> {
 					item.locale_text:DummyPresetClass.getLocaleText(item.text, item.text_context);
 		}
 		return null;
+	}
+	
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
+    }
+    
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.removePropertyChangeListener(listener);
+    }
+    
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+        this.pcs.firePropertyChange(EasyPresets.class.getName(), null, this);
 	}
 }

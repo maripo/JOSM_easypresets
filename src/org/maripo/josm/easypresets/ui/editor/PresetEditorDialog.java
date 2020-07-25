@@ -324,17 +324,17 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 			}
 
 			EasyPreset preset = applyToPreset(presetToEdit);
-
 			System.out.printf("\nname: %s\n", name);
 			System.out.printf("uiPresetName: %s\n", uiPresetName.getText());
 			System.out.printf("preset: %s\n", preset.getName());
+			preset.dataChanged();
 			
-			this.parentPresets.setElementAt(preset, index);
+			// TODO: this.parentPresets.setElementAt(preset, index);
 		} else {
 			// New preset
 			this.parentPresets.addElement(createPreset());
+			// TODO: this.parentPresets.dataChenged();
 		}
-		this.parentPresets.save();
 		close();
 	}
 

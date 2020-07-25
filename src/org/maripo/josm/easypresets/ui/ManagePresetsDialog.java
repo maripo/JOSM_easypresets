@@ -232,7 +232,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	private void delete() {
 		if (isSelectionValid()) {
 			presets.removeElement(getSelectedPreset());
-			presets.save();
+			// TODO : presets.save();
 		}
 	}
 
