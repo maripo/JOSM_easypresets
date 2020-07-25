@@ -2,6 +2,8 @@ package org.maripo.josm.easypresets.data;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.EnumSet;
 
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
@@ -102,4 +104,19 @@ public class EasyPreset extends TaggingPreset  {
 		}
 		return null;
 	}
+
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
+    }
+    
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.removePropertyChangeListener(listener);
+    }
+    
+    public void dataChanged() {
+    	EasyPreset oldPreset = null;
+        this.pcs.firePropertyChange(EasyPreset.class.getName(), oldPreset, this);
+    }
 }

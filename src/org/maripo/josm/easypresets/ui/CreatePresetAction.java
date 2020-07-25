@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
@@ -23,14 +24,16 @@ import org.openstreetmap.josm.tools.Shortcut;
 
 @SuppressWarnings("serial")
 public class CreatePresetAction extends JosmAction {
-
-	public CreatePresetAction () {
+	EasyPresets presets;
+	
+	public CreatePresetAction (EasyPresets root) {
         super(tr("Create Preset"), "easypresets_add.png",
                 tr("Create or edit your custom preset based on tags from the current selection"),
                 Shortcut.registerShortcut(
                         "tools:easy_presets_create", tr("Tool: {0}", tr("Create Preset")), 
                         KeyEvent.VK_F3,
                         Shortcut.ALT_CTRL_SHIFT), true);
+        this.presets = root;
 	}
 	
 	@Override
@@ -47,7 +50,8 @@ public class CreatePresetAction extends JosmAction {
         }
         Map<String, Map<String, Integer>> tagMap = findTagsFromSelection(selected);
         List<TaggingPresetType> targetTypes = findTypesFromSelection(selected);
-        new PresetEditorDialog(tagMap, targetTypes).showDialog();
+		PresetEditorDialog dialog = new PresetEditorDialog(tagMap, targetTypes, presets);
+		dialog.showDialog();
 	}
 	
 
@@ -67,10 +71,12 @@ public class CreatePresetAction extends JosmAction {
         Map<String, Map<String, Integer>> allTags = new TreeMap<String, Map<String, Integer>>();
         for (OsmPrimitive primitive: selected) {
 			// Support both Map<String, List<String>> and <Map<String, String>
+			@SuppressWarnings("rawtypes")
 			Map tags = primitive.getInterestingTags();
 			if (tags==null) {
 				continue;
 			}
+			@SuppressWarnings("unchecked")
 			Iterator<String> keyIte = (Iterator<String>)tags.keySet().iterator();
 			while (keyIte.hasNext()) {
 				String key = keyIte.next();
@@ -78,6 +84,7 @@ public class CreatePresetAction extends JosmAction {
 				if (valueObj instanceof String) {
 					incrementKeyValueCount(allTags, key, (String)valueObj);
 				} else {
+					@SuppressWarnings("unchecked")
 					List<String> values = (List<String>)tags.get(key);
 					for (String value: values) {
 						incrementKeyValueCount(allTags, key, value);

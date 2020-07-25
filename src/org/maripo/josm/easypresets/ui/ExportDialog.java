@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
@@ -28,9 +29,11 @@ import org.openstreetmap.josm.tools.GBC;
 
 public class ExportDialog extends ExtendedDialog {
 	private static final long serialVersionUID = -1147760276640641360L;
+	EasyPresets presets;
 	
-	public ExportDialog () {
+	public ExportDialog (EasyPresets presets) {
 		super(MainApplication.getMainFrame(), tr("Export"));
+		this.presets = presets;
 		initUI();
 	}
 
@@ -64,7 +67,7 @@ public class ExportDialog extends ExtendedDialog {
 
 		final JPanel list = new JPanel(new GridBagLayout());
 		list.setBackground(Color.WHITE);
-		TaggingPreset[] array = (TaggingPreset[]) EasyPresets.getInstance().toArray();
+		EasyPreset[] array = (EasyPreset[]) presets.toArray();
         for (int i = 0; i < array.length; i++) {
 			PresetWrapper wrapper = new PresetWrapper(array[i]);
 			list.add(wrapper.getCheckbox());
@@ -154,7 +157,7 @@ public class ExportDialog extends ExtendedDialog {
         chooser.setFileFilter(new FileNameExtensionFilter("XML File", "xml"));
         int returnVal = chooser.showSaveDialog(this);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-        	EasyPresets.getInstance().saveTo(selectedPresets, chooser.getSelectedFile());
+        	presets.saveTo(selectedPresets, chooser.getSelectedFile());
         }
 	}
 	

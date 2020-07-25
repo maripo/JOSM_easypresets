@@ -402,14 +402,14 @@ public class TagEditor {
 	 * @param map
 	 * @return Created instance
 	 */
-	public static TagEditor create(ExtendedDialog baseDialog, String key, Map<String, Integer> map) {
+	public static TagEditor create(ExtendedDialog baseDialog, String key, Map<String, Integer> map, EasyPresets presets) {
 		TagEditor instance = new TagEditor(baseDialog);
 		instance.keyField = new KeyFieldFixed(key);
 		instance.switchType(TYPE_DEFAULT);
 		instance.uiType.setSelectedItem(TYPE_DEFAULT);
 		if (!map.isEmpty()) {
 			String firstKey = map.keySet().iterator().next();
-			instance.uiLabel.setText(EasyPresets.getInstance().getLabelFromExistingPresets(key));
+			instance.uiLabel.setText(presets.getLabelFromExistingPresets(key));
 			instance.getSelectedValueField().populateDefaultValue(firstKey);
 		}
 		instance.initUI();

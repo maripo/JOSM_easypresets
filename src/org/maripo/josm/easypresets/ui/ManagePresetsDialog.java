@@ -188,14 +188,16 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 
 	private void export() {
-		new ExportDialog().showDialog();
+		new ExportDialog(presets).showDialog();
 	}
 			
 	protected void edit() {
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
 			EasyPreset preset = getSelectedPreset();
-			new PresetEditorDialog(preset, index).showDialog();
+			PresetEditorDialog dialog = new PresetEditorDialog(preset, index, presets);
+			preset.addPropertyChangeListener(dialog);
+			dialog.showDialog();
 		}
 	}
 
@@ -226,7 +228,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		SwingUtilities.invokeLater(dialog::toFront);
 		return dialog.getValue() == 1;
 	}
-	
 	
 	private void delete() {
 		if (isSelectionValid()) {

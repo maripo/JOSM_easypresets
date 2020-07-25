@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -45,7 +47,7 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
  *
  */
 @SuppressWarnings("serial")
-public class PresetEditorDialog extends ExtendedDialog {
+public class PresetEditorDialog extends ExtendedDialog implements PropertyChangeListener {
 	
 	private JTextField uiPresetName;
 	private JTextField uiURL;
@@ -59,20 +61,24 @@ public class PresetEditorDialog extends ExtendedDialog {
 	private EasyPreset presetToEdit;
 	protected Collection<TaggingPresetType> defaultTypes;
 	private int index = -1;
+	private EasyPresets parentPresets;
 	
 	/**
 	 * Create new preset (Initialize with tags and types extracted from selection)
 	 * @param tagMap
 	 * @param presetTypes 
 	 */
-	public PresetEditorDialog (Map<String, Map<String, Integer>> tagMap, 
-			List<TaggingPresetType> presetTypes) {
+	public PresetEditorDialog (Map<String,
+			Map<String, Integer>> tagMap, 
+			List<TaggingPresetType> presetTypes,
+			EasyPresets presets)
+	{
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.defaultTypes = presetTypes;
 
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
         for (final String key: tagMap.keySet()) {
-        	TagEditor editor = TagEditor.create(this, key, tagMap.get(key));
+        	TagEditor editor = TagEditor.create(this, key, tagMap.get(key), presets);
         	tagEditors.add(editor);
         }
         name = "";
@@ -83,16 +89,20 @@ public class PresetEditorDialog extends ExtendedDialog {
 	 * Edit existing preset (Initialize with existing TaggingPreset object)
 	 * @param preset
 	 */
-	public PresetEditorDialog (EasyPreset preset, int index) {
+	public PresetEditorDialog (EasyPreset preset, int index, final EasyPresets parentPresets) {
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.index = index;
+		this.parentPresets = parentPresets;
 		name = preset.name;
 		referenceURL = findURL(preset);
 		icon = preset.getIcon();
 		iconPath = preset.iconName;
-		this.presetToEdit = preset;
+		this.presetToEdit = preset.clone();
 		defaultTypes = preset.types;
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
+		
+		this.presetToEdit.addPropertyChangeListener(this);
+		
 		// Select all
 		for (final TaggingPresetItem item: preset.data) {
 			TagEditor editor = TagEditor.create(this, item);
@@ -282,6 +292,12 @@ public class PresetEditorDialog extends ExtendedDialog {
 	protected void close() {
 		this.dispose();
 	}
+	
+	@Override
+	public void dispose() {
+		this.presetToEdit.removePropertyChangeListener(this);
+		super.dispose();
+	}
 
 	void showErrorMessage(String message) {
 		if (message==null || message.isEmpty()) {
@@ -313,12 +329,12 @@ public class PresetEditorDialog extends ExtendedDialog {
 			System.out.printf("uiPresetName: %s\n", uiPresetName.getText());
 			System.out.printf("preset: %s\n", preset.getName());
 			
-			EasyPresets.getInstance().setElementAt(preset, index);
+			this.parentPresets.setElementAt(preset, index);
 		} else {
 			// New preset
-			EasyPresets.getInstance().addElement(createPreset());
+			this.parentPresets.addElement(createPreset());
 		}
-		EasyPresets.getInstance().save();
+		this.parentPresets.save();
 		close();
 	}
 
@@ -412,4 +428,13 @@ public class PresetEditorDialog extends ExtendedDialog {
 		}
 		return types;
 	}
+
+	/**
+	 * implements PropertyChangeListener
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+        EasyPreset preset = (EasyPreset)evt.getNewValue();
+        this.parentPresets.setElementAt(preset, this.index);
+    }
 }
