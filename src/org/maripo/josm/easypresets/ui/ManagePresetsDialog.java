@@ -36,6 +36,7 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 
 @SuppressWarnings("serial")
 public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener {
+	private JButton createButton;
 	private JButton editButton;
 	private JButton copyButton;
 	private JButton deleteButton;
@@ -129,6 +130,16 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		reorderUpButton.setToolTipText(tr("Move up"));
 		reorderDownButton.setToolTipText(tr("Move down"));
 
+		createButton = new JButton();
+		createButton.setToolTipText(tr("Edit"));
+		createButton.setIcon(ImageProvider.get("create", "edit", ImageSizes.LARGEICON));
+		createButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				edit();
+			}
+		});
+		createButton.setEnabled(false);
 		
 		editButton = new JButton();
 		editButton.setToolTipText(tr("Edit"));
@@ -171,7 +182,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		buttons.add(editButton, GBC.eol());
 		buttons.add(copyButton, GBC.eol());
 		buttons.add(deleteButton, GBC.eol());
-		listPane.add(buttons, GBC.eol().fill());
+		listPane.add(createButton, GBC.eol());
+		listPane.add(buttons, GBC.eol());
 		mainPane.add(listPane, GBC.eol().fill());
 
 		final JButton cancelButton = new JButton(tr("Close"));
@@ -256,10 +268,12 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		reorderDownButton.setEnabled(index < presets.getSize()-1);
 		
 		if (!isSelectionValid()) {
+			createButton.setEnabled(false);
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(false);
 			return;
 		}
+		createButton.setEnabled(true);
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
 		copyButton.setEnabled(true);
