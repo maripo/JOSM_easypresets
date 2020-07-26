@@ -239,7 +239,7 @@ public class TagEditor {
 			ComboMultiSelect item = createEmptyItem();
 			// set delimiters
 			StringBuilder valueString = new StringBuilder();
-			item.delimiter = getDefaultDelimiter();
+			// item.delimiter = getDefaultDelimiter();
 			for (String value: inputValues) {
 				if (valueString.length() > 0) {
 					valueString.append(getDefaultDelimiter());

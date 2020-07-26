@@ -110,7 +110,9 @@ public class EasyPresets {
 			try (Reader reader = UTFInputStreamReader.create(new FileInputStream(file))) {
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
-					model.addAll(readResult);
+					for (TaggingPreset preset: readResult) {
+						model.addElement(preset);
+					}
 				}
 				TaggingPresets.addTaggingPresets(readResult);
 			} catch (FileNotFoundException e) {
