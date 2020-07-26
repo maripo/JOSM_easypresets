@@ -15,9 +15,8 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
 public class GroupPresetMenu extends TaggingPresetMenu implements ListDataListener {
 	EasyPresets model;
 
-	/**
+	/*
 	 * Create a preset group holding all custom presets
-	 * @return created group
 	 */
 	public GroupPresetMenu(EasyPresets presets) {
 		super();

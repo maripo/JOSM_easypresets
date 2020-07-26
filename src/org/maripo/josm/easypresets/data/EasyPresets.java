@@ -110,6 +110,7 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 		}
 	}
 	
+	@Override
 	public void addAll(@SuppressWarnings("rawtypes") Collection c) {
 		if (c != null) {
 			for (Object preset : c) {
@@ -118,22 +119,21 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 		}
 	}
 	
-	/**
+	/*
 	 * Add new tagging preset
-	 * @param preset
 	 */
+	@Override
 	public void addElement(EasyPreset preset) {
 		super.addElement(preset);
 	}
 	
+	@Override
 	public void setElementAt(EasyPreset element, int index) {
 		super.setElementAt(element, index);
 	}
 	
-	/**
+	/*
 	 * Save all TaggingPresets to specified file
-	 * 
-	 * @param file
 	 */
 	public void saveTo(List<TaggingPreset> list, File file) {
 		try {
@@ -255,9 +255,8 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 		return presetElement;
 	}
 
-	/**
+	/*
 	 * Reorder presets
-	 * @param index
 	 */
 	public void moveDown(int index) {
 		if (index >= getSize() - 1) {
@@ -267,9 +266,8 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 		add(index+1, presetToMove);
 	}
 
-	/**
+	/*
 	 * Reorder presets
-	 * @param index
 	 */
 	public void moveUp(int index) {
 		if (index <= 0) {

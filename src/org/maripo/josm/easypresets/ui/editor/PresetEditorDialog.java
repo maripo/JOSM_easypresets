@@ -63,10 +63,8 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 	private int index = -1;
 	private EasyPresets parentPresets;
 	
-	/**
+	/*
 	 * Create new preset (Initialize with tags and types extracted from selection)
-	 * @param tagMap
-	 * @param presetTypes 
 	 */
 	public PresetEditorDialog (Map<String,
 			Map<String, Integer>> tagMap, 
@@ -85,9 +83,8 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 		initUI(tagEditors);
 	}
 
-	/**
+	/*
 	 * Edit existing preset (Initialize with existing TaggingPreset object)
-	 * @param preset
 	 */
 	public PresetEditorDialog (EasyPreset preset, int index, final EasyPresets parentPresets) {
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
@@ -378,9 +375,8 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 		}
 		return errors;
 	}
-	/**
+	/*
 	 * Generate new TaggingPreset
-	 * @return
 	 */
 	private EasyPreset createPreset () {
 		return applyToPreset(new EasyPreset());

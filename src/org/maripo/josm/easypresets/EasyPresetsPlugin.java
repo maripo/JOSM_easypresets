@@ -21,12 +21,11 @@ import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
 public class EasyPresetsPlugin extends Plugin implements ListDataListener {
-	public static EasyPresets root;
-	public static GroupPresetMenu groupMenu;
+	public static final EasyPresets root = new EasyPresets();
+	public static final GroupPresetMenu groupMenu = new GroupPresetMenu(root);
 
 	public EasyPresetsPlugin (PluginInformation info) {
 		super(info);
-		root = new EasyPresets();
         root.load();
 		root.addListDataListener(this);
 		
@@ -37,7 +36,7 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
         MainMenu.add(menu, new ManagePresetsAction(root));
         
         // Group for all custom presets
-        groupMenu = new GroupPresetMenu(root);
+        // groupMenu = new GroupPresetMenu(root);
         menu.add(groupMenu.menu);
 	}
 

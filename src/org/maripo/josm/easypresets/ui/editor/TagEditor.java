@@ -385,9 +385,8 @@ public class TagEditor {
 		return fields.get(uiType.getSelectedItem());
 	}
 	
-	/**
+	/*
 	 * Create empty config (called by clicking "New tag")
-	 * @return
 	 */
 	public static TagEditor create(ExtendedDialog baseDialog) {
 		TagEditor instance = new TagEditor(baseDialog);
@@ -398,8 +397,10 @@ public class TagEditor {
 	}
 	/**
 	 * Init with key and value map
-	 * @param key
-	 * @param map
+	 * @param	baseDialog	baseDialog
+	 * @param key	key
+	 * @param map	map
+	 * @param presets	EasyPresets
 	 * @return Created instance
 	 */
 	public static TagEditor create(ExtendedDialog baseDialog, String key, Map<String, Integer> map, EasyPresets presets) {
@@ -418,7 +419,8 @@ public class TagEditor {
 
 	/**
 	 * Init with existing TaggingPresetItem
-	 * @param item
+	 * @param	baseDialog	baseDialog
+	 * @param	item	item
 	 * @return  Created instance Return null if the preset is not supported)
 	 */
 	public static TagEditor create(ExtendedDialog baseDialog, TaggingPresetItem item) {
