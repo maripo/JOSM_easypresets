@@ -220,7 +220,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			int index = list.getSelectedIndex();
 			EasyPreset preset = getSelectedPreset();
 			PresetEditorDialog dialog = new PresetEditorDialog(preset, index, presets);
-			preset.addPropertyChangeListener(dialog);
 			dialog.showDialog();
 		}
 	}

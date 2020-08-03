@@ -35,6 +35,7 @@ public class GroupPresetMenu extends TaggingPresetMenu implements ListDataListen
         for (int i = 0; i < array.length; i++) {
             JMenuItem mi = new JMenuItem(array[i]);
             mi.setText(array[i].getLocaleName());
+            mi.setEnabled(true);
             menu.add(mi);
         }
 	}

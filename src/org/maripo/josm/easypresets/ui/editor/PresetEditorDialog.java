@@ -7,8 +7,6 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -47,7 +45,7 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
  *
  */
 @SuppressWarnings("serial")
-public class PresetEditorDialog extends ExtendedDialog implements PropertyChangeListener {
+public class PresetEditorDialog extends ExtendedDialog {
 	
 	private JTextField uiPresetName;
 	private JTextField uiURL;
@@ -98,8 +96,6 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 		this.presetToEdit = preset.clone();
 		defaultTypes = preset.types;
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
-		
-		this.presetToEdit.addPropertyChangeListener(this);
 		
 		// Select all
 		for (final TaggingPresetItem item: preset.data) {
@@ -277,7 +273,7 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
         });
 	} 
 
-	protected void addTag () {
+	protected void addTag() {
 		tagsPane.addTag();
 		repaint();
 	}
@@ -288,7 +284,6 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 	
 	@Override
 	public void dispose() {
-		// TODO: this.presetToEdit.removePropertyChangeListener(this);
 		super.dispose();
 	}
 
@@ -344,8 +339,8 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 		public boolean isChecked() {
 			return checkbox.isSelected();
 		}
-		
 	}
+	
 	private List<String> validateInput () {
 		List<String> errors = new ArrayList<String>();
 		if (uiPresetName.getText().isEmpty()) {
@@ -410,13 +405,4 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 		}
 		return types;
 	}
-
-	/*
-	 * implements PropertyChangeListener
-	 */
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-        EasyPreset preset = (EasyPreset)evt.getNewValue();
-        this.parentPresets.setElementAt(preset, this.index);
-    }
 }
