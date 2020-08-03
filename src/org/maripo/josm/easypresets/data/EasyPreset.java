@@ -25,6 +25,22 @@ public class EasyPreset extends TaggingPreset  {
 		name = tr("New Preset");
 	}
 	
+	public EasyPreset(TaggingPreset src) {
+		super();
+		this.name = src.name;
+		this.setIcon(src.iconName);
+		for (TaggingPresetItem fromItem: src.data) {
+			TaggingPresetItem item = clonePresetTag(fromItem);
+			if (item != null) {
+				this.data.add(item);
+			}
+		}
+		this.types = EnumSet.noneOf(TaggingPresetType.class);
+		if (src.types != null) {
+			this.types.addAll(src.types);
+		}
+	}
+	
 	public static EasyPreset copy(TaggingPreset src) {
 		EasyPreset preset = EasyPreset.clone(src);
 		preset.name = tr("Copy of {0}", src.name);
@@ -37,20 +53,7 @@ public class EasyPreset extends TaggingPreset  {
 	}
 	
 	public static EasyPreset clone(TaggingPreset src) {
-		EasyPreset preset = new EasyPreset();
-		preset.name = src.name;
-		preset.setIcon(src.iconName);
-		for (TaggingPresetItem fromItem: src.data) {
-			TaggingPresetItem item = clonePresetTag(fromItem);
-			if (item != null) {
-				preset.data.add(item);
-			}
-		}
-		preset.types = EnumSet.noneOf(TaggingPresetType.class);
-		if (src.types != null) {
-			preset.types.addAll(src.types);
-		}
-		return preset;
+		return new EasyPreset(src);
 	}
 	
 	private static TaggingPresetItem clonePresetTag(TaggingPresetItem itemFrom) {
@@ -116,10 +119,5 @@ public class EasyPreset extends TaggingPreset  {
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.removePropertyChangeListener(listener);
-    }
-    
-    public void dataChanged() {
-    	EasyPreset oldPreset = null;
-        this.pcs.firePropertyChange(EasyPreset.class.getName(), oldPreset, this);
     }
 }

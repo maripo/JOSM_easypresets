@@ -45,6 +45,7 @@ import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
 import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.Logging;
+import org.openstreetmap.josm.tools.XmlParsingException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -99,21 +100,17 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 			try (Reader reader = UTFInputStreamReader.create(new FileInputStream(file))) {
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
-					addAll(readResult);
+					for (TaggingPreset preset : readResult) {
+						this.addElement(new EasyPreset(preset));
+					}
 				}
 			} catch (FileNotFoundException e) {
 				Logging.debug("File not found: " + file.getAbsolutePath());
 				return;
+			} catch (XmlParsingException e) {
+				Logging.info(e.toString());
 			} catch (SAXException | IOException e) {
 				Logging.warn(e);
-			}
-		}
-	}
-	
-	public void addAll(@SuppressWarnings("rawtypes") Collection c) {
-		if (c != null) {
-			for (Object preset : c) {
-				super.addElement((EasyPreset)preset);
 			}
 		}
 	}

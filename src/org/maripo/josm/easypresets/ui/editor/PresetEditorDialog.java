@@ -73,6 +73,7 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 	{
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.defaultTypes = presetTypes;
+		this.parentPresets = presets;
 
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
         for (final String key: tagMap.keySet()) {
@@ -206,8 +207,6 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
         iconPane.add(iconPathLabel, GBC.std().insets(0));
         iconPane.add(iconPickerButton, GBC.std().insets(0));
         mainPane.add(iconPane, GBC.eol());
-		
-				
         mainPane.add(iconPane, GBC.eol().insets(0, 0, 0, 5).anchor(GBC.NORTHWEST));
         
 		mainPane.add(new JLabel(tr("Applies to") + ":"), GBC.std().anchor(GBC.NORTHWEST));
@@ -217,10 +216,7 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 		uiURL = new JTextField();
 		uiURL.setText(referenceURL);
 		mainPane.add(uiURL, GBC.eol().fill());
-
-
 		mainPane.add(new JLabel(tr("Tags") + ":"), GBC.eol().anchor(GBC.NORTHWEST));
-        
 		
         tagsPane = new TagsPane(tagEditors, this);
         if (tagEditors.isEmpty()) {
@@ -292,7 +288,7 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 	
 	@Override
 	public void dispose() {
-		this.presetToEdit.removePropertyChangeListener(this);
+		// TODO: this.presetToEdit.removePropertyChangeListener(this);
 		super.dispose();
 	}
 
@@ -319,18 +315,10 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 			if ((str == null) || (str.length() < 1)) {
 				uiPresetName.setText(presetToEdit.getName());
 			}
-
-			EasyPreset preset = applyToPreset(presetToEdit);
-			System.out.printf("\nname: %s\n", name);
-			System.out.printf("uiPresetName: %s\n", uiPresetName.getText());
-			System.out.printf("preset: %s\n", preset.getName());
-			preset.dataChanged();
-			
-			// TODO: this.parentPresets.setElementAt(preset, index);
+			this.parentPresets.setElementAt(applyToPreset(presetToEdit), index);
 		} else {
 			// New preset
-			this.parentPresets.addElement(createPreset());
-			// TODO: this.parentPresets.dataChenged();
+			this.parentPresets.addElement(applyToPreset(new EasyPreset()));
 		}
 		close();
 	}
@@ -375,12 +363,10 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 		}
 		return errors;
 	}
+	
 	/*
 	 * Generate new TaggingPreset
 	 */
-	private EasyPreset createPreset () {
-		return applyToPreset(new EasyPreset());
-	}
 	private EasyPreset applyToPreset(final EasyPreset src) {
 		EasyPreset preset = EasyPreset.clone(src);
 		preset.name = uiPresetName.getText();
@@ -425,7 +411,7 @@ public class PresetEditorDialog extends ExtendedDialog implements PropertyChange
 		return types;
 	}
 
-	/**
+	/*
 	 * implements PropertyChangeListener
 	 */
 	@Override

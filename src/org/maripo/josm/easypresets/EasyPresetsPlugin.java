@@ -17,6 +17,7 @@ import org.maripo.josm.easypresets.ui.ManagePresetsAction;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MainMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
+import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetNameTemplateList;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
@@ -38,18 +39,19 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
         // Group for all custom presets
         // groupMenu = new GroupPresetMenu(root);
         menu.add(groupMenu.menu);
+		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent arg0) {
 		saveAllPresetsTo();
-		// TODO TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
+		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 
 	@Override
 	public void intervalAdded(ListDataEvent arg0) {
 		saveAllPresetsTo();
-		// TODO TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
+		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 
 	@Override
