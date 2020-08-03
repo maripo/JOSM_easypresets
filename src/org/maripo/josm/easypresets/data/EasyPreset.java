@@ -22,6 +22,7 @@ public class EasyPreset extends TaggingPreset  {
 
 	public EasyPreset() {
 		super();
+		name = tr("New Preset");
 	}
 	
 	public static EasyPreset copy(TaggingPreset src) {
@@ -107,10 +108,12 @@ public class EasyPreset extends TaggingPreset  {
 
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
+	@Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
     }
     
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.removePropertyChangeListener(listener);
     }

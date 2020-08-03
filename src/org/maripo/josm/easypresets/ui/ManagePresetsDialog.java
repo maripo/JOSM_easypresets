@@ -70,8 +70,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			setIcon(preset.getIcon());
 			setText(preset.getName());
 			setOpaque(true);
-			setBackground((isSelected)?selectionBackground:textBackground);
-			setForeground((isSelected)?selectionForeground:textForeground);
+			setBackground(isSelected?selectionBackground:textBackground);
+			setForeground(isSelected?selectionForeground:textForeground);
 			return this;
 		}
 	
@@ -131,15 +131,15 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		reorderDownButton.setToolTipText(tr("Move down"));
 
 		createButton = new JButton();
-		createButton.setToolTipText(tr("Edit"));
-		createButton.setIcon(ImageProvider.get("create", "edit", ImageSizes.LARGEICON));
+		createButton.setToolTipText(tr("Create Preset"));
+		createButton.setIcon(ImageProvider.get("dialogs", "add", ImageSizes.LARGEICON));
 		createButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				edit();
+				create();
 			}
 		});
-		createButton.setEnabled(false);
+		createButton.setEnabled(true);
 		
 		editButton = new JButton();
 		editButton.setToolTipText(tr("Edit"));
@@ -179,10 +179,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 
 		buttons.add(reorderUpButton, GBC.eol());
 		buttons.add(reorderDownButton, GBC.eol());
+		buttons.add(createButton, GBC.eol());
 		buttons.add(editButton, GBC.eol());
 		buttons.add(copyButton, GBC.eol());
 		buttons.add(deleteButton, GBC.eol());
-		listPane.add(createButton, GBC.eol());
 		listPane.add(buttons, GBC.eol());
 		mainPane.add(listPane, GBC.eol().fill());
 
@@ -203,6 +203,18 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		new ExportDialog(presets).showDialog();
 	}
 			
+	protected void create() {
+		int index;
+		if (!isSelectionValid()) {
+			index = presets.getSize();
+		}
+		else {
+			index = list.getSelectedIndex();
+		}
+		EasyPreset preset = new EasyPreset();
+		presets.insertElementAt(preset, index);
+	}
+
 	protected void edit() {
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();

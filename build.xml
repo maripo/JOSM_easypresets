@@ -11,7 +11,7 @@
 ** Call "ant help" to get possible build targets.
 **
 -->
-<project name="EasyPresets" default="dist" basedir=".">
+<project name="easypresets" default="dist" basedir=".">
 
     <!-- enter the SVN commit message -->
     <property name="commit.message" value="Commit message"/>

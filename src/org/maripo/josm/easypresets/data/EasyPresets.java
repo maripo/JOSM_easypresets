@@ -110,7 +110,6 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 		}
 	}
 	
-	@Override
 	public void addAll(@SuppressWarnings("rawtypes") Collection c) {
 		if (c != null) {
 			for (Object preset : c) {

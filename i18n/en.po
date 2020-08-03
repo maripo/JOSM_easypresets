@@ -283,3 +283,7 @@ msgstr "Manage Custom Presets"
 #, fuzzy, java-format
 msgid "Copy of {0}"
 msgstr "Tool: {0}"
+
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java
+msgid "New Preset"
+msgstr "New Custom Preset"

@@ -282,3 +282,7 @@ msgstr "カスタムプリセット"
 #, java-format
 msgid "Copy of {0}"
 msgstr "{0}のコピー"
+
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java
+msgid "New Preset"
+msgstr "新規プリセット"
