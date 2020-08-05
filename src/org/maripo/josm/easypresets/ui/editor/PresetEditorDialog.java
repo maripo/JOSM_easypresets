@@ -63,6 +63,10 @@ public class PresetEditorDialog extends ExtendedDialog {
 	
 	/*
 	 * Create new preset (Initialize with tags and types extracted from selection)
+	 * 
+	 * @param tagMap
+	 * @param presetTypes	
+	 * @param presets		EasyPresets
 	 */
 	public PresetEditorDialog (Map<String,
 			Map<String, Integer>> tagMap, 
@@ -84,6 +88,10 @@ public class PresetEditorDialog extends ExtendedDialog {
 
 	/*
 	 * Edit existing preset (Initialize with existing TaggingPreset object)
+	 * 
+	 * @param preset		new EasyPreset
+	 * @param index			insert index
+	 * @param parentPresets	EasyPresets
 	 */
 	public PresetEditorDialog (EasyPreset preset, int index, final EasyPresets parentPresets) {
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
@@ -135,7 +143,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		targetTypes.add(new TargetType(TaggingPresetType.MULTIPOLYGON));
 		
 		final JPanel mainPane = new JPanel(new GridBagLayout());
-		mainPane.add(new JLabel(tr("Preset Name") + ":"),  GBC.std().insets(0, 0, 0, 10).anchor(GBC.WEST));
+		mainPane.add(new JLabel(tr("PresetEditorDialogreset Name") + ":"),  GBC.std().insets(0, 0, 0, 10).anchor(GBC.WEST));
 		uiPresetName = new JTextField(16);
 		uiPresetName.setText(name);
 		

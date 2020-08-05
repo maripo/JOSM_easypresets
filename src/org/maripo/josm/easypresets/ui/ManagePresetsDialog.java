@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -30,6 +33,7 @@ import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
+import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
@@ -42,15 +46,36 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	private JButton deleteButton;
 	private JButton reorderUpButton;
 	private JButton reorderDownButton;
-
+	
 	public ManagePresetsDialog (EasyPresets presets) {
 		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
 		this.presets = presets;
 		initUI();
 	}
 	
+	/**
+	 * 
+	 * @param tagMap		selected POI Tags
+	 * @param presetTypes	selected POI Types
+	 * @param presets		EasyPresets
+	 */
+	public ManagePresetsDialog (
+			Map<String,Map<String, Integer>> tagMap, 
+			List<TaggingPresetType> presetTypes,
+			EasyPresets presets)
+	{
+		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
+		this.defaultTypes = presetTypes;
+		this.presets = presets;
+		this.tagMap = tagMap;
+		initUI();
+	}
+	
 	private EasyPresets presets;
 	JList<EasyPreset> list;
+	Map<String,Map<String, Integer>> tagMap;
+	List<TaggingPresetType> targetTypes = null;			// TypesFromSelection
+	protected Collection<TaggingPresetType> defaultTypes;
 
 	private static class PresetRenderer extends JLabel implements ListCellRenderer<TaggingPreset> {
 		private final static Color selectionForeground;
@@ -213,6 +238,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 		EasyPreset preset = new EasyPreset();
 		presets.insertElementAt(preset, index);
+		PresetEditorDialog dialog = new PresetEditorDialog(tagMap, targetTypes, presets);
+		dialog.showDialog();
 	}
 
 	protected void edit() {

@@ -26,8 +26,27 @@ import org.openstreetmap.josm.tools.Shortcut;
 public class CreatePresetAction extends JosmAction {
 	EasyPresets presets;
 	
-	public CreatePresetAction (EasyPresets root) {
-        super(tr("Create Preset"), "easypresets_add.png",
+    /**
+     * Constructs a new {@code JosmAction} and installs layer changed and selection changed adapters.
+     *
+     * Use this super constructor to setup your action.
+     *
+     * @param name the action's text as displayed on the menu (if it is added to a menu)
+     * @param iconName the filename of the icon to use
+     * @param tooltip  a longer description of the action that will be displayed in the tooltip. Please note
+     *           that html is not supported for menu actions on some platforms.
+     * @param shortcut a ready-created shortcut object or null if you don't want a shortcut. But you always
+     *            do want a shortcut, remember you can always register it with group=none, so you
+     *            won't be assigned a shortcut unless the user configures one. If you pass null here,
+     *            the user CANNOT configure a shortcut for your action.
+     * @param registerInToolbar register this action for the toolbar preferences?
+     */
+    protected CreatePresetAction(String name, String iconName, String tooltip, Shortcut shortcut, boolean registerInToolbar) {
+        super(name, iconName, tooltip, shortcut, registerInToolbar, null, true);
+    }
+
+    public CreatePresetAction (EasyPresets root) {
+        this(tr("Create Preset"), "easypresets_add.png",
                 tr("Create or edit your custom preset based on tags from the current selection"),
                 Shortcut.registerShortcut(
                         "tools:easy_presets_create", tr("Tool: {0}", tr("Create Preset")), 
@@ -54,8 +73,7 @@ public class CreatePresetAction extends JosmAction {
 		dialog.showDialog();
 	}
 	
-
-	private List<TaggingPresetType> findTypesFromSelection(Collection<OsmPrimitive> selected) {
+	protected List<TaggingPresetType> findTypesFromSelection(Collection<OsmPrimitive> selected) {
 		List<TaggingPresetType> types = new ArrayList<TaggingPresetType>();
 		
 		for (OsmPrimitive primitive: selected) {
@@ -67,7 +85,7 @@ public class CreatePresetAction extends JosmAction {
         return types;
 	}
 
-	private Map<String, Map<String, Integer>> findTagsFromSelection(Collection<OsmPrimitive> selected) {
+	protected Map<String, Map<String, Integer>> findTagsFromSelection(Collection<OsmPrimitive> selected) {
         Map<String, Map<String, Integer>> allTags = new TreeMap<String, Map<String, Integer>>();
         for (OsmPrimitive primitive: selected) {
 			// Support both Map<String, List<String>> and <Map<String, String>
