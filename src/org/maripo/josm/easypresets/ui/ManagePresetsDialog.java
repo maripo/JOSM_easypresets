@@ -42,6 +42,7 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 
 @SuppressWarnings("serial")
 public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener {
+	private JButton folderButton;
 	private JButton createButton;
 	private JButton editButton;
 	private JButton copyButton;
@@ -158,6 +159,18 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		reorderUpButton.setToolTipText(tr("Move up"));
 		reorderDownButton.setToolTipText(tr("Move down"));
 
+		folderButton = new JButton();
+		folderButton.setToolTipText(tr("Create Preset"));
+		ImageProvider img = new ImageProvider("open");
+		img.setSize(ImageSizes.LARGEICON);
+		folderButton.setIcon(img.get());
+		folderButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		folderButton.setEnabled(true);
+		
 		createButton = new JButton();
 		createButton.setToolTipText(tr("Create Preset"));
 		createButton.setIcon(ImageProvider.get("dialogs", "add", ImageSizes.LARGEICON));
@@ -207,6 +220,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 
 		buttons.add(reorderUpButton, GBC.eol());
 		buttons.add(reorderDownButton, GBC.eol());
+		buttons.add(folderButton, GBC.eol());
 		buttons.add(createButton, GBC.eol());
 		buttons.add(editButton, GBC.eol());
 		buttons.add(copyButton, GBC.eol());
@@ -315,11 +329,13 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		reorderDownButton.setEnabled(index < presets.getSize()-1);
 		
 		if (!isSelectionValid()) {
+			folderButton.setEnabled(false);
 			createButton.setEnabled(false);
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(false);
 			return;
 		}
+		folderButton.setEnabled(true);
 		createButton.setEnabled(true);
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
