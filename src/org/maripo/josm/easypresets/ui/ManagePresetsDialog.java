@@ -11,9 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -49,7 +50,9 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	public ManagePresetsDialog (EasyPresets presets) {
 		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
+		this.targetTypes = new ArrayList<TaggingPresetType>();
 		this.presets = presets;
+		this.tagMap = new TreeMap<String, Map<String, Integer>>();
 		initUI();
 	}
 	
@@ -65,7 +68,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			EasyPresets presets)
 	{
 		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
-		this.defaultTypes = presetTypes;
+		this.targetTypes = presetTypes;
 		this.presets = presets;
 		this.tagMap = tagMap;
 		initUI();
@@ -74,8 +77,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	private EasyPresets presets;
 	JList<EasyPreset> list;
 	Map<String,Map<String, Integer>> tagMap;
-	List<TaggingPresetType> targetTypes = null;			// TypesFromSelection
-	protected Collection<TaggingPresetType> defaultTypes;
+	List<TaggingPresetType> targetTypes;			// TypesFromSelection
 
 	private static class PresetRenderer extends JLabel implements ListCellRenderer<TaggingPreset> {
 		private final static Color selectionForeground;
