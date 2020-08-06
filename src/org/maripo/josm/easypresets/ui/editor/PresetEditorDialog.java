@@ -93,7 +93,23 @@ public class PresetEditorDialog extends ExtendedDialog {
 	 * @param index			insert index
 	 * @param parentPresets	EasyPresets
 	 */
-	public PresetEditorDialog (EasyPreset preset, int index, final EasyPresets parentPresets) {
+	public PresetEditorDialog(EasyPreset preset, int index, final EasyPresets parentPresets) {
+		this(preset, null, index, parentPresets);
+	}
+	
+	/*
+	 * Edit existing preset (Initialize with existing TaggingPreset object)
+	 * 
+	 * @param preset		new EasyPreset
+	 * @param tagMap		Tag map
+	 * @param index			insert index
+	 * @param parentPresets	EasyPresets
+	 */
+	public PresetEditorDialog (EasyPreset preset, 
+			Map<String,Map<String, Integer>> tagMap, 
+			int index, 
+			final EasyPresets parentPresets) 
+	{
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.index = index;
 		this.parentPresets = parentPresets;
@@ -104,6 +120,12 @@ public class PresetEditorDialog extends ExtendedDialog {
 		this.presetToEdit = preset.clone();
 		defaultTypes = preset.types;
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
+		if (tagMap != null) {
+	        for (final String key: tagMap.keySet()) {
+	        	TagEditor editor = TagEditor.create(this, key, tagMap.get(key), parentPresets);
+	        	tagEditors.add(editor);
+	        }
+		}
 		
 		// Select all
 		for (final TaggingPresetItem item: preset.data) {
@@ -121,7 +143,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		}
 		uiIncludeName.setSelected(containsLabel);
 	}
-	
+
 	private String findURL(TaggingPreset preset) {
 		if (preset.data!=null) {
 			for (TaggingPresetItem item: preset.data) {

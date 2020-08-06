@@ -32,7 +32,6 @@ import javax.swing.event.ListSelectionListener;
 import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
-import org.maripo.josm.easypresets.ui.editor.TagEditor;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
@@ -247,14 +246,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			preset.types.add(type);
 		}
 
-		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
-        for (final String key: tagMap.keySet()) {
-        	TagEditor editor = TagEditor.create(this, key, tagMap.get(key), presets);
-        	tagEditors.add(editor);
-        }
-		
 		presets.insertElementAt(preset, index);
-		PresetEditorDialog dialog = new PresetEditorDialog(preset, index, presets);
+		PresetEditorDialog dialog = new PresetEditorDialog(preset, tagMap, index, presets);
 		dialog.showDialog();
 	}
 
