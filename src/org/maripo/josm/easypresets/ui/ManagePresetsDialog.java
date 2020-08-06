@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -240,6 +241,11 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			index = list.getSelectedIndex();
 		}
 		EasyPreset preset = new EasyPreset();
+		
+        preset.types = EnumSet.noneOf(TaggingPresetType.class);
+		for (TaggingPresetType type : targetTypes) {
+			preset.types.add(type);
+		}
 
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
         for (final String key: tagMap.keySet()) {
