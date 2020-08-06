@@ -64,12 +64,12 @@ public class PresetEditorDialog extends ExtendedDialog {
 	/*
 	 * Create new preset (Initialize with tags and types extracted from selection)
 	 * 
-	 * @param tagMap
-	 * @param presetTypes	
+	 * @param tagMap		Tag map
+	 * @param presetTypes	POI types
 	 * @param presets		EasyPresets
 	 */
-	public PresetEditorDialog (Map<String,
-			Map<String, Integer>> tagMap, 
+	public PresetEditorDialog (
+			Map<String,Map<String, Integer>> tagMap, 
 			List<TaggingPresetType> presetTypes,
 			EasyPresets presets)
 	{
