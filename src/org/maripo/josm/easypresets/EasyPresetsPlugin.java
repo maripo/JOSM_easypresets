@@ -11,6 +11,7 @@ import javax.swing.event.ListDataListener;
 
 import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
+import org.maripo.josm.easypresets.data.PresetsEntry;
 import org.maripo.josm.easypresets.ui.CreatePresetAction;
 import org.maripo.josm.easypresets.ui.GroupPresetMenu;
 import org.maripo.josm.easypresets.ui.ManagePresetsAction;
@@ -60,11 +61,11 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 	
 	private void saveAllPresetsTo() {
 		File file = new File(root.getXMLPath());
-		List<EasyPreset> list = root.getPresets();
+		List<PresetsEntry> list = root.getEntry();
 		List<TaggingPreset> tags = new ArrayList<TaggingPreset>();
-		for (EasyPreset preset : list) {
-			if (preset instanceof TaggingPreset) {
-				tags.add(preset);
+		for (PresetsEntry preset : list) {
+			if (preset instanceof EasyPreset) {
+				tags.add((TaggingPreset)preset);
 			}
 		}
 		root.saveTo(tags, file);

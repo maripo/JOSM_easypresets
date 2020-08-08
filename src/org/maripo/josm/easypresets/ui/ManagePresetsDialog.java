@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -31,10 +32,10 @@ import javax.swing.event.ListSelectionListener;
 
 import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
+import org.maripo.josm.easypresets.data.PresetsEntry;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
-import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
@@ -42,6 +43,7 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 
 @SuppressWarnings("serial")
 public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener {
+	private JTextField uiGroupName;
 	private JButton folderButton;
 	private JButton createButton;
 	private JButton editButton;
@@ -55,6 +57,18 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		this.targetTypes = new ArrayList<TaggingPresetType>();
 		this.presets = presets;
 		this.tagMap = new TreeMap<String, Map<String, Integer>>();
+		initUI();
+	}
+	
+	public ManagePresetsDialog (EasyPresets presets, 
+			int index, 
+			final EasyPresets parentPresets) 
+	{
+		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
+		this.targetTypes = new ArrayList<TaggingPresetType>();
+		this.presets = presets;
+		this.tagMap = new TreeMap<String, Map<String, Integer>>();
+		name = presets.getName();
 		initUI();
 	}
 	
@@ -77,11 +91,12 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 	
 	private EasyPresets presets;
-	JList<EasyPreset> list;
+	private String name = null;
+	JList<PresetsEntry> list;
 	Map<String,Map<String, Integer>> tagMap;
 	List<TaggingPresetType> targetTypes;			// TypesFromSelection
 
-	private static class PresetRenderer extends JLabel implements ListCellRenderer<TaggingPreset> {
+	private static class PresetRenderer extends JLabel implements ListCellRenderer<PresetsEntry> {
 		private final static Color selectionForeground;
 		private final static Color selectionBackground;
 		private final static Color textForeground;
@@ -94,8 +109,13 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList<? extends TaggingPreset> list, TaggingPreset preset,
-				int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(
+				JList<? extends PresetsEntry> list, 
+				PresetsEntry preset,
+				int index, 
+				boolean isSelected, 
+				boolean cellHasFocus) 
+		{
 			setIcon(preset.getIcon());
 			setText(preset.getName());
 			setOpaque(true);
@@ -103,10 +123,9 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			setForeground(isSelected?selectionForeground:textForeground);
 			return this;
 		}
-	
 	}
 	private void initUI() {
-		list = new JList<EasyPreset>(presets);
+		list = new JList<PresetsEntry>();
 		list.setCellRenderer(new PresetRenderer());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		
@@ -120,6 +139,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		});
 		mainPane.add(exportButton, GBC.eol().anchor(GridBagConstraints.EAST));
 
+		uiGroupName = new JTextField(16);
+		uiGroupName.setText(name);
+		mainPane.add(uiGroupName, GBC.std().insets(0, 0, 0, 10));
+		
 		final JPanel listPane = new JPanel(new GridBagLayout());
 		final JPanel buttons = new JPanel(new GridBagLayout());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -167,6 +190,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		folderButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				addFolder();
 			}
 		});
 		folderButton.setEnabled(true);
@@ -244,7 +268,24 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	private void export() {
 		new ExportDialog(presets).showDialog();
 	}
-			
+	
+	/*
+	 * button action "Folder"
+	 */
+	protected void addFolder() {
+		int index;
+		if (!isSelectionValid()) {
+			index = presets.getSize();
+		}
+		else {
+			index = list.getSelectedIndex();
+		}
+		EasyPresets folder = new EasyPresets();
+		presets.insertElementAt(folder, index);
+		ManagePresetsDialog dialog = new ManagePresetsDialog(folder, index, presets);
+		dialog.showDialog();
+	}
+
 	protected void create() {
 		int index;
 		if (!isSelectionValid()) {
@@ -268,16 +309,18 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	protected void edit() {
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
-			EasyPreset preset = getSelectedPreset();
-			PresetEditorDialog dialog = new PresetEditorDialog(preset, index, presets);
-			dialog.showDialog();
+			PresetsEntry preset = getSelectedPreset();
+			if (preset instanceof EasyPreset) {
+				PresetEditorDialog dialog = new PresetEditorDialog((EasyPreset)preset, index, presets);
+				dialog.showDialog();
+			}
 		}
 	}
 
 	private boolean copy() {
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
-			EasyPreset copiedPreset = EasyPreset.copy(getSelectedPreset());
+			PresetsEntry copiedPreset = getSelectedPreset().copy();
 			presets.insertElementAt(copiedPreset, index);
 			return true;
 		} else {
@@ -342,7 +385,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		copyButton.setEnabled(true);
 	}
 	
-	EasyPreset getSelectedPreset() {
+	PresetsEntry getSelectedPreset() {
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
 			return presets.elementAt(index);

@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.EnumSet;
 
+import org.maripo.josm.easypresets.ui.GroupPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
@@ -17,7 +18,7 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
 
-public class EasyPreset extends TaggingPreset  {
+public class EasyPreset extends TaggingPreset implements PresetsEntry {
 	private static final long serialVersionUID = -7626914563011340418L;
 
 	public EasyPreset() {
@@ -41,9 +42,9 @@ public class EasyPreset extends TaggingPreset  {
 		}
 	}
 	
-	public static EasyPreset copy(TaggingPreset src) {
-		EasyPreset preset = EasyPreset.clone(src);
-		preset.name = tr("Copy of {0}", src.name);
+	public EasyPreset copy() {
+		EasyPreset preset = EasyPreset.clone(this);
+		preset.name = tr("Copy of {0}", this.name);
 		return preset;
 	}
 
@@ -120,4 +121,15 @@ public class EasyPreset extends TaggingPreset  {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.removePropertyChangeListener(listener);
     }
+
+	@Override
+	public int getSize() {
+		return 1;
+	}
+
+	@Override
+	public void addListDataListener(GroupPresetMenu groupPresetMenu) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,6 +30,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.maripo.josm.easypresets.ui.GroupPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
@@ -44,8 +46,10 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
 import org.openstreetmap.josm.spi.preferences.Config;
+import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.Logging;
 import org.openstreetmap.josm.tools.XmlParsingException;
+import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -56,7 +60,7 @@ import org.xml.sax.SAXException;
  *
  */
 @SuppressWarnings("serial")
-public class EasyPresets extends DefaultListModel<EasyPreset> implements PropertyChangeListener {
+public class EasyPresets extends DefaultListModel<PresetsEntry> implements PropertyChangeListener, PresetsEntry {
 	private static final String FILE_NAME = "EasyPresets.xml";
 	private static final String[] PRESET_FORMAT_URLS = {
 			"https://josm.openstreetmap.de/wiki/TaggingPresets",
@@ -64,7 +68,13 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 			};
 	public static final String PLUGIN_HELP_URL = "https://github.com/maripo/JOSM_easypresets/blob/master/README.md";
 
-	/**
+    /**
+     * A cache for the local name. Should never be accessed directly.
+     * @see #getLocaleName()
+     */
+    public String name = "";
+
+    /**
 	 * Get file path of custom preset data file
 	 * @return Full path of preset data file
 	 */
@@ -76,19 +86,19 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 		super();
 	}
 
-	public List<EasyPreset> getPresets() {
-		List<EasyPreset> list = new ArrayList<EasyPreset>();
+	public List<PresetsEntry> getEntry() {
+		List<PresetsEntry> list = new ArrayList<PresetsEntry>();
 		for (int i = 0; i < getSize(); i++) {
-			EasyPreset e = getElementAt(i);
+			PresetsEntry e = getElementAt(i);
 			list.add(e);
 		}
 		return list;
 	}
 	
 	@Override
-	public EasyPreset[] toArray() {
-		List<EasyPreset> list = getPresets();
-		return (EasyPreset[])list.toArray(new EasyPreset[list.size()]);
+	public PresetsEntry[] toArray() {
+		List<PresetsEntry> list = getEntry();
+		return (PresetsEntry[])list.toArray(new PresetsEntry[list.size()]);
 	}
 
 	/**
@@ -119,12 +129,12 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 	 * Add new tagging preset
 	 */
 	@Override
-	public void addElement(EasyPreset preset) {
+	public void addElement(PresetsEntry preset) {
 		super.addElement(preset);
 	}
 	
 	@Override
-	public void setElementAt(EasyPreset element, int index) {
+	public void setElementAt(PresetsEntry element, int index) {
 		super.setElementAt(element, index);
 	}
 	
@@ -258,7 +268,7 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 		if (index >= getSize() - 1) {
 			return;
 		}
-		EasyPreset presetToMove = remove(index);
+		PresetsEntry presetToMove = remove(index);
 		add(index+1, presetToMove);
 	}
 
@@ -269,7 +279,7 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 		if (index <= 0) {
 			return;
 		}
-		EasyPreset presetToMove = this.remove(index);
+		PresetsEntry presetToMove = this.remove(index);
 		this.add(index-1, presetToMove);
 	}
 	
@@ -343,5 +353,42 @@ public class EasyPresets extends DefaultListModel<EasyPreset> implements Propert
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
         this.pcs.firePropertyChange(EasyPresets.class.getName(), null, this);
+	}
+
+	@Override
+	public Icon getIcon() {
+		ImageProvider img = new ImageProvider("open");
+		img.setSize(ImageSizes.SMALLICON);
+		return img.get();
+	}
+
+    /**
+     * Returns the translated name of this preset, prefixed with the group names it belongs to.
+     * @return the translated name of this preset, prefixed with the group names it belongs to
+     */
+	@Override
+	public String getName() {
+        return this.name;
+	}
+
+	@Override
+	public PresetsEntry copy() {
+		EasyPresets preset = EasyPresets.clone(this);
+		preset.name = tr("Copy of {0}", this.name);
+		return preset;
+	}
+	
+	@Override
+	public EasyPresets clone() {
+		return EasyPresets.clone(this);
+	}
+	static EasyPresets clone(EasyPresets src) {
+		return new EasyPresets();
+	}
+
+	@Override
+	public void addListDataListener(GroupPresetMenu groupPresetMenu) {
+		// TODO Auto-generated method stub
+		
 	}
 }
