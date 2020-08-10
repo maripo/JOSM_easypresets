@@ -388,7 +388,6 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 
 	@Override
 	public void addListDataListener(GroupPresetMenu groupPresetMenu) {
-		// TODO Auto-generated method stub
-		
+		super.addListDataListener(groupPresetMenu);
 	}
 }
