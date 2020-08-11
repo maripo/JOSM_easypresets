@@ -57,6 +57,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		this.targetTypes = new ArrayList<TaggingPresetType>();
 		this.presets = presets;
 		this.tagMap = new TreeMap<String, Map<String, Integer>>();
+		this.parent = null;
 		initUI();
 	}
 	
@@ -68,6 +69,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		this.targetTypes = new ArrayList<TaggingPresetType>();
 		this.presets = presets;
 		this.tagMap = new TreeMap<String, Map<String, Integer>>();
+		this.parent = parentPresets;
 		name = presets.getName();
 		initUI();
 	}
@@ -87,9 +89,11 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		this.targetTypes = presetTypes;
 		this.presets = presets;
 		this.tagMap = tagMap;
+		this.parent = null;
 		initUI();
 	}
 	
+	private EasyPresets parent;
 	private EasyPresets presets;
 	private String name = null;
 	JList<PresetsEntry> list;
@@ -125,7 +129,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 	}
 	private void initUI() {
-		list = new JList<PresetsEntry>();
+		list = new JList<PresetsEntry>(this.presets);
 		list.setCellRenderer(new PresetRenderer());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		
@@ -141,7 +145,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 
 		uiGroupName = new JTextField(16);
 		uiGroupName.setText(name);
-		mainPane.add(uiGroupName, GBC.std().insets(0, 0, 0, 10));
+		//mainPane.add(uiGroupName, GBC.std().insets(0, 0, 0, 10));
 		
 		final JPanel listPane = new JPanel(new GridBagLayout());
 		final JPanel buttons = new JPanel(new GridBagLayout());
