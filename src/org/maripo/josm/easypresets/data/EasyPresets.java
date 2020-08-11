@@ -371,6 +371,14 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
         return this.name;
 	}
 
+    /**
+     * Returns the translated name of this preset, prefixed with the group names it belongs to.
+     * @return the translated name of this preset, prefixed with the group names it belongs to
+     */
+	public void setName(String name) {
+        this.name = name;
+	}
+
 	@Override
 	public PresetsEntry copy() {
 		EasyPresets preset = EasyPresets.clone(this);

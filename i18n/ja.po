@@ -210,9 +210,17 @@ msgstr "プリセット編集"
 msgid "Preset Name"
 msgstr "プリセットの名前"
 
-#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:140
-msgid "Show the name on the dialog"
-msgstr "ダイアログにプリセット名を表示する"
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:133
+msgid "Preset Name"
+msgstr "プリセットの名前"
+
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:133
+msgid "New Presets Name"
+msgstr "新規プリセット名"
+
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:146
+msgid "Preset Group Name"
+msgstr "プリセット・グループ名"
 
 #: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:168
 msgid "Select icon"

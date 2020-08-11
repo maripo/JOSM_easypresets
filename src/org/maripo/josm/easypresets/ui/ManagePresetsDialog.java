@@ -58,6 +58,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		this.presets = presets;
 		this.tagMap = new TreeMap<String, Map<String, Integer>>();
 		this.parent = null;
+		this.name = presets.getName();
 		initUI();
 	}
 	
@@ -70,7 +71,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		this.presets = presets;
 		this.tagMap = new TreeMap<String, Map<String, Integer>>();
 		this.parent = parentPresets;
-		name = presets.getName();
+		this.name = presets.getName();
 		initUI();
 	}
 	
@@ -143,9 +144,13 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		});
 		mainPane.add(exportButton, GBC.eol().anchor(GridBagConstraints.EAST));
 
+		JLabel label = new JLabel(tr("Preset Group Name"));
+
 		uiGroupName = new JTextField(16);
 		uiGroupName.setText(name);
-		//mainPane.add(uiGroupName, GBC.std().insets(0, 0, 0, 10));
+		uiGroupName.setEditable(this.parent != null);
+		mainPane.add(label, GBC.std().insets(0, 0, 0, 10));
+		mainPane.add(uiGroupName, GBC.eol().insets(0, 0, 0, 10));
 		
 		final JPanel listPane = new JPanel(new GridBagLayout());
 		final JPanel buttons = new JPanel(new GridBagLayout());

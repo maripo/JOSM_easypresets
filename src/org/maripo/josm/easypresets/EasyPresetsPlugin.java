@@ -1,5 +1,7 @@
 package org.maripo.josm.easypresets;
 
+import static org.openstreetmap.josm.tools.I18n.tr;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 	public EasyPresetsPlugin (PluginInformation info) {
 		super(info);
         root.load();
+        root.setName(tr("Custom Presets"));
 		root.addListDataListener(this);
 		
         // Add custom presets to "Presets" menu
