@@ -58,20 +58,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		this.presets = presets;
 		this.tagMap = new TreeMap<String, Map<String, Integer>>();
 		this.parent = null;
-		this.name = presets.getName();
-		initUI();
-	}
-	
-	public ManagePresetsDialog (EasyPresets presets, 
-			int index, 
-			final EasyPresets parentPresets) 
-	{
-		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
-		this.targetTypes = new ArrayList<TaggingPresetType>();
-		this.presets = presets;
-		this.tagMap = new TreeMap<String, Map<String, Integer>>();
-		this.parent = parentPresets;
-		this.name = presets.getName();
 		initUI();
 	}
 	
@@ -84,19 +70,19 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	public ManagePresetsDialog (
 			Map<String,Map<String, Integer>> tagMap, 
 			List<TaggingPresetType> presetTypes,
-			EasyPresets presets)
+			EasyPresets presets,
+			EasyPresets parent)
 	{
 		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
-		this.targetTypes = presetTypes;
+		this.tagMap = ((tagMap == null) ? new TreeMap<String, Map<String, Integer>>() : tagMap);
+		this.targetTypes = ((presetTypes == null) ? new ArrayList<TaggingPresetType>() : presetTypes);
 		this.presets = presets;
-		this.tagMap = tagMap;
-		this.parent = null;
+		this.parent = parent;
 		initUI();
 	}
 	
 	private EasyPresets parent;
 	private EasyPresets presets;
-	private String name = null;
 	JList<PresetsEntry> list;
 	Map<String,Map<String, Integer>> tagMap;
 	List<TaggingPresetType> targetTypes;			// TypesFromSelection
@@ -147,7 +133,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		JLabel label = new JLabel(tr("Preset Group Name"));
 
 		uiGroupName = new JTextField(16);
-		uiGroupName.setText(name);
+		uiGroupName.setText(this.presets.getName());
 		uiGroupName.setEditable(this.parent != null);
 		mainPane.add(label, GBC.std().insets(0, 0, 0, 10));
 		mainPane.add(uiGroupName, GBC.eol().insets(0, 0, 0, 10));
@@ -289,9 +275,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		else {
 			index = list.getSelectedIndex();
 		}
-		EasyPresets folder = new EasyPresets();
+		EasyPresets folder = new EasyPresets(presets);
+		folder.setName(tr("NewGroup"));
 		presets.insertElementAt(folder, index);
-		ManagePresetsDialog dialog = new ManagePresetsDialog(folder, index, presets);
+		ManagePresetsDialog dialog = new ManagePresetsDialog(null, null, folder, presets);
 		dialog.showDialog();
 	}
 
@@ -319,7 +306,11 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
 			PresetsEntry preset = getSelectedPreset();
-			if (preset instanceof EasyPreset) {
+			if (preset instanceof EasyPresets) {
+				ManagePresetsDialog dialog = new ManagePresetsDialog(null, null, (EasyPresets)preset, presets);
+				dialog.showDialog();
+			}
+			else if (preset instanceof EasyPreset) {
 				PresetEditorDialog dialog = new PresetEditorDialog((EasyPreset)preset, index, presets);
 				dialog.showDialog();
 			}

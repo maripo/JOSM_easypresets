@@ -291,6 +291,10 @@ msgstr "カスタムプリセット"
 msgid "Copy of {0}"
 msgstr "{0}のコピー"
 
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:293
+msgid "NewGroup"
+msgstr "新規グループ"
+
 #: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java
 msgid "New Preset"
 msgstr "新規プリセット"

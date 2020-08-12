@@ -33,6 +33,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.maripo.josm.easypresets.ui.GroupPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
+import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresets;
 import org.openstreetmap.josm.gui.tagging.presets.items.Check;
@@ -67,6 +68,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
      * @see #getLocaleName()
      */
     public String name = "";
+    EasyPresets parent = null;
 
     /**
 	 * Get file path of custom preset data file
@@ -77,7 +79,16 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	}
 
 	public EasyPresets() {
+		this(null);
+	}
+
+	public EasyPresets(EasyPresets parent) {
 		super();
+		this.parent = parent;
+	}
+	
+	public boolean isRoot() {
+		return (this.parent == null);
 	}
 
 	public List<PresetsEntry> getEntry() {
@@ -109,7 +120,16 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
 					for (TaggingPreset preset : readResult) {
-						this.addElement(new EasyPreset(preset));
+						if (preset instanceof TaggingPresetMenu) {
+							// TODO
+							//EasyPresets group = new EasyPresets(preset);
+							//this.addElement(group);
+						}
+						else {
+							EasyPreset tags = new EasyPreset(preset);
+							// TODO
+							this.addElement(new EasyPreset(tags));
+						}
 					}
 				}
 			} catch (FileNotFoundException e) {
@@ -151,8 +171,11 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			doc.appendChild(presetsElement);
 			
 			// XML element <presets><group>
-			Element groupElement = getGroupElement(doc);
-			presetsElement.appendChild(groupElement);
+			Element groupElement = presetsElement;
+			if (!isRoot()) {
+				groupElement = getGroupElement(doc);
+				presetsElement.appendChild(groupElement);
+			}
 			
 			// XML element <presets><group><item>
 			List<PresetsEntry> list = this.getEntry();

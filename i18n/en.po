@@ -210,6 +210,10 @@ msgstr "Preset Editor"
 msgid "Preset Name"
 msgstr "Preset name is empty."
 
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:293
+msgid "NewGroup"
+msgstr "New Group"
+
 #: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:133
 msgid "New Presets Name"
 msgstr "New presets name"
