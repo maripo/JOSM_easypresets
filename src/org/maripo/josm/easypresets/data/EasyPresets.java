@@ -34,16 +34,10 @@ import org.maripo.josm.easypresets.ui.GroupPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
-import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresets;
 import org.openstreetmap.josm.gui.tagging.presets.items.Check;
-import org.openstreetmap.josm.gui.tagging.presets.items.Combo;
 import org.openstreetmap.josm.gui.tagging.presets.items.ComboMultiSelect;
-import org.openstreetmap.josm.gui.tagging.presets.items.Key;
 import org.openstreetmap.josm.gui.tagging.presets.items.KeyedItem;
-import org.openstreetmap.josm.gui.tagging.presets.items.Label;
-import org.openstreetmap.josm.gui.tagging.presets.items.Link;
-import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
 import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.ImageProvider;
@@ -106,6 +100,10 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	 */
 	public void load() {
 		final File file = new File(this.getXMLPath());
+		load(file);
+	}
+	
+	void load(File file) {
 		if (file.exists() && file.canRead()) {
 			try (Reader reader = UTFInputStreamReader.create(new FileInputStream(file))) {
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
@@ -141,23 +139,28 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	/*
 	 * Save all TaggingPresets to specified file
 	 */
-	public void saveTo(List<TaggingPreset> list, File file) {
+	public void saveTo(File file) {
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
 			Document doc = docBuilder.newDocument();
-			Element rootElement = doc.createElement("presets");
-			rootElement.setAttribute("xmlns", "http://josm.openstreetmap.de/tagging-preset-1.0");
-			rootElement.setAttribute("author", "");
-			rootElement.setAttribute("version", "");
-			rootElement.setAttribute("description", "");
-			rootElement.setAttribute("shortdescription", "");
-			doc.appendChild(rootElement);
-			rootElement.appendChild(doc.createComment(getComment()));
-			for (TaggingPreset preset: list) {
-				Element presetElement = createpresetElement(doc, preset);
-				rootElement.appendChild(presetElement);
+			
+			// XML top element <presets>
+			Element presetsElement = getPresetsElement(doc);
+			presetsElement.appendChild(doc.createComment(getComment()));
+			doc.appendChild(presetsElement);
+			
+			// XML element <presets><group>
+			Element groupElement = getGroupElement(doc);
+			presetsElement.appendChild(groupElement);
+			
+			// XML element <presets><group><item>
+			List<PresetsEntry> list = this.getEntry();
+			for (PresetsEntry preset: list) {
+				if (preset instanceof EasyPreset) {
+					Element itemElement = ((EasyPreset)preset).getItemElement(doc);
+					groupElement.appendChild(itemElement);
+				}
 			}
 
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -177,6 +180,16 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 		}
 	}
 
+	Element getPresetsElement(Document doc) {
+		Element presetsElement = doc.createElement("presets");
+		presetsElement.setAttribute("xmlns", "http://josm.openstreetmap.de/tagging-preset-1.0");
+		presetsElement.setAttribute("author", "");
+		presetsElement.setAttribute("version", "");
+		presetsElement.setAttribute("description", "");
+		presetsElement.setAttribute("shortdescription", "");
+		return presetsElement;
+	}
+
 	private String getComment() {
 		StringBuilder comment = new StringBuilder();
 		comment.append("\n");
@@ -192,73 +205,14 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 		}
 		return comment.toString();
 	}
-
-	private Element createpresetElement(Document doc, TaggingPreset obj) {
-		Element presetElement = doc.createElement("item");
-		presetElement.setAttribute("name", obj.name);
-		if (obj.iconName!=null && !obj.iconName.isEmpty()) {
-			presetElement.setAttribute("icon", obj.iconName);
+	
+	Element getGroupElement(Document doc) {
+		Element groupElement = doc.createElement("group");
+		String name = this.getName();
+		if (name != null) {
+			groupElement.setAttribute("name", this.name);
 		}
-		if (obj.types!=null && obj.types.size()>0) {
-			List<String> typeNames = new ArrayList<String>();
-			for (TaggingPresetType type: obj.types) {
-				typeNames.add(type.getName());
-			}
-			presetElement.setAttribute("type", String.join(",", typeNames));
-		}
-		for (TaggingPresetItem item : obj.data) {
-			if (item instanceof Label) {
-				Label label = (Label)item;
-				Element labelElement = doc.createElement("label");
-				labelElement.setAttribute("text", label.text);
-				presetElement.appendChild(labelElement);
-			}
-			else if (item instanceof Key) {
-				Key key = (Key) item;
-				Element keyElement = doc.createElement("key");
-				keyElement.setAttribute("key", key.key);
-				keyElement.setAttribute("value", key.value);
-				presetElement.appendChild(keyElement);
-			}
-			else if (item instanceof Text) {
-				Text text = (Text)item;
-				Element textElement = doc.createElement("text");
-				textElement.setAttribute("text", text.text);
-				textElement.setAttribute("key", text.key);
-				textElement.setAttribute("default", text.default_);
-				presetElement.appendChild(textElement);
-			}
-			else if (item instanceof Combo) {
-				Combo combo = (Combo)item;
-				Element comboElement = doc.createElement("combo");
-				comboElement.setAttribute("text", combo.text);
-				comboElement.setAttribute("key", combo.key);
-				comboElement.setAttribute("values", combo.values);
-				presetElement.appendChild(comboElement);
-			}
-			else if (item instanceof MultiSelect) {
-				MultiSelect multiselect = (MultiSelect)item;
-				Element multiselectElement = doc.createElement("multiselect");
-				multiselectElement.setAttribute("text", multiselect.text);
-				multiselectElement.setAttribute("key", multiselect.key);
-				multiselectElement.setAttribute("values", multiselect.values);
-				presetElement.appendChild(multiselectElement);
-			}
-			else if (item instanceof Check) {
-				Check key = (Check) item;
-				Element keyElement = doc.createElement("check");
-				keyElement.setAttribute("text", key.text);
-				keyElement.setAttribute("key", key.key);
-				presetElement.appendChild(keyElement);
-			}
-			else if (item instanceof Link) {
-				Link link = (Link)item;
-				Element linkItem = doc.createElement("link");
-				linkItem.setAttribute("href", link.href);
-				presetElement.appendChild(linkItem);
-			}
-		}
-		return presetElement;
+		return groupElement;
 	}
 
 	/*

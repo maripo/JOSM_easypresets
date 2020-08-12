@@ -22,6 +22,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
+import org.maripo.josm.easypresets.data.PresetsEntry;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
@@ -139,10 +140,10 @@ public class ExportDialog extends ExtendedDialog {
 		
 	}
 	private void exportSelected() {
-		List<TaggingPreset> selectedPresets = new ArrayList<TaggingPreset>();
+		List<PresetsEntry> selectedPresets = new ArrayList<>();
 		for (PresetWrapper wrapper: wrappers) {
 			if (wrapper.getCheckbox().isSelected()) {
-				selectedPresets.add(wrapper.preset);
+				selectedPresets.add(new EasyPreset(wrapper.preset));
 			}
 		}
 		
@@ -152,12 +153,18 @@ public class ExportDialog extends ExtendedDialog {
 		} else {
 			alertLabel.setText(" ");
 		}
+		
+		EasyPresets root = new EasyPresets();
+		for (PresetsEntry preset : selectedPresets) {
+			root.addElement(preset);
+		}
+		
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(tr("Save Presets"));
         chooser.setFileFilter(new FileNameExtensionFilter("XML File", "xml"));
         int returnVal = chooser.showSaveDialog(this);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-        	presets.saveTo(selectedPresets, chooser.getSelectedFile());
+        	root.saveTo(chooser.getSelectedFile());
         }
 	}
 	

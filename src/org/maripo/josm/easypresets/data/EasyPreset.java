@@ -4,7 +4,9 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import org.maripo.josm.easypresets.ui.GroupPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
@@ -17,6 +19,8 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Label;
 import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class EasyPreset extends TaggingPreset implements PresetsEntry {
 	private static final long serialVersionUID = -7626914563011340418L;
@@ -108,6 +112,74 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry {
 			return itemTo;
 		}
 		return null;
+	}
+	
+	Element getItemElement(Document doc) {
+		Element itemElement = doc.createElement("item");
+		itemElement.setAttribute("name", this.name);
+		if (this.iconName!=null && !this.iconName.isEmpty()) {
+			itemElement.setAttribute("icon", this.iconName);
+		}
+		if (this.types!=null && this.types.size()>0) {
+			List<String> typeNames = new ArrayList<String>();
+			for (TaggingPresetType type: this.types) {
+				typeNames.add(type.getName());
+			}
+			itemElement.setAttribute("type", String.join(",", typeNames));
+		}
+		for (TaggingPresetItem item : this.data) {
+			if (item instanceof Label) {
+				Label label = (Label)item;
+				Element labelElement = doc.createElement("label");
+				labelElement.setAttribute("text", label.text);
+				itemElement.appendChild(labelElement);
+			}
+			else if (item instanceof Key) {
+				Key key = (Key) item;
+				Element keyElement = doc.createElement("key");
+				keyElement.setAttribute("key", key.key);
+				keyElement.setAttribute("value", key.value);
+				itemElement.appendChild(keyElement);
+			}
+			else if (item instanceof Text) {
+				Text text = (Text)item;
+				Element textElement = doc.createElement("text");
+				textElement.setAttribute("text", text.text);
+				textElement.setAttribute("key", text.key);
+				textElement.setAttribute("default", text.default_);
+				itemElement.appendChild(textElement);
+			}
+			else if (item instanceof Combo) {
+				Combo combo = (Combo)item;
+				Element comboElement = doc.createElement("combo");
+				comboElement.setAttribute("text", combo.text);
+				comboElement.setAttribute("key", combo.key);
+				comboElement.setAttribute("values", combo.values);
+				itemElement.appendChild(comboElement);
+			}
+			else if (item instanceof MultiSelect) {
+				MultiSelect multiselect = (MultiSelect)item;
+				Element multiselectElement = doc.createElement("multiselect");
+				multiselectElement.setAttribute("text", multiselect.text);
+				multiselectElement.setAttribute("key", multiselect.key);
+				multiselectElement.setAttribute("values", multiselect.values);
+				itemElement.appendChild(multiselectElement);
+			}
+			else if (item instanceof Check) {
+				Check key = (Check) item;
+				Element keyElement = doc.createElement("check");
+				keyElement.setAttribute("text", key.text);
+				keyElement.setAttribute("key", key.key);
+				itemElement.appendChild(keyElement);
+			}
+			else if (item instanceof Link) {
+				Link link = (Link)item;
+				Element linkItem = doc.createElement("link");
+				linkItem.setAttribute("href", link.href);
+				itemElement.appendChild(linkItem);
+			}
+		}
+		return itemElement;
 	}
 
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
