@@ -190,8 +190,10 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 					groupElement.appendChild(itemElement);
 				}
 				else if (preset instanceof EasyPresets) {
-					Element itemElement = ((EasyPresets)preset).getGroupElement(doc);
-					groupElement.appendChild(itemElement);
+					if (!((EasyPresets)preset).isEmpty()) {
+						Element itemElement = ((EasyPresets)preset).getGroupElement(doc);
+						groupElement.appendChild(itemElement);
+					}
 				}
 			}
 
@@ -243,6 +245,19 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 		String name = this.getName();
 		if (name != null) {
 			groupElement.setAttribute("name", name);
+		}
+		List<PresetsEntry> list = this.getEntry();
+		for (PresetsEntry preset: list) {
+			if (preset instanceof EasyPreset) {
+				Element itemElement = ((EasyPreset)preset).getItemElement(doc);
+				groupElement.appendChild(itemElement);
+			}
+			else if (preset instanceof EasyPresets) {
+				if (!((EasyPresets)preset).isEmpty()) {
+					Element itemElement = ((EasyPresets)preset).getGroupElement(doc);
+					groupElement.appendChild(itemElement);
+				}
+			}
 		}
 		return groupElement;
 	}

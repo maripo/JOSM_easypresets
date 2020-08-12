@@ -2,7 +2,6 @@ package org.maripo.josm.easypresets;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.io.File;
 import javax.swing.JMenu;
 import javax.swing.JSeparator;
 import javax.swing.event.ListDataEvent;
@@ -41,23 +40,17 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 
 	@Override
 	public void contentsChanged(ListDataEvent arg0) {
-		saveAllPresetsTo();
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 
 	@Override
 	public void intervalAdded(ListDataEvent arg0) {
-		saveAllPresetsTo();
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent arg0) {
-		saveAllPresetsTo();
+		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 	
-	private void saveAllPresetsTo() {
-		File file = new File(root.getXMLPath());
-		root.saveTo(file);
-	}
 }
