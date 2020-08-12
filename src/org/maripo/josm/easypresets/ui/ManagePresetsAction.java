@@ -30,7 +30,7 @@ public class ManagePresetsAction extends CreatePresetAction {
             if (selected!=null && !selected.isEmpty()) {
             	Map<String, Map<String, Integer>> tagMap = findTagsFromSelection(selected);
             	List<TaggingPresetType> targetTypes = findTypesFromSelection(selected);
-        		ManagePresetsDialog dialog = new ManagePresetsDialog(tagMap, targetTypes, this.root, null);
+        		ManagePresetsDialog dialog = new ManagePresetsDialog(tagMap, targetTypes, this.root, null, 0);
         		dialog.showDialog();
         		return;
             }

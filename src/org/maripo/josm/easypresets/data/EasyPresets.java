@@ -156,6 +156,11 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 		super.setElementAt(element, index);
 	}
 	
+	public void saveTo() {
+		final File file = new File(this.getXMLPath());
+		saveTo(file);
+	}
+
 	/*
 	 * Save all TaggingPresets to specified file
 	 */
@@ -182,6 +187,10 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			for (PresetsEntry preset: list) {
 				if (preset instanceof EasyPreset) {
 					Element itemElement = ((EasyPreset)preset).getItemElement(doc);
+					groupElement.appendChild(itemElement);
+				}
+				else if (preset instanceof EasyPresets) {
+					Element itemElement = ((EasyPresets)preset).getGroupElement(doc);
 					groupElement.appendChild(itemElement);
 				}
 			}
@@ -233,7 +242,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 		Element groupElement = doc.createElement("group");
 		String name = this.getName();
 		if (name != null) {
-			groupElement.setAttribute("name", this.name);
+			groupElement.setAttribute("name", name);
 		}
 		return groupElement;
 	}

@@ -58,6 +58,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		this.presets = presets;
 		this.tagMap = new TreeMap<String, Map<String, Integer>>();
 		this.parent = null;
+		this.index = 0;
 		initUI();
 	}
 	
@@ -71,18 +72,20 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			Map<String,Map<String, Integer>> tagMap, 
 			List<TaggingPresetType> presetTypes,
 			EasyPresets presets,
-			EasyPresets parent)
+			EasyPresets parent, int index)
 	{
 		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
 		this.tagMap = ((tagMap == null) ? new TreeMap<String, Map<String, Integer>>() : tagMap);
 		this.targetTypes = ((presetTypes == null) ? new ArrayList<TaggingPresetType>() : presetTypes);
 		this.presets = presets;
 		this.parent = parent;
+		this.index = index;
 		initUI();
 	}
 	
 	private EasyPresets parent;
 	private EasyPresets presets;
+	int index;
 	JList<PresetsEntry> list;
 	Map<String,Map<String, Integer>> tagMap;
 	List<TaggingPresetType> targetTypes;			// TypesFromSelection
@@ -251,7 +254,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cancel();
+				close();
 			}
 		});
 
@@ -268,27 +271,27 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	 * button action "Folder"
 	 */
 	protected void addFolder() {
-		int index;
+		int i;
 		if (!isSelectionValid()) {
-			index = presets.getSize();
+			i = presets.getSize();
 		}
 		else {
-			index = list.getSelectedIndex();
+			i = list.getSelectedIndex();
 		}
 		EasyPresets folder = new EasyPresets(presets);
 		folder.setName(tr("NewGroup"));
-		presets.insertElementAt(folder, index);
-		ManagePresetsDialog dialog = new ManagePresetsDialog(null, null, folder, presets);
+		presets.insertElementAt(folder, i);
+		ManagePresetsDialog dialog = new ManagePresetsDialog(null, null, folder, presets, i);
 		dialog.showDialog();
 	}
 
 	protected void create() {
-		int index;
+		int i;
 		if (!isSelectionValid()) {
-			index = presets.getSize();
+			i = presets.getSize();
 		}
 		else {
-			index = list.getSelectedIndex();
+			i = list.getSelectedIndex();
 		}
 		EasyPreset preset = new EasyPreset();
 		
@@ -297,21 +300,21 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			preset.types.add(type);
 		}
 
-		presets.insertElementAt(preset, index);
-		PresetEditorDialog dialog = new PresetEditorDialog(preset, tagMap, index, presets);
+		presets.insertElementAt(preset, i);
+		PresetEditorDialog dialog = new PresetEditorDialog(preset, tagMap, i, presets);
 		dialog.showDialog();
 	}
 
 	protected void edit() {
 		if (isSelectionValid()) {
-			int index = list.getSelectedIndex();
+			int i = list.getSelectedIndex();
 			PresetsEntry preset = getSelectedPreset();
 			if (preset instanceof EasyPresets) {
-				ManagePresetsDialog dialog = new ManagePresetsDialog(null, null, (EasyPresets)preset, presets);
+				ManagePresetsDialog dialog = new ManagePresetsDialog(null, null, (EasyPresets)preset, presets, i);
 				dialog.showDialog();
 			}
 			else if (preset instanceof EasyPreset) {
-				PresetEditorDialog dialog = new PresetEditorDialog((EasyPreset)preset, index, presets);
+				PresetEditorDialog dialog = new PresetEditorDialog((EasyPreset)preset, i, presets);
 				dialog.showDialog();
 			}
 		}
@@ -357,7 +360,12 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		super.dispose();
 	}
 	
-	protected void cancel() {
+	protected void close() {
+		String str = uiGroupName.getText().trim();
+		this.presets.setName(str);
+		if (this.parent != null) {
+			this.parent.setElementAt(presets, this.index);
+		}
 		dispose();
 	}
 
@@ -367,9 +375,9 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	@Override
 	public void valueChanged(ListSelectionEvent evt) {
-		int index = list.getSelectedIndex();
-		reorderUpButton.setEnabled(index>0);
-		reorderDownButton.setEnabled(index < presets.getSize()-1);
+		int i = list.getSelectedIndex();
+		reorderUpButton.setEnabled(i > 0);
+		reorderDownButton.setEnabled(i < presets.getSize()-1);
 		
 		if (!isSelectionValid()) {
 			folderButton.setEnabled(false);
@@ -383,12 +391,16 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
 		copyButton.setEnabled(true);
+		
+		if (this.presets.isRoot()) {
+			this.presets.saveTo();
+		}
 	}
 	
 	PresetsEntry getSelectedPreset() {
 		if (isSelectionValid()) {
-			int index = list.getSelectedIndex();
-			return presets.elementAt(index);
+			int i = list.getSelectedIndex();
+			return presets.elementAt(i);
 		}
 		return null;
 	}
@@ -397,17 +409,17 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		if (!isSelectionValid()) {
 			return;
 		}
-		int index = list.getSelectedIndex();
-		presets.moveUp(index);
-		list.setSelectedIndex(index-1);
+		int i = list.getSelectedIndex();
+		presets.moveUp(i);
+		list.setSelectedIndex(i-1);
 	}
 	
 	private void reorderDown () {
 		if (!isSelectionValid()) {
 			return;
 		}
-		int index = list.getSelectedIndex();
-		presets.moveDown(index);
-		list.setSelectedIndex(index+1);
+		int i = list.getSelectedIndex();
+		presets.moveDown(i);
+		list.setSelectedIndex(i+1);
 	}
 }
