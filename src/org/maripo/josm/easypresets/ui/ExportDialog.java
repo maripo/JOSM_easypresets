@@ -143,7 +143,7 @@ public class ExportDialog extends ExtendedDialog {
 		List<PresetsEntry> selectedPresets = new ArrayList<>();
 		for (PresetWrapper wrapper: wrappers) {
 			if (wrapper.getCheckbox().isSelected()) {
-				selectedPresets.add(new EasyPreset(wrapper.preset));
+				selectedPresets.add(new EasyPreset(wrapper.preset, null));
 			}
 		}
 		

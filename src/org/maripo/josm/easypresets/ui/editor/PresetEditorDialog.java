@@ -393,7 +393,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 	 * Generate new TaggingPreset
 	 */
 	private EasyPreset applyToPreset(final EasyPreset src) {
-		EasyPreset preset = EasyPreset.clone(src);
+		EasyPreset preset = src.clone();
 		preset.name = uiPresetName.getText();
 		preset.data.clear();
 		if (iconPath!=null) {

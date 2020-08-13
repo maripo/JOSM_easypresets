@@ -67,7 +67,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
      * A cache for the local name. Should never be accessed directly.
      * @see #getLocaleName()
      */
-    public String name = "";
+    private String name = "";
     EasyPresets parent = null;
 
     /**
@@ -119,16 +119,25 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			try (Reader reader = UTFInputStreamReader.create(new FileInputStream(file))) {
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
+					GroupStack stack = new GroupStack();
 					for (TaggingPreset preset : readResult) {
+						String fullName = preset.getName();
+						String locale = preset.getLocaleName();
+						String raw = preset.getRawName();
+						String path = fullName.substring(0, fullName.length() - locale.length());
+						EasyPresets pp = stack.pop(path);
+						if (pp == null) {
+							pp = this;
+						}
 						if (preset instanceof TaggingPresetMenu) {
-							// TODO
-							//EasyPresets group = new EasyPresets(preset);
-							//this.addElement(group);
+							EasyPresets group = new EasyPresets(pp);
+							group.setLocaleName(locale);
+							stack.push(group);
+							pp.addElement(group);
 						}
 						else {
-							EasyPreset tags = new EasyPreset(preset);
-							// TODO
-							this.addElement(new EasyPreset(tags));
+							EasyPreset tags = new EasyPreset((TaggingPreset)preset, pp);
+							pp.addElement(tags);
 						}
 					}
 				}
@@ -368,15 +377,28 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
      * @return the translated name of this preset, prefixed with the group names it belongs to
      */
 	@Override
-	public String getName() {
+	public String getLocaleName() {
         return this.name;
+	}
+	
+	@Override
+	public String getName() {
+		String locale = "";
+		if (this.parent != null) {
+			locale += this.parent.getName();
+		}
+		if (!locale.isEmpty()) {
+			locale += "/";
+		}
+		locale += this.getLocaleName();
+		return locale;
 	}
 
     /**
      * Returns the translated name of this preset, prefixed with the group names it belongs to.
      * @return the translated name of this preset, prefixed with the group names it belongs to
      */
-	public void setName(String name) {
+	public void setLocaleName(String name) {
         this.name = name;
 	}
 

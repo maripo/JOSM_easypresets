@@ -24,14 +24,17 @@ import org.w3c.dom.Element;
 
 public class EasyPreset extends TaggingPreset implements PresetsEntry {
 	private static final long serialVersionUID = -7626914563011340418L;
+	private EasyPresets parent = null;
 
 	public EasyPreset() {
 		super();
 		name = tr("New Preset");
+		this.parent = null;
 	}
 	
-	public EasyPreset(TaggingPreset src) {
+	public EasyPreset(TaggingPreset src, EasyPresets parent) {
 		super();
+		this.parent = parent;
 		this.name = src.name;
 		this.setIcon(src.iconName);
 		for (TaggingPresetItem fromItem: src.data) {
@@ -47,18 +50,18 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry {
 	}
 	
 	public EasyPreset copy() {
-		EasyPreset preset = EasyPreset.clone(this);
+		EasyPreset preset = EasyPreset.clone(this, this.parent);
 		preset.name = tr("Copy of {0}", this.name);
 		return preset;
 	}
 
 	@Override
 	public EasyPreset clone() {
-		return EasyPreset.clone(this);
+		return EasyPreset.clone(this, this.parent);
 	}
 	
-	public static EasyPreset clone(TaggingPreset src) {
-		return new EasyPreset(src);
+	public static EasyPreset clone(TaggingPreset src, EasyPresets parent) {
+		return new EasyPreset(src, parent);
 	}
 	
 	private static TaggingPresetItem clonePresetTag(TaggingPresetItem itemFrom) {
