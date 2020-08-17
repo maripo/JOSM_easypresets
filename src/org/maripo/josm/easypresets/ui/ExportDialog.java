@@ -20,12 +20,10 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.data.PresetsEntry;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
-import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
 
 public class ExportDialog extends ExtendedDialog {
@@ -42,8 +40,8 @@ public class ExportDialog extends ExtendedDialog {
 	static class PresetWrapper {
 		JCheckBox checkbox;
 		JLabel  label;
-		TaggingPreset preset;
-		public PresetWrapper(TaggingPreset preset) {
+		PresetsEntry preset;
+		public PresetWrapper(PresetsEntry preset) {
 			this.preset = preset;
 			checkbox = new JCheckBox();
 			label = new JLabel();
@@ -68,13 +66,15 @@ public class ExportDialog extends ExtendedDialog {
 
 		final JPanel list = new JPanel(new GridBagLayout());
 		list.setBackground(Color.WHITE);
-		EasyPreset[] array = (EasyPreset[]) presets.toArray();
+		
+		PresetsEntry[] array = (PresetsEntry[]) presets.toArray();
         for (int i = 0; i < array.length; i++) {
 			PresetWrapper wrapper = new PresetWrapper(array[i]);
 			list.add(wrapper.getCheckbox());
 			list.add(wrapper.getLabel(), GBC.eol().fill());
 			wrappers.add(wrapper);
 		}
+		
 		JScrollPane listScroll = new JScrollPane(list);
 		listScroll.setPreferredSize(new Dimension(320,420));
 		
@@ -143,7 +143,7 @@ public class ExportDialog extends ExtendedDialog {
 		List<PresetsEntry> selectedPresets = new ArrayList<>();
 		for (PresetWrapper wrapper: wrappers) {
 			if (wrapper.getCheckbox().isSelected()) {
-				selectedPresets.add(new EasyPreset(wrapper.preset, null));
+				selectedPresets.add(wrapper.preset);
 			}
 		}
 		
