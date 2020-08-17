@@ -136,7 +136,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		JLabel label = new JLabel(tr("Preset Group Name"));
 
 		uiGroupName = new JTextField(16);
-		uiGroupName.setText(this.presets.getName());
+		uiGroupName.setText(this.presets.getLocaleName());
 		uiGroupName.setEditable(this.parent != null);
 		mainPane.add(label, GBC.std().insets(0, 0, 0, 10));
 		mainPane.add(uiGroupName, GBC.eol().insets(0, 0, 0, 10));

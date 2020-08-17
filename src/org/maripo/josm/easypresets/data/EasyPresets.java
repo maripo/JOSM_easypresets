@@ -121,10 +121,10 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 				if (readResult != null) {
 					GroupStack stack = new GroupStack();
 					for (TaggingPreset preset : readResult) {
-						String fullName = preset.getName();
+						//String fullName = preset.getName();
 						String locale = preset.getLocaleName();
 						String raw = preset.getRawName();
-						String path = fullName.substring(0, fullName.length() - locale.length());
+						String path = raw.substring(0, raw.length() - locale.length());
 						EasyPresets pp = stack.pop(path);
 						if (pp == null) {
 							pp = this;
@@ -251,7 +251,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	
 	Element getGroupElement(Document doc) {
 		Element groupElement = doc.createElement("group");
-		String name = this.getName();
+		String name = this.getLocaleName();
 		if (name != null) {
 			groupElement.setAttribute("name", name);
 		}
@@ -385,7 +385,9 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	public String getName() {
 		String locale = "";
 		if (this.parent != null) {
-			locale += this.parent.getName();
+			if (!this.parent.isRoot()) {
+				locale += this.parent.getName();
+			}
 		}
 		if (!locale.isEmpty()) {
 			locale += "/";
