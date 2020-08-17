@@ -281,7 +281,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		EasyPresets folder = new EasyPresets(presets);
 		folder.setLocaleName(tr("NewGroup"));
 		presets.insertElementAt(folder, i);
-		ManagePresetsDialog dialog = new ManagePresetsDialog(null, null, folder, presets, i);
+		ManagePresetsDialog dialog = new ManagePresetsDialog(this.tagMap, this.targetTypes, folder, presets, i);
 		dialog.showDialog();
 	}
 
@@ -310,7 +310,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			int i = list.getSelectedIndex();
 			PresetsEntry preset = getSelectedPreset();
 			if (preset instanceof EasyPresets) {
-				ManagePresetsDialog dialog = new ManagePresetsDialog(null, null, (EasyPresets)preset, presets, i);
+				ManagePresetsDialog dialog = new ManagePresetsDialog(this.tagMap, this.targetTypes, (EasyPresets)preset, presets, i);
 				dialog.showDialog();
 			}
 			else if (preset instanceof EasyPreset) {
