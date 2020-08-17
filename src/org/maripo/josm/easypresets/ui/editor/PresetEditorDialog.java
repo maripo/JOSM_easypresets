@@ -113,7 +113,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.index = index;
 		this.parentPresets = parentPresets;
-		name = preset.name;
+		name = preset.getLocaleName();
 		referenceURL = findURL(preset);
 		icon = preset.getIcon();
 		iconPath = preset.iconName;

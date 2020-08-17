@@ -14,6 +14,8 @@ public interface PresetsEntry {
 	
 	String getLocaleName();
 	
+	String getRawName();
+
 	PresetsEntry copy();
 	
 	void addListDataListener(GroupPresetMenu groupPresetMenu);

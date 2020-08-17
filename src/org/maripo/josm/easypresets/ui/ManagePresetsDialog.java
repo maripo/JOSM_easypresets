@@ -357,15 +357,15 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 
 	@Override
 	public void dispose() {
+		super.dispose();
+	}
+	
+	protected void close() {
 		String str = uiGroupName.getText().trim();
 		this.presets.setLocaleName(str);
 		if (this.parent != null) {
 			this.parent.setElementAt(presets, this.index);
 		}
-		super.dispose();
-	}
-	
-	protected void close() {
 		dispose();
 	}
 

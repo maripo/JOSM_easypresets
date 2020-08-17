@@ -19,6 +19,8 @@ import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -98,6 +100,23 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			list.add(e);
 		}
 		return list;
+	}
+	
+	public JMenu getMenu() {
+		JMenu menu = new JMenu(this.getLocaleName());
+		List<PresetsEntry> lentry = this.getEntry();
+        for (PresetsEntry entry : lentry) {
+        	if (entry instanceof TaggingPreset) {
+                JMenuItem mi = new JMenuItem((TaggingPreset)entry);
+                mi.setText(((TaggingPreset)entry).getName());
+                mi.setEnabled(true);
+                menu.add(mi);
+        	}
+        	else if (entry instanceof EasyPresets) {
+                menu.add(((EasyPresets) entry).getMenu());
+        	}
+        }
+        return menu;
 	}
 	
 	@Override
@@ -188,7 +207,6 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			Element groupElement = presetsElement;
 			if (!isRoot()) {
 				groupElement = getGroupElement(doc);
-				presetsElement.appendChild(groupElement);
 			}
 			
 			// XML element <presets><group><item>
@@ -203,6 +221,12 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 						Element itemElement = ((EasyPresets)preset).getGroupElement(doc);
 						groupElement.appendChild(itemElement);
 					}
+				}
+			}
+			
+			if (!isRoot()) {
+				if (groupElement.hasChildNodes()) {
+					presetsElement.appendChild(groupElement);
 				}
 			}
 
@@ -383,10 +407,14 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	
 	@Override
 	public String getName() {
+        return this.getLocaleName();
+	}
+	
+	public String getRawName() {
 		String locale = "";
 		if (this.parent != null) {
 			if (!this.parent.isRoot()) {
-				locale += this.parent.getName();
+				locale += this.parent.getRawName();
 			}
 		}
 		if (!locale.isEmpty()) {

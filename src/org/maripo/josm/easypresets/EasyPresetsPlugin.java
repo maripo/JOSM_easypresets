@@ -34,6 +34,7 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
         MainMenu.add(menu, new ManagePresetsAction(root));
         
         // Group for all custom presets
+        groupMenu.updatePresetListMenu();
         menu.add(groupMenu.menu);
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}

@@ -38,9 +38,12 @@ public class GroupPresetMenu extends TaggingPresetMenu implements ListDataListen
         for (PresetsEntry entry : lentry) {
         	if (entry instanceof TaggingPreset) {
                 JMenuItem mi = new JMenuItem((TaggingPreset)entry);
-                mi.setText(((TaggingPreset)entry).getLocaleName());
+                mi.setText(((TaggingPreset)entry).getName());
                 mi.setEnabled(true);
                 menu.add(mi);
+        	}
+        	else if (entry instanceof EasyPresets) {
+                menu.add(((EasyPresets) entry).getMenu());
         	}
         }
 	}
