@@ -1,6 +1,8 @@
 .classpath
+.checkstyle
 .project
 .settings/
 .externalToolBuilders/
 /javadoc/
 /build/
+/bin/
