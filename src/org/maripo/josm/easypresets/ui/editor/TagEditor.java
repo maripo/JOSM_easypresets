@@ -384,9 +384,8 @@ public class TagEditor {
 		return fields.get(uiType.getSelectedItem());
 	}
 	
-	/**
+	/*
 	 * Create empty config (called by clicking "New tag")
-	 * @return
 	 */
 	public static TagEditor create(ExtendedDialog baseDialog) {
 		TagEditor instance = new TagEditor(baseDialog);
@@ -397,18 +396,20 @@ public class TagEditor {
 	}
 	/**
 	 * Init with key and value map
-	 * @param key
-	 * @param map
+	 * @param	baseDialog	baseDialog
+	 * @param key	key
+	 * @param map	map
+	 * @param presets	EasyPresets
 	 * @return Created instance
 	 */
-	public static TagEditor create(ExtendedDialog baseDialog, String key, Map<String, Integer> map) {
+	public static TagEditor create(ExtendedDialog baseDialog, String key, Map<String, Integer> map, EasyPresets presets) {
 		TagEditor instance = new TagEditor(baseDialog);
 		instance.keyField = new KeyFieldFixed(key);
 		instance.switchType(TYPE_DEFAULT);
 		instance.uiType.setSelectedItem(TYPE_DEFAULT);
 		if (!map.isEmpty()) {
 			String firstKey = map.keySet().iterator().next();
-			instance.uiLabel.setText(EasyPresets.getInstance().getLabelFromExistingPresets(key));
+			instance.uiLabel.setText(presets.getLabelFromExistingPresets(key));
 			instance.getSelectedValueField().populateDefaultValue(firstKey);
 		}
 		instance.initUI();
@@ -417,7 +418,8 @@ public class TagEditor {
 
 	/**
 	 * Init with existing TaggingPresetItem
-	 * @param item
+	 * @param	baseDialog	baseDialog
+	 * @param	item	item
 	 * @return  Created instance Return null if the preset is not supported)
 	 */
 	public static TagEditor create(ExtendedDialog baseDialog, TaggingPresetItem item) {

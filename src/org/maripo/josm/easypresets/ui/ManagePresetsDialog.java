@@ -11,12 +11,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -24,37 +30,67 @@ import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.maripo.josm.easypresets.EasyPresetsPlugin;
 import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
+import org.maripo.josm.easypresets.data.PresetsEntry;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
-import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog.PresetEditorDialogListener;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
-import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
+import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 
 @SuppressWarnings("serial")
-public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener,
-	PresetEditorDialogListener {
+public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener {
+	private JTextField uiGroupName;
+	private JButton folderButton;
+	private JButton createButton;
 	private JButton editButton;
 	private JButton copyButton;
 	private JButton deleteButton;
 	private JButton reorderUpButton;
 	private JButton reorderDownButton;
-
-	public ManagePresetsDialog () {
+	
+	public ManagePresetsDialog (EasyPresets presets) {
 		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
-		presets = EasyPresets.getInstance();
+		this.targetTypes = new ArrayList<TaggingPresetType>();
+		this.presets = presets;
+		this.tagMap = new TreeMap<String, Map<String, Integer>>();
+		this.parent = null;
+		this.index = 0;
 		initUI();
 	}
 	
+	/**
+	 * 
+	 * @param tagMap		selected POI Tags
+	 * @param presetTypes	selected POI Types
+	 * @param presets		EasyPresets
+	 */
+	public ManagePresetsDialog (
+			Map<String,Map<String, Integer>> tagMap, 
+			List<TaggingPresetType> presetTypes,
+			EasyPresets presets,
+			EasyPresets parent, int index)
+	{
+		super(MainApplication.getMainFrame(), tr("Manage Custom Presets"));
+		this.tagMap = ((tagMap == null) ? new TreeMap<String, Map<String, Integer>>() : tagMap);
+		this.targetTypes = ((presetTypes == null) ? new ArrayList<TaggingPresetType>() : presetTypes);
+		this.presets = presets;
+		this.parent = parent;
+		this.index = index;
+		initUI();
+	}
+	
+	private EasyPresets parent;
 	private EasyPresets presets;
-	JList<TaggingPreset> list;
+	int index;
+	JList<PresetsEntry> list;
+	Map<String,Map<String, Integer>> tagMap;
+	List<TaggingPresetType> targetTypes;			// TypesFromSelection
 
-	private static class PresetRenderer extends JLabel implements ListCellRenderer<TaggingPreset> {
+	private static class PresetRenderer extends JLabel implements ListCellRenderer<PresetsEntry> {
 		private final static Color selectionForeground;
 		private final static Color selectionBackground;
 		private final static Color textForeground;
@@ -67,19 +103,23 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList<? extends TaggingPreset> list, TaggingPreset preset,
-				int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(
+				JList<? extends PresetsEntry> list, 
+				PresetsEntry preset,
+				int index, 
+				boolean isSelected, 
+				boolean cellHasFocus) 
+		{
 			setIcon(preset.getIcon());
 			setText(preset.getName());
 			setOpaque(true);
-			setBackground((isSelected)?selectionBackground:textBackground);
-			setForeground((isSelected)?selectionForeground:textForeground);
+			setBackground(isSelected?selectionBackground:textBackground);
+			setForeground(isSelected?selectionForeground:textForeground);
 			return this;
 		}
-	
 	}
 	private void initUI() {
-		list = new JList<TaggingPreset>(EasyPresets.getInstance().getModel());
+		list = new JList<PresetsEntry>(this.presets);
 		list.setCellRenderer(new PresetRenderer());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
 		
@@ -93,6 +133,14 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		});
 		mainPane.add(exportButton, GBC.eol().anchor(GridBagConstraints.EAST));
 
+		JLabel label = new JLabel(tr("Preset Group Name"));
+
+		uiGroupName = new JTextField(16);
+		uiGroupName.setText(this.presets.getLocaleName());
+		uiGroupName.setEditable(this.parent != null);
+		mainPane.add(label, GBC.std().insets(0, 0, 0, 10));
+		mainPane.add(uiGroupName, GBC.eol().insets(0, 0, 0, 10));
+		
 		final JPanel listPane = new JPanel(new GridBagLayout());
 		final JPanel buttons = new JPanel(new GridBagLayout());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -132,6 +180,29 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		reorderUpButton.setToolTipText(tr("Move up"));
 		reorderDownButton.setToolTipText(tr("Move down"));
 
+		folderButton = new JButton();
+		folderButton.setToolTipText(tr("Create Preset"));
+		ImageProvider img = new ImageProvider("open");
+		img.setSize(ImageSizes.LARGEICON);
+		folderButton.setIcon(img.get());
+		folderButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addFolder();
+			}
+		});
+		folderButton.setEnabled(true);
+		
+		createButton = new JButton();
+		createButton.setToolTipText(tr("Create Preset"));
+		createButton.setIcon(ImageProvider.get("dialogs", "add", ImageSizes.LARGEICON));
+		createButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				create();
+			}
+		});
+		createButton.setEnabled(true);
 		
 		editButton = new JButton();
 		editButton.setToolTipText(tr("Edit"));
@@ -171,17 +242,19 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 
 		buttons.add(reorderUpButton, GBC.eol());
 		buttons.add(reorderDownButton, GBC.eol());
+		buttons.add(folderButton, GBC.eol());
+		buttons.add(createButton, GBC.eol());
 		buttons.add(editButton, GBC.eol());
 		buttons.add(copyButton, GBC.eol());
 		buttons.add(deleteButton, GBC.eol());
-		listPane.add(buttons, GBC.eol().fill());
+		listPane.add(buttons, GBC.eol());
 		mainPane.add(listPane, GBC.eol().fill());
 
 		final JButton cancelButton = new JButton(tr("Close"));
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cancel();
+				close();
 			}
 		});
 
@@ -190,33 +263,68 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		setContent(mainPane);
 	}
 
-	private void refreshList(String msg) {
-		//presets = EasyPresets.getInstance().getPresets().toArray(new TaggingPresEasyPresetsPluginet[0]);
-		System.out.println(msg);
-		//list.clearSelection();
-		//list.setListData(presets);
-		EasyPresetsPlugin.groupMenu.updatePresetListMenu(presets);
+	private void export() {
+		new ExportDialog(presets).showDialog();
+	}
+	
+	/*
+	 * button action "Folder"
+	 */
+	protected void addFolder() {
+		int i;
+		if (!isSelectionValid()) {
+			i = presets.getSize();
+		}
+		else {
+			i = list.getSelectedIndex();
+		}
+		EasyPresets folder = new EasyPresets(presets);
+		folder.setLocaleName(tr("NewGroup"));
+		presets.insertElementAt(folder, i);
+		ManagePresetsDialog dialog = new ManagePresetsDialog(this.tagMap, this.targetTypes, folder, presets, i);
+		dialog.showDialog();
 	}
 
-	private void export() {
-		new ExportDialog().showDialog();
+	protected void create() {
+		int i;
+		if (!isSelectionValid()) {
+			i = presets.getSize();
+		}
+		else {
+			i = list.getSelectedIndex();
+		}
+		EasyPreset preset = new EasyPreset();
+		
+        preset.types = EnumSet.noneOf(TaggingPresetType.class);
+		for (TaggingPresetType type : targetTypes) {
+			preset.types.add(type);
+		}
+
+		presets.insertElementAt(preset, i);
+		PresetEditorDialog dialog = new PresetEditorDialog(preset, tagMap, i, presets);
+		dialog.showDialog();
 	}
-			
+
 	protected void edit() {
-		// Open 
 		if (isSelectionValid()) {
-			int index = list.getSelectedIndex();
-			new PresetEditorDialog(getSelectedPreset(), index).showDialog(this);
+			int i = list.getSelectedIndex();
+			PresetsEntry preset = getSelectedPreset();
+			if (preset instanceof EasyPresets) {
+				ManagePresetsDialog dialog = new ManagePresetsDialog(this.tagMap, this.targetTypes, (EasyPresets)preset, presets, i);
+				dialog.showDialog();
+			}
+			else if (preset instanceof EasyPreset) {
+				PresetEditorDialog dialog = new PresetEditorDialog((EasyPreset)preset, i, presets);
+				dialog.showDialog();
+			}
 		}
 	}
 
 	private boolean copy() {
 		if (isSelectionValid()) {
 			int index = list.getSelectedIndex();
-			TaggingPreset copiedPreset = EasyPreset.copy(getSelectedPreset());
-			presets.getModel().insertElementAt(copiedPreset, index);
-			//presets.isDirty = true;
-			refreshList("ManagePresetsDialog->copy()");
+			PresetsEntry copiedPreset = getSelectedPreset().copy();
+			presets.insertElementAt(copiedPreset, index);
 			return true;
 		} else {
 			return false;
@@ -240,12 +348,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		return dialog.getValue() == 1;
 	}
 	
-	
 	private void delete() {
 		if (isSelectionValid()) {
-			presets.getModel().removeElement(getSelectedPreset());
-			presets.save();
-			refreshList("ManagePresetsDialog->delete()");
+			presets.removeElement(getSelectedPreset());
+			// TODO : presets.save();
 		}
 	}
 
@@ -254,34 +360,47 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		super.dispose();
 	}
 	
-	protected void cancel() {
+	protected void close() {
+		String str = uiGroupName.getText().trim();
+		this.presets.setLocaleName(str);
+		if (this.parent != null) {
+			this.parent.setElementAt(presets, this.index);
+		}
 		dispose();
 	}
 
 	boolean isSelectionValid () {
-		return !(list.getSelectedIndex() < 0 || list.getSelectedIndex() >= presets.getModel().getSize()); 
+		return !(list.getSelectedIndex() < 0 || list.getSelectedIndex() >= presets.getSize()); 
 	}
 	
 	@Override
 	public void valueChanged(ListSelectionEvent evt) {
-		int index = list.getSelectedIndex();
-		reorderUpButton.setEnabled(index>0);
-		reorderDownButton.setEnabled(index < presets.getModel().getSize()-1);
+		int i = list.getSelectedIndex();
+		reorderUpButton.setEnabled(i > 0);
+		reorderDownButton.setEnabled(i < presets.getSize()-1);
 		
 		if (!isSelectionValid()) {
+			folderButton.setEnabled(false);
+			createButton.setEnabled(false);
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(false);
 			return;
 		}
+		folderButton.setEnabled(true);
+		createButton.setEnabled(true);
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
 		copyButton.setEnabled(true);
+		
+		if (this.presets.isRoot()) {
+			this.presets.saveTo();
+		}
 	}
 	
-	TaggingPreset getSelectedPreset() {
+	PresetsEntry getSelectedPreset() {
 		if (isSelectionValid()) {
-			int index = list.getSelectedIndex();
-			return presets.getModel().elementAt(index);
+			int i = list.getSelectedIndex();
+			return presets.elementAt(i);
 		}
 		return null;
 	}
@@ -290,31 +409,17 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		if (!isSelectionValid()) {
 			return;
 		}
-		int index = list.getSelectedIndex();
-		presets.moveUp(index);
-		refreshList("ManagePresetsDialog->reorderUp()");
-		list.setSelectedIndex(index-1);
+		int i = list.getSelectedIndex();
+		presets.moveUp(i);
+		list.setSelectedIndex(i-1);
 	}
 	
 	private void reorderDown () {
 		if (!isSelectionValid()) {
 			return;
 		}
-		int index = list.getSelectedIndex();
-		presets.moveDown(index);
-		refreshList("ManagePresetsDialog->reorderDown()");
-		list.setSelectedIndex(index+1);
-	}
-
-	/* Implementation of ManagePresetsDialogListener */
-	@Override
-	public void onCancel() {
-		// Do nothing
-		refreshList("ManagePresetsDialog->onCancel()");
-	}
-
-	@Override
-	public void onSave() {
-		refreshList("ManagePresetsDialog->onSave()");
+		int i = list.getSelectedIndex();
+		presets.moveDown(i);
+		list.setSelectedIndex(i+1);
 	}
 }

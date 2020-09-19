@@ -38,18 +38,15 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
+
 /**
  * Editor dialog to create or edit a custom preset
- * @author maripo
+ * @author maripo, hayashi
  *
  */
 @SuppressWarnings("serial")
 public class PresetEditorDialog extends ExtendedDialog {
 	
-	public static interface PresetEditorDialogListener {
-		public void onCancel();
-		public void onSave();
-	}
 	private JTextField uiPresetName;
 	private JTextField uiURL;
 	private JCheckBox uiIncludeName; // Check to include name label
@@ -59,43 +56,77 @@ public class PresetEditorDialog extends ExtendedDialog {
 	private List<TargetType> targetTypes = new ArrayList<TargetType>();
 	private String name;
 	private String referenceURL;
-	private TaggingPreset presetToEdit;
+	private EasyPreset presetToEdit;
 	protected Collection<TaggingPresetType> defaultTypes;
 	private int index = -1;
+	private EasyPresets parentPresets;
 	
-	/**
+	/*
 	 * Create new preset (Initialize with tags and types extracted from selection)
-	 * @param tagMap
-	 * @param presetTypes 
+	 * 
+	 * @param tagMap		Tag map
+	 * @param presetTypes	POI types
+	 * @param presets		EasyPresets
 	 */
-	public PresetEditorDialog (Map<String, Map<String, Integer>> tagMap, 
-			List<TaggingPresetType> presetTypes) {
+	public PresetEditorDialog (
+			Map<String,Map<String, Integer>> tagMap, 
+			List<TaggingPresetType> presetTypes,
+			EasyPresets presets)
+	{
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.defaultTypes = presetTypes;
+		this.parentPresets = presets;
 
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
         for (final String key: tagMap.keySet()) {
-        	TagEditor editor = TagEditor.create(this, key, tagMap.get(key));
+        	TagEditor editor = TagEditor.create(this, key, tagMap.get(key), presets);
         	tagEditors.add(editor);
         }
         name = "";
 		initUI(tagEditors);
 	}
 
-	/**
+	/*
 	 * Edit existing preset (Initialize with existing TaggingPreset object)
-	 * @param preset
+	 * 
+	 * @param preset		new EasyPreset
+	 * @param index			insert index
+	 * @param parentPresets	EasyPresets
 	 */
-	public PresetEditorDialog (TaggingPreset preset, int index) {
+	public PresetEditorDialog(EasyPreset preset, int index, final EasyPresets parentPresets) {
+		this(preset, null, index, parentPresets);
+	}
+	
+	/*
+	 * Edit existing preset (Initialize with existing TaggingPreset object)
+	 * 
+	 * @param preset		new EasyPreset
+	 * @param tagMap		Tag map
+	 * @param index			insert index
+	 * @param parentPresets	EasyPresets
+	 */
+	public PresetEditorDialog (EasyPreset preset, 
+			Map<String,Map<String, Integer>> tagMap, 
+			int index, 
+			final EasyPresets parentPresets) 
+	{
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.index = index;
-		name = preset.name;
+		this.parentPresets = parentPresets;
+		name = preset.getLocaleName();
 		referenceURL = findURL(preset);
 		icon = preset.getIcon();
 		iconPath = preset.iconName;
-		this.presetToEdit = preset;
+		this.presetToEdit = preset.clone();
 		defaultTypes = preset.types;
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
+		if (tagMap != null) {
+	        for (final String key: tagMap.keySet()) {
+	        	TagEditor editor = TagEditor.create(this, key, tagMap.get(key), parentPresets);
+	        	tagEditors.add(editor);
+	        }
+		}
+		
 		// Select all
 		for (final TaggingPresetItem item: preset.data) {
 			TagEditor editor = TagEditor.create(this, item);
@@ -112,7 +143,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		}
 		uiIncludeName.setSelected(containsLabel);
 	}
-	
+
 	private String findURL(TaggingPreset preset) {
 		if (preset.data!=null) {
 			for (TaggingPresetItem item: preset.data) {
@@ -126,7 +157,6 @@ public class PresetEditorDialog extends ExtendedDialog {
 
 	TagsPane tagsPane;
 	JLabel errorMessageLabel;
-	private PresetEditorDialogListener dialogListener;
 	private void initUI(List<TagEditor> tagEditors) {
 		targetTypes.add(new TargetType(TaggingPresetType.NODE));
 		targetTypes.add(new TargetType(TaggingPresetType.WAY));
@@ -135,7 +165,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		targetTypes.add(new TargetType(TaggingPresetType.MULTIPOLYGON));
 		
 		final JPanel mainPane = new JPanel(new GridBagLayout());
-		mainPane.add(new JLabel(tr("Preset Name") + ":"),  GBC.std().insets(0, 0, 0, 10).anchor(GBC.WEST));
+		mainPane.add(new JLabel(tr("PresetEditorDialogreset Name") + ":"),  GBC.std().insets(0, 0, 0, 10).anchor(GBC.WEST));
 		uiPresetName = new JTextField(16);
 		uiPresetName.setText(name);
 		
@@ -203,8 +233,6 @@ public class PresetEditorDialog extends ExtendedDialog {
         iconPane.add(iconPathLabel, GBC.std().insets(0));
         iconPane.add(iconPickerButton, GBC.std().insets(0));
         mainPane.add(iconPane, GBC.eol());
-		
-				
         mainPane.add(iconPane, GBC.eol().insets(0, 0, 0, 5).anchor(GBC.NORTHWEST));
         
 		mainPane.add(new JLabel(tr("Applies to") + ":"), GBC.std().anchor(GBC.NORTHWEST));
@@ -214,10 +242,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		uiURL = new JTextField();
 		uiURL.setText(referenceURL);
 		mainPane.add(uiURL, GBC.eol().fill());
-
-
 		mainPane.add(new JLabel(tr("Tags") + ":"), GBC.eol().anchor(GBC.NORTHWEST));
-        
 		
         tagsPane = new TagsPane(tagEditors, this);
         if (tagEditors.isEmpty()) {
@@ -258,9 +283,6 @@ public class PresetEditorDialog extends ExtendedDialog {
         cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (dialogListener != null) {
-					dialogListener.onCancel();
-				}
 				close();
 			}
 		});
@@ -281,13 +303,18 @@ public class PresetEditorDialog extends ExtendedDialog {
         });
 	} 
 
-	protected void addTag () {
+	protected void addTag() {
 		tagsPane.addTag();
 		repaint();
 	}
 	
 	protected void close() {
 		this.dispose();
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
 	}
 
 	void showErrorMessage(String message) {
@@ -313,21 +340,10 @@ public class PresetEditorDialog extends ExtendedDialog {
 			if ((str == null) || (str.length() < 1)) {
 				uiPresetName.setText(presetToEdit.getName());
 			}
-
-			TaggingPreset preset = applyToPreset(presetToEdit);
-
-			System.out.printf("\nname: %s\n", name);
-			System.out.printf("uiPresetName: %s\n", uiPresetName.getText());
-			System.out.printf("preset: %s\n", preset.getName());
-			
-			EasyPresets.getInstance().setElementAt(preset, index);
+			this.parentPresets.setElementAt(applyToPreset(presetToEdit), index);
 		} else {
 			// New preset
-			EasyPresets.getInstance().addElement(createPreset());
-		}
-		EasyPresets.getInstance().save();
-		if (dialogListener != null) {
-			dialogListener.onSave();
+			this.parentPresets.addElement(applyToPreset(new EasyPreset()));
 		}
 		close();
 	}
@@ -353,8 +369,8 @@ public class PresetEditorDialog extends ExtendedDialog {
 		public boolean isChecked() {
 			return checkbox.isSelected();
 		}
-		
 	}
+	
 	private List<String> validateInput () {
 		List<String> errors = new ArrayList<String>();
 		if (uiPresetName.getText().isEmpty()) {
@@ -372,15 +388,12 @@ public class PresetEditorDialog extends ExtendedDialog {
 		}
 		return errors;
 	}
-	/**
+	
+	/*
 	 * Generate new TaggingPreset
-	 * @return
 	 */
-	private TaggingPreset createPreset () {
-		return applyToPreset(new TaggingPreset());
-	}
-	private TaggingPreset applyToPreset(final TaggingPreset src) {
-		EasyPreset preset = EasyPreset.clone(src);
+	private EasyPreset applyToPreset(final EasyPreset src) {
+		EasyPreset preset = src.clone();
 		preset.name = uiPresetName.getText();
 		preset.data.clear();
 		if (iconPath!=null) {
@@ -421,10 +434,5 @@ public class PresetEditorDialog extends ExtendedDialog {
 			}
 		}
 		return types;
-	}
-
-	public void showDialog(PresetEditorDialogListener dialogListener) {
-		this.dialogListener = dialogListener;
-		this.showDialog();
 	}
 }

@@ -18,6 +18,7 @@ import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 
+@SuppressWarnings("serial")
 public class TagsPane extends JPanel {
 	private List<TagEditor> tagEditors;
 	List<Line> lines;
@@ -54,10 +55,8 @@ public class TagsPane extends JPanel {
 		private int index;
 		JButton upButton, downButton;
 		private JPanel containerInclude, containerType, containerKey, containerLabel, containerValue;
-		private TagEditor editor;
 		public Line(TagEditor editor, int index) {
 			this.index = index;
-			this.editor = editor;
 
 			containerInclude = new JPanel(new GridBagLayout());
 			containerType = new JPanel(new GridBagLayout());
@@ -104,7 +103,6 @@ public class TagsPane extends JPanel {
 			containerValue.remove(0);
 		}
 		public void renderEditor(TagEditor editor) {
-			this.editor = editor;
 			containerInclude.add(editor.getUiInclude(), GBC.eol().insets(0));
 			containerType.add(editor.getUiType(), GBC.eol().insets(0));
 			containerKey.add(editor.getUiKey(), GBC.eol().insets(0));

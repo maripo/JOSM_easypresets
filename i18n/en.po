@@ -210,6 +210,18 @@ msgstr "Preset Editor"
 msgid "Preset Name"
 msgstr "Preset name is empty."
 
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:293
+msgid "NewGroup"
+msgstr "New Group"
+
+#: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:133
+msgid "New Presets Name"
+msgstr "New presets name"
+
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:146
+msgid "Preset Group Name"
+msgstr "Presets group name"
+
 #: src/org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:140
 msgid "Show the name on the dialog"
 msgstr ""
@@ -283,3 +295,7 @@ msgstr "Manage Custom Presets"
 #, fuzzy, java-format
 msgid "Copy of {0}"
 msgstr "Tool: {0}"
+
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java
+msgid "New Preset"
+msgstr "New Custom Preset"

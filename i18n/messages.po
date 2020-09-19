@@ -276,3 +276,8 @@ msgstr ""
 #, java-format
 msgid "Copy of {0}"
 msgstr ""
+
+#: src/org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:146
+msgid "Preset Group Name"
+msgstr ""
+

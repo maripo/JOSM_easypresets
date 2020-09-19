@@ -22,6 +22,7 @@ import org.openstreetmap.josm.tools.GBC;
  * @author maripo
  *
  */
+@SuppressWarnings("serial")
 public class ValuesEditorDialog extends ExtendedDialog {
 
 	/**

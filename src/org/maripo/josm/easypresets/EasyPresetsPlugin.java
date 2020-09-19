@@ -1,7 +1,11 @@
 package org.maripo.josm.easypresets;
 
+import static org.openstreetmap.josm.tools.I18n.tr;
+
 import javax.swing.JMenu;
 import javax.swing.JSeparator;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.ui.CreatePresetAction;
@@ -9,29 +13,45 @@ import org.maripo.josm.easypresets.ui.GroupPresetMenu;
 import org.maripo.josm.easypresets.ui.ManagePresetsAction;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MainMenu;
+import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetNameTemplateList;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
-public class EasyPresetsPlugin extends Plugin {
-	public static EasyPresets presets;
-	public static GroupPresetMenu groupMenu;
+public class EasyPresetsPlugin extends Plugin implements ListDataListener {
+	public static final EasyPresets root = new EasyPresets();
+	public static final GroupPresetMenu groupMenu = new GroupPresetMenu(root);
 
 	public EasyPresetsPlugin (PluginInformation info) {
 		super(info);
+        root.load();
+        root.setLocaleName(tr("Custom Presets"));
+		root.addListDataListener(this);
 		
-		presets = EasyPresets.getInstance();
-        presets.load();
-
         // Add custom presets to "Presets" menu
 		JMenu menu = MainApplication.getMenu().presetsMenu;
         menu.add(new JSeparator());
-        MainMenu.add(menu, new CreatePresetAction());
-        MainMenu.add(menu, new ManagePresetsAction());
+        MainMenu.add(menu, new CreatePresetAction(root));
+        MainMenu.add(menu, new ManagePresetsAction(root));
         
         // Group for all custom presets
-        groupMenu = new GroupPresetMenu();
-        groupMenu.updatePresetListMenu(presets);
+        groupMenu.updatePresetListMenu();
         menu.add(groupMenu.menu);
+		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
+	}
+
+	@Override
+	public void contentsChanged(ListDataEvent arg0) {
+		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
+	}
+
+	@Override
+	public void intervalAdded(ListDataEvent arg0) {
+		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
+	}
+
+	@Override
+	public void intervalRemoved(ListDataEvent arg0) {
+		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
 	
 }

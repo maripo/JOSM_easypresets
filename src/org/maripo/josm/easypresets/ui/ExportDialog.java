@@ -21,16 +21,18 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
+import org.maripo.josm.easypresets.data.PresetsEntry;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
-import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.tools.GBC;
 
 public class ExportDialog extends ExtendedDialog {
 	private static final long serialVersionUID = -1147760276640641360L;
+	EasyPresets presets;
 	
-	public ExportDialog () {
+	public ExportDialog (EasyPresets presets) {
 		super(MainApplication.getMainFrame(), tr("Export"));
+		this.presets = presets;
 		initUI();
 	}
 
@@ -38,8 +40,8 @@ public class ExportDialog extends ExtendedDialog {
 	static class PresetWrapper {
 		JCheckBox checkbox;
 		JLabel  label;
-		TaggingPreset preset;
-		public PresetWrapper(TaggingPreset preset) {
+		PresetsEntry preset;
+		public PresetWrapper(PresetsEntry preset) {
 			this.preset = preset;
 			checkbox = new JCheckBox();
 			label = new JLabel();
@@ -64,13 +66,15 @@ public class ExportDialog extends ExtendedDialog {
 
 		final JPanel list = new JPanel(new GridBagLayout());
 		list.setBackground(Color.WHITE);
-		TaggingPreset[] array = (TaggingPreset[]) EasyPresets.getInstance().toArray();
+		
+		PresetsEntry[] array = (PresetsEntry[]) presets.toArray();
         for (int i = 0; i < array.length; i++) {
 			PresetWrapper wrapper = new PresetWrapper(array[i]);
 			list.add(wrapper.getCheckbox());
 			list.add(wrapper.getLabel(), GBC.eol().fill());
 			wrappers.add(wrapper);
 		}
+		
 		JScrollPane listScroll = new JScrollPane(list);
 		listScroll.setPreferredSize(new Dimension(320,420));
 		
@@ -136,7 +140,7 @@ public class ExportDialog extends ExtendedDialog {
 		
 	}
 	private void exportSelected() {
-		List<TaggingPreset> selectedPresets = new ArrayList<TaggingPreset>();
+		List<PresetsEntry> selectedPresets = new ArrayList<>();
 		for (PresetWrapper wrapper: wrappers) {
 			if (wrapper.getCheckbox().isSelected()) {
 				selectedPresets.add(wrapper.preset);
@@ -149,12 +153,18 @@ public class ExportDialog extends ExtendedDialog {
 		} else {
 			alertLabel.setText(" ");
 		}
+		
+		EasyPresets root = new EasyPresets();
+		for (PresetsEntry preset : selectedPresets) {
+			root.addElement(preset);
+		}
+		
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(tr("Save Presets"));
         chooser.setFileFilter(new FileNameExtensionFilter("XML File", "xml"));
         int returnVal = chooser.showSaveDialog(this);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-        	EasyPresets.getInstance().saveTo(selectedPresets, chooser.getSelectedFile());
+        	root.saveTo(chooser.getSelectedFile());
         }
 	}
 	
