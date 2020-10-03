@@ -139,6 +139,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
 					GroupStack stack = new GroupStack();
+					TaggingPresets.addTaggingPresets(readResult);
 					for (TaggingPreset preset : readResult) {
 						//String fullName = preset.getName();
 						String locale = preset.getLocaleName();

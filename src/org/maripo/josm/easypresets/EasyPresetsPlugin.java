@@ -20,35 +20,35 @@ import org.openstreetmap.josm.plugins.PluginInformation;
 public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 	public static final EasyPresets root = new EasyPresets();
 	public static final GroupPresetMenu groupMenu = new GroupPresetMenu(root);
-
+	
 	public EasyPresetsPlugin (PluginInformation info) {
 		super(info);
-        root.load();
-        root.setLocaleName(tr("Custom Presets"));
+		root.load();
+		root.setLocaleName(tr("Custom Presets"));
 		root.addListDataListener(this);
 		
-        // Add custom presets to "Presets" menu
+		// Add custom presets to "Presets" menu
 		JMenu menu = MainApplication.getMenu().presetsMenu;
-        menu.add(new JSeparator());
-        MainMenu.add(menu, new CreatePresetAction(root));
-        MainMenu.add(menu, new ManagePresetsAction(root));
-        
-        // Group for all custom presets
-        groupMenu.updatePresetListMenu();
-        menu.add(groupMenu.menu);
+		menu.add(new JSeparator());
+		MainMenu.add(menu, new CreatePresetAction(root));
+		MainMenu.add(menu, new ManagePresetsAction(root));
+		
+		// Group for all custom presets
+		groupMenu.updatePresetListMenu();
+		menu.add(groupMenu.menu);
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
-
+	
 	@Override
 	public void contentsChanged(ListDataEvent arg0) {
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
-
+	
 	@Override
 	public void intervalAdded(ListDataEvent arg0) {
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
 	}
-
+	
 	@Override
 	public void intervalRemoved(ListDataEvent arg0) {
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();

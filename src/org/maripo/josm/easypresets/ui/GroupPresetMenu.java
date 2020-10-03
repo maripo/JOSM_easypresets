@@ -17,10 +17,10 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
 @SuppressWarnings("serial")
 public class GroupPresetMenu extends TaggingPresetMenu implements ListDataListener {
 	EasyPresets model;
-
+	
 	/*
-	 * Create a preset group holding all custom presets
-	 */
+	* Create a preset group holding all custom presets
+	*/
 	public GroupPresetMenu(EasyPresets presets) {
 		super();
 		name = tr("Custom Presets");
@@ -30,35 +30,35 @@ public class GroupPresetMenu extends TaggingPresetMenu implements ListDataListen
 		model = presets;
 		model.addListDataListener(this);
 	}
-
+	
 	public void updatePresetListMenu() {
 		setEnabled(model.getSize() > 0);
 		menu.removeAll();
 		List<PresetsEntry> lentry = model.getEntry();
-        for (PresetsEntry entry : lentry) {
-        	if (entry instanceof TaggingPreset) {
-                JMenuItem mi = new JMenuItem((TaggingPreset)entry);
-                mi.setText(((TaggingPreset)entry).getName());
-                mi.setEnabled(true);
-                menu.add(mi);
-        	}
-        	else if (entry instanceof EasyPresets) {
-                menu.add(((EasyPresets) entry).getMenu());
-        	}
-        }
+		for (PresetsEntry entry : lentry) {
+			if (entry instanceof TaggingPreset) {
+				JMenuItem mi = new JMenuItem((TaggingPreset)entry);
+				mi.setText(((TaggingPreset)entry).getName());
+				mi.setEnabled(true);
+				menu.add(mi);
+			}
+			else if (entry instanceof EasyPresets) {
+				menu.add(((EasyPresets) entry).getMenu());
+			}
+		}
 	}
-
+	
 	@Override
 	public void contentsChanged(ListDataEvent evt) {
 		updatePresetListMenu();
 	}
-
+	
 	@Override
 	public void intervalAdded(ListDataEvent evt) {
 		updatePresetListMenu();
 		
 	}
-
+	
 	@Override
 	public void intervalRemoved(ListDataEvent evt) {
 		updatePresetListMenu();
