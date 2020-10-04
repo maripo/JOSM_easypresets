@@ -37,6 +37,8 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 		groupMenu.updatePresetListMenu();
 		menu.add(groupMenu.menu);
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
+		// Call ToolbarPreferences.refreshToolbarControl
+		MainApplication.getToolbar().refreshToolbarControl();
 	}
 	
 	@Override

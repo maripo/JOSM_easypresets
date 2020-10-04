@@ -47,6 +47,7 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry {
 		if (src.types != null) {
 			this.types.addAll(src.types);
 		}
+		this.setDisplayName();
 	}
 	
 	public EasyPreset copy() {

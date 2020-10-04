@@ -159,6 +159,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 							EasyPreset tags = new EasyPreset((TaggingPreset)preset, pp);
 							pp.addElement(tags);
 						}
+						preset.setDisplayName();
 					}
 				}
 			} catch (FileNotFoundException e) {
