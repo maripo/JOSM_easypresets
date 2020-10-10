@@ -3,6 +3,8 @@
 .project
 .settings/
 .externalToolBuilders/
+/i18n/*.prev
+/i18n/*.mo
 /javadoc/
 /build/
 /bin/
