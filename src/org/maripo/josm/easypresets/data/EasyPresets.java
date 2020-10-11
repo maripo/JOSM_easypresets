@@ -141,7 +141,6 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 					GroupStack stack = new GroupStack();
 					TaggingPresets.addTaggingPresets(readResult);
 					for (TaggingPreset preset : readResult) {
-						//String fullName = preset.getName();
 						String locale = preset.getLocaleName();
 						String raw = preset.getRawName();
 						String path = raw.substring(0, raw.length() - locale.length());
@@ -157,9 +156,9 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 						}
 						else {
 							EasyPreset tags = new EasyPreset((TaggingPreset)preset, pp);
+							tags.setDisplayName();	// for JOSM menu [presets]-[find preset... F3]
 							pp.addElement(tags);
 						}
-						preset.setDisplayName();
 					}
 				}
 			} catch (FileNotFoundException e) {
@@ -415,9 +414,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	public String getRawName() {
 		String locale = "";
 		if (this.parent != null) {
-			if (!this.parent.isRoot()) {
-				locale += this.parent.getRawName();
-			}
+			locale += this.parent.getRawName();
 		}
 		if (!locale.isEmpty()) {
 			locale += "/";
