@@ -139,7 +139,6 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
 					GroupStack stack = new GroupStack();
-					TaggingPresets.addTaggingPresets(readResult);
 					for (TaggingPreset preset : readResult) {
 						String locale = preset.getLocaleName();
 						String raw = preset.getRawName();
@@ -156,8 +155,12 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 						}
 						else {
 							EasyPreset tags = new EasyPreset((TaggingPreset)preset, pp);
-							tags.setDisplayName();	// for JOSM menu [presets]-[find preset... F3]
 							pp.addElement(tags);
+							
+							// for JOSM menu [presets]-[find preset... F3]
+							ArrayList<TaggingPreset> presetList = new ArrayList<>();
+							presetList.add(preset);
+							TaggingPresets.addTaggingPresets(presetList);
 						}
 					}
 				}
