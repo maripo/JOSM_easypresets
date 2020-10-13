@@ -394,6 +394,12 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		
 		if (this.presets.isRoot()) {
 			this.presets.saveTo();
+			
+/*			
+			// for JOSM menu [presets]-[find preset... F3]
+			ArrayList<TaggingPreset> presetList = new ArrayList<>();
+			presetList.add(preset);
+			TaggingPresets.addTaggingPresets(presetList);	*/
 		}
 	}
 	
