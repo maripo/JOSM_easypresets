@@ -351,7 +351,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	private void delete() {
 		if (isSelectionValid()) {
 			presets.removeElement(getSelectedPreset());
-			// TODO : presets.save();
 		}
 	}
 
@@ -363,7 +362,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	protected void close() {
 		String str = uiGroupName.getText().trim();
 		this.presets.setLocaleName(str);
-		if (this.parent != null) {
+		if (this.presets.isRoot()) {
+			this.presets.saveTo();
+		}
+		else {
 			this.parent.setElementAt(presets, this.index);
 		}
 		dispose();
@@ -391,16 +393,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
 		copyButton.setEnabled(true);
-		
-		if (this.presets.isRoot()) {
-			this.presets.saveTo();
-			
-/*			
-			// for JOSM menu [presets]-[find preset... F3]
-			ArrayList<TaggingPreset> presetList = new ArrayList<>();
-			presetList.add(preset);
-			TaggingPresets.addTaggingPresets(presetList);	*/
-		}
 	}
 	
 	PresetsEntry getSelectedPreset() {

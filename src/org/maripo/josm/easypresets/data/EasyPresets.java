@@ -207,21 +207,6 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			// XML element <presets><group>
 			Element groupElement = getGroupElement(doc);
 			
-			// XML element <presets><group><item>
-			List<PresetsEntry> list = this.getEntry();
-			for (PresetsEntry preset: list) {
-				if (preset instanceof EasyPreset) {
-					Element itemElement = ((EasyPreset)preset).getItemElement(doc);
-					groupElement.appendChild(itemElement);
-				}
-				else if (preset instanceof EasyPresets) {
-					if (!((EasyPresets)preset).isEmpty()) {
-						Element itemElement = ((EasyPresets)preset).getGroupElement(doc);
-						groupElement.appendChild(itemElement);
-					}
-				}
-			}
-			
 			if (groupElement.hasChildNodes()) {
 				presetsElement.appendChild(groupElement);
 			}

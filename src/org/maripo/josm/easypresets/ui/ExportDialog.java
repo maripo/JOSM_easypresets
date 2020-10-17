@@ -59,9 +59,13 @@ public class ExportDialog extends ExtendedDialog {
 	}
 
 	List<PresetWrapper> wrappers = new ArrayList<PresetWrapper>();
+	ParameterPanelName presetsNamePane = new ParameterPanelName(tr("Presets name"), tr("Custom Presets name"), "Custom Presets");
+
 	private void initUI() {
 		JPanel listPane = new JPanel(new GridBagLayout());
 		final JPanel mainPane = new JPanel(new GridBagLayout());
+
+		mainPane.add(presetsNamePane);
 		mainPane.add(new JLabel(tr("Please check presets you want to export.")), GBC.eol().fill());
 
 		final JPanel list = new JPanel(new GridBagLayout());
@@ -115,7 +119,6 @@ public class ExportDialog extends ExtendedDialog {
 			}
 		});
 
-
 		mainPane.add(selectAllButton, GBC.std());
 		mainPane.add(deselectAllButton, GBC.eol());
 		alertLabel = new JLabel(" ");
@@ -147,14 +150,19 @@ public class ExportDialog extends ExtendedDialog {
 			}
 		}
 		
+		alertLabel.setText(" ");
+		if (!presetsNamePane.isEnabled()) {
+			alertLabel.setText(tr("Illegal presets name."));
+			return;
+		}
+
 		if (selectedPresets.isEmpty()) {
 			alertLabel.setText(tr("No presets are selected."));
 			return;
-		} else {
-			alertLabel.setText(" ");
 		}
 		
 		EasyPresets root = new EasyPresets();
+		root.setLocaleName(presetsNamePane.getText());
 		for (PresetsEntry preset : selectedPresets) {
 			root.addElement(preset);
 		}
