@@ -138,7 +138,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			try (Reader reader = UTFInputStreamReader.create(new FileInputStream(file))) {
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
-					GroupStack stack = new GroupStack();
+					GroupStack stack = new GroupStack(this);
 					for (TaggingPreset preset : readResult) {
 						String locale = preset.getLocaleName();
 						String raw = preset.getRawName();
@@ -148,10 +148,12 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 							pp = this;
 						}
 						if (preset instanceof TaggingPresetMenu) {
-							EasyPresets group = new EasyPresets(pp);
-							group.setLocaleName(locale);
-							stack.push(group);
-							pp.addElement(group);
+							if (!locale.contentEquals("Custom Presets")) {
+								EasyPresets group = new EasyPresets(pp);
+								group.setLocaleName(locale);
+								stack.push(group);
+								pp.addElement(group);
+							}
 						}
 						else {
 							EasyPreset tags = new EasyPreset((TaggingPreset)preset, pp);
