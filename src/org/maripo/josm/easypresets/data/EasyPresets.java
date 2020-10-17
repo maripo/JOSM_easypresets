@@ -156,11 +156,6 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 						else {
 							EasyPreset tags = new EasyPreset((TaggingPreset)preset, pp);
 							pp.addElement(tags);
-							
-							// for JOSM menu [presets]-[find preset... F3]
-							ArrayList<TaggingPreset> presetList = new ArrayList<>();
-							presetList.add(preset);
-							TaggingPresets.addTaggingPresets(presetList);
 						}
 					}
 				}
@@ -208,10 +203,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			doc.appendChild(presetsElement);
 			
 			// XML element <presets><group>
-			Element groupElement = presetsElement;
-			if (!isRoot()) {
-				groupElement = getGroupElement(doc);
-			}
+			Element groupElement = getGroupElement(doc);
 			
 			// XML element <presets><group><item>
 			List<PresetsEntry> list = this.getEntry();
@@ -228,10 +220,8 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 				}
 			}
 			
-			if (!isRoot()) {
-				if (groupElement.hasChildNodes()) {
-					presetsElement.appendChild(groupElement);
-				}
+			if (groupElement.hasChildNodes()) {
+				presetsElement.appendChild(groupElement);
 			}
 
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -278,10 +268,17 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	}
 	
 	Element getGroupElement(Document doc) {
-		Element groupElement = doc.createElement("group");
 		String name = this.getLocaleName();
+		return getGroupElement(doc, name);
+	}
+
+	Element getGroupElement(Document doc, String name) {
+		Element groupElement = doc.createElement("group");
 		if (name != null) {
 			groupElement.setAttribute("name", name);
+		}
+		else {
+			groupElement.setAttribute("name", tr("Custom Presets"));
 		}
 		List<PresetsEntry> list = this.getEntry();
 		for (PresetsEntry preset: list) {
