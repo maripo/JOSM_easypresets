@@ -1,0 +1,104 @@
+@startuml
+interface java.awt.event.MouseListener
+
+org.openstreetmap.josm.gui.ExtendedDialog <|-- IconPickerDialog
+java.awt.event.MouseListener <|-- IconPickerDialog
+IconPickerDialog *-- IconPickerDialogListener
+
+class IconPickerDialog {
+	void setListener (IconPickerDialogListener)
+	mouseClicked(MouseEvent)
+}
+
+interface IconPickerDialogListener {
+	void onSelectIcon(ImageIcon, name)
+	void onCancel()
+}
+
+class PresetEditorDialog extends org.openstreetmap.josm.gui.ExtendedDialog {
+	name : String
+	referenceURL : String
+	icon : Icon
+	iconPath : String
+	presetToEdit : EasyPreset
+	void dispose()
+	void addTag()
+	void close()
+	void dispose()
+	void showErrorMessage(message)
+	void save()
+}
+PresetEditorDialog "targetTypes" - "*" TargetType
+(PresetEditorDialog, TargetType) .. List
+
+PresetEditorDialog "defaultTypes" - "*" TaggingPresetType
+(PresetEditorDialog, TaggingPresetType) .. Collection
+
+PresetEditorDialog *-- "1" org.maripo.josm.easypresets.data.EasyPreset : presetToEdit
+
+class TargetType {
+	JCheckBox createCheckbox()
+	boolean isChecked()
+}
+TargetType *-- org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType
+
+TagEditor *-- "*" ValueField
+ValueField <|-- ValueFieldFixed
+TagEditor *-- ValueFieldFixed
+ValueField <|-- ValueFieldTextbox
+TagEditor *-- ValueFieldTextbox
+ValueField <|-- ValueFieldCheckbox
+TagEditor *-- ValueFieldCheckbox
+ValueField <|-- ValueFieldSelection
+TagEditor *-- ValueFieldSelection
+ValuesEditorDialogListener <|-- ValueFieldSelection
+ValueFieldSelection <|-- ValueFieldMultiselect
+
+class ValueFieldSelection implements java.awt.event.ActionListener {
+	void appendUI(JPanel pane)
+	void setVisibility(boolean visible)
+	void actionPerformed(ActionEvent e)
+	void populateDefaultValue(String... values)
+	void applyEditedValues()
+	KeyedItem createItem()
+	void onInput(String[] values)
+}
+
+class ValueFieldMultiselect{
+	ComboMultiSelect createEmptyItem()
+	char getDefaultDelimiter()
+}
+
+class ValueFieldCheckbox {
+	KeyedItem createItem()
+}
+
+class TagEditor {
+	void onSelectedTypeChange()
+	TagEditor create(ExtendedDialog)
+	TagEditor create(ExtendedDialog, key, Map<String, Integer>, EasyPresets)
+	TagEditor create(ExtendedDialog, TaggingPresetItem)
+	TaggingPresetItem getTaggingPresetItem()
+	Component getUiInclude()
+	Component getUiType()
+	Component getUiKey()
+	Component getUiValue()
+	Component getUiLabel()
+}
+
+javax.swing.JPanel <|-- TagPane
+TagPane *-- "*" TagEditor
+TagPane *-- TagPane.Line
+
+class TagPane.Line implements java.awt.event.ActionListener {
+	upButton : JButton
+	downButton : upButton
+	void actionPerformed(ActionEvent)
+	void removeUI()
+	void renderEditor(TagEditor)
+	void revalidateComponents()
+}
+
+interface List
+interface Collection
+@enduml

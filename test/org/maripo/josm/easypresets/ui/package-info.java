@@ -1,0 +1,14 @@
+/**
+ * @author hayashi
+ * 
+
+Class03 *-- Class04
+Class05 o-- Class06
+Class07 .. Class08
+Class09 -- Class10
+
+
+http://www.plantuml.com/plantuml/svg/fLFRRjim37tNL-Yn6L2Xm-x37bgate1W6uAXFy16hAP25Ws9TZ9a-_V9ffCPXdS1zYJnyF3mcBIkCqFYjWwAaZFKOCoS4Bc6nZnIhWtis5FCPbE2c-6ktts_lDJhXC2uJPYH1LTg5o3dXOm-gaJ4-gsk87-JJ5OTUQj5VelfWLADza8AgWuZhzGFfJPRY1YavHOIrCYO1amDeV0NyseQBsjyBdUbV2pn0-nGicVFzqG18MgVgmZteRXRYUcCV8S7liYSV7Gh9QTs8pmObrdCB1mL9FVUOx1b5fkUF0J_eoeVKPIZsrFgTQLkS3-rNif_jsFNUbCT6AD5U-iXa9DXLOU64WjowZt5IjT6bZbRxPzRCJXN79gnrjn9BCMVCBRI_KEYjla5gaVeu63olY_53YERZpxpBJ3q9qPCotMJ_Vw3n56MiQDOOixhhn1T6T-99t-cS0RT3iADjNzXVC6QkZbdij2PvMAY9ejXwS6qZJs_hY8ty6Mvwrxgwfb-KcOWz-SZzaBJ6NivOg-qCIFqUeJUw1FhwPMwncZRElm4
+
+ */
+package org.maripo.josm.easypresets.ui;

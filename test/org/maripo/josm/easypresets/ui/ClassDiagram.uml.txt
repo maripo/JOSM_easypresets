@@ -1,0 +1,77 @@
+@startuml
+org.openstreetmap.josm.actions.JosmAction <|-- CreatePresetAction
+
+class CreatePresetAction {
+	root : EasyPresets
+	void actionPerformed(ActionEvent)
+}
+
+JPanel <|-- ParameterPanel
+ParamAction <|-- ParameterPanel
+
+ParameterPanel <|-- ParameterPanelName
+
+interface ParamAction {
+	boolean isEnabled()
+	void setText(string)
+	string getText()
+}
+
+class ParameterPanel {
+	argField : JTextField
+	void setText(string)
+	string getText()
+}
+
+class ParameterPanelName {
+	ngword : string
+	bool isEnabled()
+}
+
+org.openstreetmap.josm.gui.ExtendedDialog <|-- ExportDialog
+org.openstreetmap.josm.gui.ExtendedDialog <|-- ManagePresetsDialog
+javax.swing.event.ListSelectionListener <|-- ManagePresetsDialog
+
+Interface javax.swing.event.ListSelectionListener {
+	void valueChanged(ListSelectionEvent)
+}
+
+class ManagePresetsDialog {
+	uiGroupName : JButton
+	folderButton : JButton
+	createButton : JButton
+	editButton : JButton
+	copyButton : JButton
+	deleteButton : JButton
+	reorderUpButton : JButton
+	reorderDownButton : JButton
+	void dispose()
+}
+
+ExportDialog *-- ParameterPanelName
+ExportDialog *-- "*" PresetWrapper
+class ExportDialog {
+	presets : EasyPresetsClass
+	alertLabel : JLabel
+}
+
+class PresetWrapper {
+	checkbox : JCheckBox
+	label : JLabel
+	preset : PresetsEntry
+}
+
+org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu <|-- GroupPresetMenu
+javax.swing.event.ListDataListener <|-- GroupPresetMenu
+
+interface javax.swing.event.ListDataListener {
+	void contentsChanged(ListDataEvent)
+	void intervalAdded(ListDataEvent)
+	void intervalRemoved(ListDataEvent)
+}
+
+class GroupPresetMenu {
+	model : EasyPresets
+	void updatePresetListMenu()
+}
+@enduml

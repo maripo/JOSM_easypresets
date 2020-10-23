@@ -113,12 +113,12 @@ public class PresetEditorDialog extends ExtendedDialog {
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.index = index;
 		this.parentPresets = parentPresets;
-		name = preset.getLocaleName();
-		referenceURL = findURL(preset);
-		icon = preset.getIcon();
-		iconPath = preset.iconName;
+		this.name = preset.getLocaleName();
+		this.referenceURL = findURL(preset);
+		this.icon = preset.getIcon();
+		this.iconPath = preset.iconName;
 		this.presetToEdit = preset.clone();
-		defaultTypes = preset.types;
+		this.defaultTypes = preset.types;
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
 		if (tagMap != null) {
 	        for (final String key: tagMap.keySet()) {
