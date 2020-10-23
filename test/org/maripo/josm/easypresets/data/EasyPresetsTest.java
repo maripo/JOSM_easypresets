@@ -15,6 +15,11 @@ import org.openstreetmap.josm.data.preferences.JosmBaseDirectories;
 import org.openstreetmap.josm.data.preferences.JosmUrls;
 import org.openstreetmap.josm.spi.preferences.Config;
 
+/**
+ * Use JUnit5
+ * @author hayashi
+ *
+ */
 class EasyPresetsTest {
 
 	@BeforeAll
