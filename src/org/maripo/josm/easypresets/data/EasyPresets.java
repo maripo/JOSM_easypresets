@@ -143,12 +143,15 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 						String locale = preset.getLocaleName();
 						String raw = preset.getRawName();
 						String path = raw.substring(0, raw.length() - locale.length());
+						if (!path.startsWith(this.name)) {
+							path = this.name + GroupStack.SEPA + path;
+						}
 						EasyPresets pp = stack.pop(path);
 						if (pp == null) {
 							pp = this;
 						}
 						if (preset instanceof TaggingPresetMenu) {
-							if (!locale.contentEquals("Custom Presets")) {
+							if (!locale.contentEquals(this.name)) {
 								EasyPresets group = new EasyPresets(pp);
 								group.setLocaleName(locale);
 								stack.push(group);
