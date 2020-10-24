@@ -45,6 +45,7 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 public class ManagePresetsDialog extends ExtendedDialog implements ListSelectionListener {
 	private JTextField uiGroupName;
 	private JButton folderButton;
+	private JButton organizeButton;
 	private JButton createButton;
 	private JButton editButton;
 	private JButton copyButton;
@@ -181,8 +182,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		reorderDownButton.setToolTipText(tr("Move down"));
 
 		folderButton = new JButton();
-		folderButton.setToolTipText(tr("Create Preset"));
-		ImageProvider img = new ImageProvider("open");
+		folderButton.setToolTipText(tr("Create a group"));
+		ImageProvider img = new ImageProvider("folder_create");
 		img.setSize(ImageSizes.LARGEICON);
 		folderButton.setIcon(img.get());
 		folderButton.addActionListener(new ActionListener() {
@@ -193,9 +194,20 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		});
 		folderButton.setEnabled(true);
 		
+		organizeButton = new JButton();
+		organizeButton.setToolTipText(tr("Organize"));
+		organizeButton.setIcon(ImageProvider.get("folder_move", ImageSizes.LARGEICON));
+		organizeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				organize();
+			}
+		});
+		organizeButton.setEnabled(true);
+		
 		createButton = new JButton();
-		createButton.setToolTipText(tr("Create Preset"));
-		createButton.setIcon(ImageProvider.get("dialogs", "add", ImageSizes.LARGEICON));
+		createButton.setToolTipText(tr("Create a preset"));
+		createButton.setIcon(ImageProvider.get("easypresets_add", ImageSizes.LARGEICON));
 		createButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -242,6 +254,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 
 		buttons.add(reorderUpButton, GBC.eol());
 		buttons.add(reorderDownButton, GBC.eol());
+		buttons.add(organizeButton, GBC.eol());
 		buttons.add(folderButton, GBC.eol());
 		buttons.add(createButton, GBC.eol());
 		buttons.add(editButton, GBC.eol());
@@ -283,6 +296,10 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		presets.insertElementAt(folder, i);
 		ManagePresetsDialog dialog = new ManagePresetsDialog(this.tagMap, this.targetTypes, folder, presets, i);
 		dialog.showDialog();
+	}
+	
+	protected void organize () {
+		System.out.println("TODO open \"move\" dialog");
 	}
 
 	protected void create() {
