@@ -17,7 +17,7 @@ public class ParameterPanelName extends ParameterPanel {
             return false;
         }
         if (text.trim().length() > 0) {
-        	if (text.contentEquals(ngword)) {
+        	if ((ngword != null) && text.contentEquals(ngword)) {
         		return false;
         	}
         	else {
