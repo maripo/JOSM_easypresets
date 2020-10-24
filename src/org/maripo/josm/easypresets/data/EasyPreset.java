@@ -210,6 +210,5 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry {
 	public void addListDataListener(GroupPresetMenu groupPresetMenu) {
 		// TODO Auto-generated method stub
 		System.out.println("EasyPreset.addListDataListener(...)");
-
 	}
 }

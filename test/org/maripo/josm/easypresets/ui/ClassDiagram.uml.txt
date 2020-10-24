@@ -1,15 +1,9 @@
 @startuml
-org.openstreetmap.josm.actions.JosmAction <|-- CreatePresetAction
 
-class CreatePresetAction {
+class CreatePresetAction extends org.openstreetmap.josm.actions.JosmAction {
 	root : EasyPresets
 	void actionPerformed(ActionEvent)
 }
-
-JPanel <|-- ParameterPanel
-ParamAction <|-- ParameterPanel
-
-ParameterPanel <|-- ParameterPanelName
 
 interface ParamAction {
 	boolean isEnabled()
@@ -17,26 +11,22 @@ interface ParamAction {
 	string getText()
 }
 
-class ParameterPanel {
+class ParameterPanel extends JPanel implements ParamAction {
 	argField : JTextField
 	void setText(string)
 	string getText()
 }
 
-class ParameterPanelName {
+class ParameterPanelName extends ParameterPanel {
 	ngword : string
 	bool isEnabled()
 }
-
-org.openstreetmap.josm.gui.ExtendedDialog <|-- ExportDialog
-org.openstreetmap.josm.gui.ExtendedDialog <|-- ManagePresetsDialog
-javax.swing.event.ListSelectionListener <|-- ManagePresetsDialog
 
 Interface javax.swing.event.ListSelectionListener {
 	void valueChanged(ListSelectionEvent)
 }
 
-class ManagePresetsDialog {
+class ManagePresetsDialog extends org.openstreetmap.josm.gui.ExtendedDialog implements javax.swing.event.ListSelectionListener {
 	uiGroupName : JButton
 	folderButton : JButton
 	createButton : JButton
@@ -50,7 +40,7 @@ class ManagePresetsDialog {
 
 ExportDialog *-- ParameterPanelName
 ExportDialog *-- "*" PresetWrapper
-class ExportDialog {
+class ExportDialog extends org.openstreetmap.josm.gui.ExtendedDialog {
 	presets : EasyPresetsClass
 	alertLabel : JLabel
 }
@@ -61,16 +51,13 @@ class PresetWrapper {
 	preset : PresetsEntry
 }
 
-org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu <|-- GroupPresetMenu
-javax.swing.event.ListDataListener <|-- GroupPresetMenu
-
 interface javax.swing.event.ListDataListener {
 	void contentsChanged(ListDataEvent)
 	void intervalAdded(ListDataEvent)
 	void intervalRemoved(ListDataEvent)
 }
 
-class GroupPresetMenu {
+class GroupPresetMenu extends org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu implements javax.swing.event.ListDataListener {
 	model : EasyPresets
 	void updatePresetListMenu()
 }
