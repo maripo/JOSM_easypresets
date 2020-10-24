@@ -16,6 +16,7 @@ interface IconPickerDialogListener {
 }
 
 class PresetEditorDialog extends org.openstreetmap.josm.gui.ExtendedDialog {
+	-uiPresetName : JTextField
 	-uiURL : JTextField
 	-icon : Icon
 	-iconPath : String
@@ -36,7 +37,6 @@ PresetEditorDialog "defaultTypes" - "*" TaggingPresetType
 
 PresetEditorDialog *-- org.maripo.josm.easypresets.data.EasyPreset : presetToEdit
 PresetEditorDialog *-- org.maripo.josm.easypresets.data.EasyPresets : parentPresets
-PresetEditorDialog *-- org.maripo.josm.easypresets.ui.ParameterPanelName : uiPresetName"
 
 class TargetType {
 	JCheckBox createCheckbox()
