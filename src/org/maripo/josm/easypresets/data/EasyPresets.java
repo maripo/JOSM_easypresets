@@ -138,28 +138,30 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			try (Reader reader = UTFInputStreamReader.create(new FileInputStream(file))) {
 				final Collection<TaggingPreset> readResult = TaggingPresetReader.readAll(reader, true);
 				if (readResult != null) {
-					GroupStack stack = new GroupStack();
-					TaggingPresets.addTaggingPresets(readResult);
+					GroupStack stack = new GroupStack(this);
 					for (TaggingPreset preset : readResult) {
-						//String fullName = preset.getName();
 						String locale = preset.getLocaleName();
 						String raw = preset.getRawName();
 						String path = raw.substring(0, raw.length() - locale.length());
+						if (!path.startsWith(this.name)) {
+							path = this.name + GroupStack.SEPA + path;
+						}
 						EasyPresets pp = stack.pop(path);
 						if (pp == null) {
 							pp = this;
 						}
 						if (preset instanceof TaggingPresetMenu) {
-							EasyPresets group = new EasyPresets(pp);
-							group.setLocaleName(locale);
-							stack.push(group);
-							pp.addElement(group);
+							if (!locale.contentEquals(this.name)) {
+								EasyPresets group = new EasyPresets(pp);
+								group.setLocaleName(locale);
+								stack.push(group);
+								pp.addElement(group);
+							}
 						}
 						else {
 							EasyPreset tags = new EasyPreset((TaggingPreset)preset, pp);
 							pp.addElement(tags);
 						}
-						preset.setDisplayName();
 					}
 				}
 			} catch (FileNotFoundException e) {
@@ -206,30 +208,10 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			doc.appendChild(presetsElement);
 			
 			// XML element <presets><group>
-			Element groupElement = presetsElement;
-			if (!isRoot()) {
-				groupElement = getGroupElement(doc);
-			}
+			Element groupElement = getGroupElement(doc);
 			
-			// XML element <presets><group><item>
-			List<PresetsEntry> list = this.getEntry();
-			for (PresetsEntry preset: list) {
-				if (preset instanceof EasyPreset) {
-					Element itemElement = ((EasyPreset)preset).getItemElement(doc);
-					groupElement.appendChild(itemElement);
-				}
-				else if (preset instanceof EasyPresets) {
-					if (!((EasyPresets)preset).isEmpty()) {
-						Element itemElement = ((EasyPresets)preset).getGroupElement(doc);
-						groupElement.appendChild(itemElement);
-					}
-				}
-			}
-			
-			if (!isRoot()) {
-				if (groupElement.hasChildNodes()) {
-					presetsElement.appendChild(groupElement);
-				}
+			if (groupElement.hasChildNodes()) {
+				presetsElement.appendChild(groupElement);
 			}
 
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -276,10 +258,17 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	}
 	
 	Element getGroupElement(Document doc) {
-		Element groupElement = doc.createElement("group");
 		String name = this.getLocaleName();
+		return getGroupElement(doc, name);
+	}
+
+	Element getGroupElement(Document doc, String name) {
+		Element groupElement = doc.createElement("group");
 		if (name != null) {
 			groupElement.setAttribute("name", name);
+		}
+		else {
+			groupElement.setAttribute("name", tr("Custom Presets"));
 		}
 		List<PresetsEntry> list = this.getEntry();
 		for (PresetsEntry preset: list) {
@@ -415,9 +404,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	public String getRawName() {
 		String locale = "";
 		if (this.parent != null) {
-			if (!this.parent.isRoot()) {
-				locale += this.parent.getRawName();
-			}
+			locale += this.parent.getRawName();
 		}
 		if (!locale.isEmpty()) {
 			locale += "/";

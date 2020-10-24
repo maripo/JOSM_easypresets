@@ -27,27 +27,30 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry {
 	private EasyPresets parent = null;
 
 	public EasyPreset() {
-		super();
-		name = tr("New Preset");
-		this.parent = null;
+		this(null, null);
 	}
 	
 	public EasyPreset(TaggingPreset src, EasyPresets parent) {
 		super();
 		this.parent = parent;
-		this.name = src.name;
-		this.setIcon(src.iconName);
-		for (TaggingPresetItem fromItem: src.data) {
-			TaggingPresetItem item = clonePresetTag(fromItem);
-			if (item != null) {
-				this.data.add(item);
+		if (src == null) {
+			this.name = tr("New Preset");
+		}
+		else {
+			this.name = src.name;
+			this.setIcon(src.iconName);
+			for (TaggingPresetItem fromItem: src.data) {
+				TaggingPresetItem item = clonePresetTag(fromItem);
+				if (item != null) {
+					this.data.add(item);
+				}
+			}
+			this.types = EnumSet.noneOf(TaggingPresetType.class);
+			if (src.types != null) {
+				this.types.addAll(src.types);
 			}
 		}
-		this.types = EnumSet.noneOf(TaggingPresetType.class);
-		if (src.types != null) {
-			this.types.addAll(src.types);
-		}
-		this.setDisplayName();
+		this.setDisplayName();	// for JOSM menu [presets]-[find preset... F3]
 	}
 	
 	public EasyPreset copy() {
@@ -207,6 +210,5 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry {
 	public void addListDataListener(GroupPresetMenu groupPresetMenu) {
 		// TODO Auto-generated method stub
 		System.out.println("EasyPreset.addListDataListener(...)");
-
 	}
 }

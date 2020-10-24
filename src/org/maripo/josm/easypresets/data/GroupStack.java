@@ -5,6 +5,27 @@ import java.util.ArrayList;
 public class GroupStack {
 	private ArrayList<EasyPresets> stack = new ArrayList<>();
 	static final String SEPA = "/";
+	EasyPresets root;
+	
+	public GroupStack() {
+		super();
+		root = null;
+	}
+	
+	public GroupStack(EasyPresets root) {
+		this();
+		setRoot(root);
+	}
+	
+	public void setRoot(EasyPresets item) {
+		clear();
+		this.root = item;
+		push(this.root);
+	}
+	
+	public void clear() {
+		stack.clear();
+	}
 	
 	public void push(EasyPresets item) {
 		stack.add(item);
@@ -22,19 +43,20 @@ public class GroupStack {
 
 	public EasyPresets pop(String rawName) {
 		if (rawName.isEmpty()) {
-			stack.clear();
-			return null;
+			setRoot(root);
+			return root;
 		}
 		if (rawName.endsWith(SEPA)) {
 			rawName = rawName.substring(0, rawName.length()-SEPA.length());
 		}
 		while (stack.size() > 0) {
 			EasyPresets item = getLast();
-			if (item.getLocaleName().equals(rawName)) {
+			if (item.getRawName().equals(rawName)) {
 				return item;
 			}
 			pop();
 		}
-		return null;
+		setRoot(root);
+		return root;
 	}
 }

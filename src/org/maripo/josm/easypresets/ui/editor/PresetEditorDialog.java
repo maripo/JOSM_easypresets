@@ -46,7 +46,6 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
  */
 @SuppressWarnings("serial")
 public class PresetEditorDialog extends ExtendedDialog {
-	
 	private JTextField uiPresetName;
 	private JTextField uiURL;
 	private JCheckBox uiIncludeName; // Check to include name label
@@ -113,12 +112,12 @@ public class PresetEditorDialog extends ExtendedDialog {
 		super(MainApplication.getMainFrame(), tr("Preset Editor"));
 		this.index = index;
 		this.parentPresets = parentPresets;
-		name = preset.getLocaleName();
-		referenceURL = findURL(preset);
-		icon = preset.getIcon();
-		iconPath = preset.iconName;
+		this.name = preset.getLocaleName();
+		this.referenceURL = findURL(preset);
+		this.icon = preset.getIcon();
+		this.iconPath = preset.iconName;
 		this.presetToEdit = preset.clone();
-		defaultTypes = preset.types;
+		this.defaultTypes = preset.types;
 		List<TagEditor> tagEditors = new ArrayList<TagEditor>();
 		if (tagMap != null) {
 	        for (final String key: tagMap.keySet()) {
@@ -165,6 +164,7 @@ public class PresetEditorDialog extends ExtendedDialog {
 		targetTypes.add(new TargetType(TaggingPresetType.MULTIPOLYGON));
 		
 		final JPanel mainPane = new JPanel(new GridBagLayout());
+		
 		mainPane.add(new JLabel(tr("PresetEditorDialogreset Name") + ":"),  GBC.std().insets(0, 0, 0, 10).anchor(GBC.WEST));
 		uiPresetName = new JTextField(16);
 		uiPresetName.setText(name);
@@ -338,8 +338,10 @@ public class PresetEditorDialog extends ExtendedDialog {
 		if (presetToEdit != null) {
 			String str = uiPresetName.getText().trim();
 			if ((str == null) || (str.length() < 1)) {
-				uiPresetName.setText(presetToEdit.getName());
+				str = presetToEdit.getName();
+				uiPresetName.setText(str);
 			}
+			presetToEdit.name = str;
 			this.parentPresets.setElementAt(applyToPreset(presetToEdit), index);
 		} else {
 			// New preset
