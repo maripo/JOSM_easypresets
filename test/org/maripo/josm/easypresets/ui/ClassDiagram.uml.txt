@@ -27,15 +27,19 @@ Interface javax.swing.event.ListSelectionListener {
 }
 
 class ManagePresetsDialog extends org.openstreetmap.josm.gui.ExtendedDialog implements javax.swing.event.ListSelectionListener {
-	uiGroupName : JButton
-	folderButton : JButton
-	createButton : JButton
-	editButton : JButton
-	copyButton : JButton
-	deleteButton : JButton
-	reorderUpButton : JButton
-	reorderDownButton : JButton
-	void dispose()
+	-uiGroupName : JTextField
+	-folderButton : JButton
+	-createButton : JButton
+	-editButton : JButton
+	-copyButton : JButton
+	-deleteButton : JButton
+	-reorderUpButton : JButton
+	-reorderDownButton : JButton
+	+void dispose()
+	~void close()
+	~boolean isSelectionValid()
+	+void valueChanged(ListSelectionEvent)
+	~PresetsEntry getSelectedPreset()
 }
 
 ExportDialog *-- ParameterPanelName
@@ -58,9 +62,10 @@ interface javax.swing.event.ListDataListener {
 }
 
 class GroupPresetMenu extends org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu implements javax.swing.event.ListDataListener {
-	model : EasyPresets
 	void updatePresetListMenu()
 }
+
+org.maripo.josm.easypresets.data.EasyPresets "model" --* GroupPresetMenu
 
 org.maripo.josm.easypresets.EasyPresetsPlugin *-- GroupPresetMenu
 
