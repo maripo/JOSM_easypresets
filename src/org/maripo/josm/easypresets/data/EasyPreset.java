@@ -55,7 +55,9 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry {
 	
 	public EasyPreset copy() {
 		EasyPreset preset = EasyPreset.clone(this, this.parent);
-		preset.name = tr("Copy of {0}", this.name);
+		preset.name = "Copy of "+ this.getRawName();
+		preset.locale_name = tr("Copy of {0}", this.getRawName());
+		preset.setDisplayName();
 		return preset;
 	}
 
