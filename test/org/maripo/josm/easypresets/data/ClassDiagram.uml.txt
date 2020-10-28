@@ -48,6 +48,8 @@ class EasyPresets extends javax.swing.DefaultListModel implements java.beans.Pro
 	+void addListDataListener(GroupPresetMenu)
 }
 
+org.maripo.josm.easypresets.EasyPresetsPlugin *-- EasyPresets
+
 class DummyPresetClass extends org.openstreetmap.josm.gui.tagging.presets.items.Text {
 	+String getLocaleText(text, textContext)
 }

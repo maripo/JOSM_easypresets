@@ -61,4 +61,7 @@ class GroupPresetMenu extends org.openstreetmap.josm.gui.tagging.presets.Tagging
 	model : EasyPresets
 	void updatePresetListMenu()
 }
+
+org.maripo.josm.easypresets.EasyPresetsPlugin *-- GroupPresetMenu
+
 @enduml
