@@ -292,7 +292,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			i = list.getSelectedIndex();
 		}
 		EasyPresets folder = new EasyPresets(presets);
-		folder.setLocaleName(tr("NewGroup"));
+		folder.setName(tr("NewGroup"));
 		presets.insertElementAt(folder, i);
 		ManagePresetsDialog dialog = new ManagePresetsDialog(this.tagMap, this.targetTypes, folder, presets, i);
 		dialog.showDialog();
@@ -378,7 +378,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	protected void close() {
 		String str = uiGroupName.getText().trim();
-		this.presets.setLocaleName(str);
+		this.presets.setName(str);
 		if (this.presets.isRoot()) {
 			this.presets.saveTo();
 		}

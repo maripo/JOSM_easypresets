@@ -57,7 +57,7 @@ import org.xml.sax.SAXException;
  *
  */
 @SuppressWarnings("serial")
-public class EasyPresets extends DefaultListModel<PresetsEntry> implements PropertyChangeListener, PresetsEntry {
+public class EasyPresets extends DefaultListModel<PresetsEntry> implements PropertyChangeListener, PresetsEntry, Cloneable {
 	private static final String FILE_NAME = "EasyPresets.xml";
 	private static final String[] PRESET_FORMAT_URLS = {
 			"https://josm.openstreetmap.de/wiki/TaggingPresets",
@@ -153,7 +153,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 						if (preset instanceof TaggingPresetMenu) {
 							if (!locale.contentEquals(this.name)) {
 								EasyPresets group = new EasyPresets(pp);
-								group.setLocaleName(locale);
+								group.setName(locale);
 								stack.push(group);
 								pp.addElement(group);
 							}
@@ -393,12 +393,12 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
      */
 	@Override
 	public String getLocaleName() {
-        return this.name;
+        return tr(this.name);
 	}
 	
 	@Override
 	public String getName() {
-        return this.getLocaleName();
+        return this.name;
 	}
 	
 	public String getRawName() {
@@ -417,24 +417,43 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
      * Returns the translated name of this preset, prefixed with the group names it belongs to.
      * @return the translated name of this preset, prefixed with the group names it belongs to
      */
-	public void setLocaleName(String name) {
+	public void setName(String name) {
         this.name = name;
 	}
 
 	@Override
 	public PresetsEntry copy() {
-		EasyPresets preset = EasyPresets.clone(this);
-		preset.name = tr("Copy of {0}", this.name);
-		return preset;
+		try {
+			EasyPresets preset = this.clone();
+			preset.name = tr("Copy of {0}", this.name);
+			return preset;
+		}
+		catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@Override
-	public EasyPresets clone() {
-		return EasyPresets.clone(this);
+	public EasyPresets clone() throws CloneNotSupportedException {
+		EasyPresets obj = new EasyPresets(this.parent);
+		obj.setName(getName());
+		obj.parent = this.parent;
+		List<PresetsEntry> entries = this.getEntry();
+		for (PresetsEntry entry : entries) {
+			if (entry instanceof EasyPreset) {
+				obj.addElement(((EasyPreset) entry).clone());
+			}
+			else if (entry instanceof EasyPresets) {
+				obj.addElement(((EasyPresets) entry).clone());
+			}
+		}
+		return obj;
 	}
+	/*
 	static EasyPresets clone(EasyPresets src) {
 		return new EasyPresets();
-	}
+	}*/
 
 	@Override
 	public void addListDataListener(GroupPresetMenu groupPresetMenu) {

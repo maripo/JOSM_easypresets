@@ -50,7 +50,7 @@ class EasyPresetsTest {
 		try {
 			File file = new File("test/resources/CustomPresets.xml");
 			EasyPresets root = new EasyPresets();
-			root.setLocaleName(tr("Custom Presets"));
+			root.setName(tr("Custom Presets"));
 			root.load(file);
 			
 			// check
@@ -93,7 +93,7 @@ class EasyPresetsTest {
 		try {
 			File file = new File("test/resources/EasyPresets-001.xml");
 			EasyPresets root = new EasyPresets();
-			root.setLocaleName(tr("Custom Presets"));
+			root.setName(tr("Custom Presets"));
 			root.load(file);
 			
 			// check
@@ -150,7 +150,7 @@ class EasyPresetsTest {
 		try {
 			File file = new File("test/resources/EasyPresets-002.xml");
 			EasyPresets root = new EasyPresets();
-			root.setLocaleName(tr("Custom Presets"));
+			root.setName(tr("Custom Presets"));
 			root.load(file);
 			
 			// check
@@ -245,7 +245,7 @@ class EasyPresetsTest {
 		try {
 			File file = new File("test/resources/EasyPresets-003.xml");
 			EasyPresets root = new EasyPresets();
-			root.setLocaleName(tr("Custom Presets"));
+			root.setName(tr("Custom Presets"));
 			root.load(file);
 			
 			// check
@@ -333,7 +333,7 @@ class EasyPresetsTest {
 		try {
 			File file = new File("test/resources/EasyPresets-004.xml");
 			EasyPresets root = new EasyPresets();
-			root.setLocaleName(tr("Custom Presets"));
+			root.setName(tr("Custom Presets"));
 			root.load(file);
 			
 			// check

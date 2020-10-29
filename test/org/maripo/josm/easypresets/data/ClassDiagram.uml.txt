@@ -14,7 +14,7 @@ class EasyPreset extends org.openstreetmap.josm.gui.tagging.presets.TaggingPrese
 
 EasyPreset "parent" --> EasyPresets
 
-class EasyPresets extends javax.swing.DefaultListModel implements java.beans.PropertyChangeListener, PresetsEntry {
+class EasyPresets extends javax.swing.DefaultListModel implements java.beans.PropertyChangeListener, PresetsEntry, Cloneable {
 	-FILE_NAME : String
 	-PRESET_FORMAT_URLS : String[]
 	+PLUGIN_HELP_URL : String

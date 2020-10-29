@@ -238,7 +238,7 @@ public class ExportDialog extends ExtendedDialog {
 		}
 		
 		EasyPresets root = new EasyPresets();
-		root.setLocaleName(presetsNamePane.getText());
+		root.setName(presetsNamePane.getText());
 		for (PresetsEntry preset : selectedPresets) {
 			root.addElement(preset);
 		}
