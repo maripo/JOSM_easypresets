@@ -1,17 +1,18 @@
 @startuml
 
-class EasyPreset extends org.openstreetmap.josm.gui.tagging.presets.TaggingPreset implements PresetsEntry {
+class EasyPreset extends org.openstreetmap.josm.gui.tagging.presets.TaggingPreset implements PresetsEntry, Cloneable {
 	parent : EasyPresets
 	-pcs : PropertyChangeSupport
 	+EasyPreset copy()
-	+EasyPreset clone(this, this.parent)
+	+EasyPreset clone()
 	+addPropertyChangeListener(PropertyChangeListener)
 	+void removePropertyChangeListener(PropertyChangeListener)
 	+int getSize()
 	+void addListDataListener(GroupPresetMenu)
-	-TaggingPresetItem clonePresetTag(TaggingPresetItem)
 	~Element getItemElement(Document)
 }
+
+EasyPreset "parent" --> EasyPresets
 
 class EasyPresets extends javax.swing.DefaultListModel implements java.beans.PropertyChangeListener, PresetsEntry {
 	-FILE_NAME : String
@@ -48,7 +49,7 @@ class EasyPresets extends javax.swing.DefaultListModel implements java.beans.Pro
 	+void addListDataListener(GroupPresetMenu)
 }
 
-org.maripo.josm.easypresets.EasyPresetsPlugin *-- EasyPresets
+org.maripo.josm.easypresets.EasyPresetsPlugin "root" *-- EasyPresets
 
 class DummyPresetClass extends org.openstreetmap.josm.gui.tagging.presets.items.Text {
 	+String getLocaleText(text, textContext)

@@ -22,7 +22,7 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Text;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class EasyPreset extends TaggingPreset implements PresetsEntry {
+public class EasyPreset extends TaggingPreset implements PresetsEntry, Cloneable {
 	private static final long serialVersionUID = -7626914563011340418L;
 	private EasyPresets parent = null;
 
@@ -54,7 +54,7 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry {
 	}
 	
 	public EasyPreset copy() {
-		EasyPreset preset = EasyPreset.clone(this, this.parent);
+		EasyPreset preset = this.clone();
 		preset.name = "Copy of "+ this.getRawName();
 		preset.locale_name = tr("Copy of {0}", this.getRawName());
 		preset.setDisplayName();
@@ -63,11 +63,14 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry {
 
 	@Override
 	public EasyPreset clone() {
-		return EasyPreset.clone(this, this.parent);
-	}
-	
-	public static EasyPreset clone(TaggingPreset src, EasyPresets parent) {
-		return new EasyPreset(src, parent);
+		EasyPreset obj = null;
+		try {
+			obj = new EasyPreset((TaggingPreset)super.clone(), this.parent);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return obj;
 	}
 	
 	private static TaggingPresetItem clonePresetTag(TaggingPresetItem itemFrom) {
