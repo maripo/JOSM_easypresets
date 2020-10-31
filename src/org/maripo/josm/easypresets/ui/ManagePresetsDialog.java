@@ -68,6 +68,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	 * @param tagMap		selected POI Tags
 	 * @param presetTypes	selected POI Types
 	 * @param presets		EasyPresets
+	 * @param parent		uppper class EasyPresets
+	 * @param index			index of list
 	 */
 	public ManagePresetsDialog (
 			Map<String,Map<String, Integer>> tagMap, 
@@ -203,7 +205,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 				organize();
 			}
 		});
-		organizeButton.setEnabled(true);
+		organizeButton.setEnabled(false);
 		
 		createButton = new JButton();
 		createButton.setToolTipText(tr("Create a preset"));
@@ -298,7 +300,11 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		dialog.showDialog();
 	}
 	
+	/*
+	 * button action "Organize / Folder_move"
+	 */
 	protected void organize () {
+		// TODO
 		System.out.println("TODO open \"move\" dialog");
 	}
 
@@ -347,7 +353,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			return false;
 		}
 	}
-	
+
 	private boolean confirmDelete() {
 		ExtendedDialog dialog = new ExtendedDialog(
 			MainApplication.getMainFrame(),
@@ -403,12 +409,14 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			createButton.setEnabled(false);
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(false);
+			organizeButton.setEnabled(false);
 			return;
 		}
 		folderButton.setEnabled(true);
 		createButton.setEnabled(true);
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
+		organizeButton.setEnabled(true);
 		copyButton.setEnabled(true);
 	}
 	

@@ -1,4 +1,5 @@
 @startuml
+"org.maripo.josm.easypresets.ui.*"
 
 class CreatePresetAction extends org.openstreetmap.josm.actions.JosmAction {
 	root : EasyPresets
@@ -29,6 +30,7 @@ Interface javax.swing.event.ListSelectionListener {
 class ManagePresetsDialog extends org.openstreetmap.josm.gui.ExtendedDialog implements javax.swing.event.ListSelectionListener {
 	-uiGroupName : JTextField
 	-folderButton : JButton
+	-organizeButton : JButton
 	-createButton : JButton
 	-editButton : JButton
 	-copyButton : JButton

@@ -223,11 +223,11 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			StreamResult result = new StreamResult(file);
 			transformer.transform(source, result);
 		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+            Logging.warn(e);
 		} catch (TransformerConfigurationException e) {
-			e.printStackTrace();
+            Logging.warn(e);
 		} catch (TransformerException e) {
-			e.printStackTrace();
+            Logging.warn(e);
 		}
 	}
 
@@ -401,6 +401,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
         return this.name;
 	}
 	
+	@Override
 	public String getRawName() {
 		String locale = "";
 		if (this.parent != null) {
@@ -415,8 +416,8 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 
     /**
      * Returns the translated name of this preset, prefixed with the group names it belongs to.
-     * @return the translated name of this preset, prefixed with the group names it belongs to
-     */
+	 * @param name	name of EasyPresets
+	 */
 	public void setName(String name) {
         this.name = name;
 	}

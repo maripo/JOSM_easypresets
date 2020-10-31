@@ -19,6 +19,7 @@ import org.openstreetmap.josm.gui.tagging.presets.items.Label;
 import org.openstreetmap.josm.gui.tagging.presets.items.Link;
 import org.openstreetmap.josm.gui.tagging.presets.items.MultiSelect;
 import org.openstreetmap.josm.gui.tagging.presets.items.Text;
+import org.openstreetmap.josm.tools.Logging;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -53,6 +54,7 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry, Cloneable
 		this.setDisplayName();	// for JOSM menu [presets]-[find preset... F3]
 	}
 	
+	@Override
 	public EasyPreset copy() {
 		EasyPreset preset = this.clone();
 		preset.name = "Copy of "+ this.getRawName();
@@ -68,7 +70,7 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry, Cloneable
 			obj = new EasyPreset((TaggingPreset)super.clone(), this.parent);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+            Logging.error(e);
 		}
 		return obj;
 	}
@@ -197,12 +199,12 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry, Cloneable
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	@Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
     }
     
     @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
+    public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.removePropertyChangeListener(listener);
     }
 
@@ -212,7 +214,7 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry, Cloneable
 	}
 
 	@Override
-	public void addListDataListener(GroupPresetMenu groupPresetMenu) {
+	public synchronized void addListDataListener(GroupPresetMenu groupPresetMenu) {
 		// TODO Auto-generated method stub
 		System.out.println("EasyPreset.addListDataListener(...)");
 	}

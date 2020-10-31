@@ -19,7 +19,7 @@ class EasyPresets extends javax.swing.DefaultListModel implements java.beans.Pro
 	-PRESET_FORMAT_URLS : String[]
 	+PLUGIN_HELP_URL : String
 	~parent : EasyPresets
-	
+
 	+String getXMLPath()
 	+boolean isRoot()
 	+List<PresetsEntry> getEntry()
@@ -43,7 +43,7 @@ class EasyPresets extends javax.swing.DefaultListModel implements java.beans.Pro
 	+String getLocaleName()
 	+String getName()
 	+String getRawName()
-	+void setLocaleName(String)
+	+void setName(String)
 	+PresetsEntry copy()
 	+EasyPresets clone()
 	+void addListDataListener(GroupPresetMenu)
