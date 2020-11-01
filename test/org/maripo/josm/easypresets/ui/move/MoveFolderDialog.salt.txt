@@ -8,7 +8,6 @@
    }
    {^ "(listPane)"
     {
-     0: EasyPresets (parent)
      1: EasyPresets (group)
      2: EasyPresets (group)
      3: EasyPresets (group)
@@ -19,7 +18,7 @@
   }
   {^ "(buttonPane)"
    {
-    [Move] | [Close]
+    [Move to upper group] | [Move] | [Cancel]
    }
   }
  }

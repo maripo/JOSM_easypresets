@@ -33,6 +33,7 @@ public class MoveFolderDialog extends ExtendedDialog implements ListSelectionLis
 	
 	JLabel alertLabel;
 	JList<PresetsEntry> list;
+	JButton moveParentButton;
 	JButton moveButton;
 
 	public MoveFolderDialog (PresetsEntry entry) throws CloneNotSupportedException {
@@ -71,8 +72,6 @@ public class MoveFolderDialog extends ExtendedDialog implements ListSelectionLis
 		EasyPresets groupList = parent.clone();
 		groupList.removeAllElements();
 		
-		// TODO Listup Parent Group
-		
 		PresetsEntry[] array = (PresetsEntry[])parent.toArray();
 		for (PresetsEntry ent : array) {
 			if (ent instanceof EasyPresets) {
@@ -103,12 +102,27 @@ public class MoveFolderDialog extends ExtendedDialog implements ListSelectionLis
 	/**
 	 * 
 	 * buttonPane:Grid
+	 * buttonPane:Grid:0 -- moveParentButton
 	 * buttonPane:Grid:1 -- moveButton
 	 * buttonPane:Grid:2 -- cancelButton
 	 * 
 	 * @return buttonPane
 	 */
 	private JPanel getButtonPanel() {
+		moveParentButton = new JButton(tr("Move to upper group"));
+		moveParentButton.setEnabled(false);
+		moveParentButton.addActionListener(new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				moveParent();
+			}
+		});
+
+		EasyPresets pp = parent.getParent();
+		if (pp != null) {
+			moveParentButton.setEnabled(true);
+		}
+		
 		moveButton = new JButton(tr("Move to"));
 		moveButton.setEnabled(false);
 		moveButton.addActionListener(new ActionListener () {
@@ -127,9 +141,19 @@ public class MoveFolderDialog extends ExtendedDialog implements ListSelectionLis
 		});
 		
 		final JPanel buttonPane = new JPanel(new GridBagLayout());
+		buttonPane.add(moveParentButton, GBC.std());
 		buttonPane.add(moveButton, GBC.std());
 		buttonPane.add(cancelButton, GBC.eol());
 		return buttonPane;
+	}
+	
+	protected void moveParent() {
+		EasyPresets pp = parent.getParent();
+		if (pp != null) {
+			pp.addElement(entry);
+			parent.removeElement(entry);
+			dispose();
+		}
 	}
 	
 	protected void move() {
