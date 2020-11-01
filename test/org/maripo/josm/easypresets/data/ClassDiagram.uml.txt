@@ -8,6 +8,7 @@ class EasyPreset extends org.openstreetmap.josm.gui.tagging.presets.TaggingPrese
 	+addPropertyChangeListener(PropertyChangeListener)
 	+void removePropertyChangeListener(PropertyChangeListener)
 	+int getSize()
+	+EasyPresets getParent()
 	+void addListDataListener(GroupPresetMenu)
 	~Element getItemElement(Document)
 }
@@ -42,6 +43,7 @@ class EasyPresets extends javax.swing.DefaultListModel implements java.beans.Pro
 	+Icon getIcon()
 	+String getLocaleName()
 	+String getName()
+	+EasyPresets getParent()
 	+String getRawName()
 	+void setName(String)
 	+PresetsEntry copy()
@@ -75,6 +77,7 @@ interface PresetsEntry {
 	String getLocaleName();
 	String getRawName();
 	PresetsEntry copy();
+	EasyPresets getParent();
 	void addListDataListener(GroupPresetMenu);
 }
 

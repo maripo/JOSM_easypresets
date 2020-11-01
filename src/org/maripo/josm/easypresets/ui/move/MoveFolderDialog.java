@@ -3,88 +3,50 @@ package org.maripo.josm.easypresets.ui.move;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.data.PresetsEntry;
+import org.maripo.josm.easypresets.ui.PresetRenderer;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.tools.GBC;
 
-public class MoveFolderDialog extends ExtendedDialog {
+public class MoveFolderDialog extends ExtendedDialog implements ListSelectionListener {
 	private static final long serialVersionUID = -5956713655196705733L;
 	PresetsEntry entry;
 	EasyPresets parent;
 	
 	JLabel alertLabel;
-	List<GroupWrapper> wrappers = new ArrayList<>();
-		
-	public MoveFolderDialog (EasyPresets parent, PresetsEntry entry) {
+	JList<PresetsEntry> list;
+	JButton moveButton;
+
+	public MoveFolderDialog (PresetsEntry entry) throws CloneNotSupportedException {
 		super(MainApplication.getMainFrame(), tr("Organize"));
 		this.entry = entry;
-		this.parent = parent;
+		this.parent = entry.getParent();
 		initUI();
 	}
 
-	static class GroupWrapper {
-		JCheckBox checkbox;
-		JLabel  label;
-		PresetsEntry entry;
-		
-		public GroupWrapper(PresetsEntry entry) {
-			this.entry = entry;
-			checkbox = new JCheckBox();
-			label = new JLabel();
-			label.setIcon(this.entry.getIcon());
-			label.setText(this.entry.getLocaleName());
-		}
-
-		public JCheckBox getCheckbox() {
-			return checkbox;
-		}
-
-		public Component getLabel() {
-			return label;
-		}
-	}
-
-	private void initUI() {
-		// mainPane:Grid
-		// mainPane:Grid:1 -- JLabel
-		// mainPane:Grid:2 -- listPane:Grid
-		// mainPane:Grid:3 -- alertLabel
-		final JPanel mainPane = getMainPane();
-
-		// buttonPane:Grid
-		// buttonPane:Grid:1 -- moveButton
-		// buttonPane:Grid:2 -- cancelButton
-		final JPanel buttonPane = getButtonPanel();
-		
-		// basePane:Box
-		// basePane:Box:1 -- mainPane
-		// basePane:Box:2 -- buttonPane
+	private void initUI() throws CloneNotSupportedException {
 		JPanel basePanel = new JPanel();
 		basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.Y_AXIS));
-		basePanel.add(mainPane);
-		basePanel.add(buttonPane);
-		
-		// ExportDialog:1 -- basePane
+		basePanel.add(getMainPane());
+		basePanel.add(getButtonPanel());
 		setContent(basePanel);
 		
         SwingUtilities.invokeLater(new Runnable() {
@@ -103,23 +65,27 @@ public class MoveFolderDialog extends ExtendedDialog {
 	 * mainPane:Grid:3 -- alertLabel
 	 * 
 	 * @return mainPane
+	 * @throws CloneNotSupportedException Clone not supported
 	 */
-	private JPanel getMainPane() {
-		JPanel listPane = new JPanel(new GridBagLayout());
-
-		final JPanel list = new JPanel(new GridBagLayout());
-		list.setBackground(Color.WHITE);
+	private JPanel getMainPane() throws CloneNotSupportedException {
+		EasyPresets groupList = parent.clone();
+		groupList.removeAllElements();
+		
+		// TODO Listup Parent Group
 		
 		PresetsEntry[] array = (PresetsEntry[])parent.toArray();
-        for (PresetsEntry ent : array) {
-        	if (ent instanceof EasyPresets) {
-            	GroupWrapper wrapper = new GroupWrapper(ent);
-    			list.add(wrapper.getCheckbox());
-    			list.add(wrapper.getLabel(), GBC.eol().fill());
-    			wrappers.add(wrapper);
-        	}
+		for (PresetsEntry ent : array) {
+			if (ent instanceof EasyPresets) {
+				groupList.addElement(ent);
+			}
 		}
 		
+		list = new JList<PresetsEntry>(groupList);
+		list.setCellRenderer(new PresetRenderer());
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.addListSelectionListener(this);
+		
+		JPanel listPane = new JPanel(new GridBagLayout());
 		JScrollPane listScroll = new JScrollPane(list);
 		listScroll.setPreferredSize(new Dimension(320,420));
 		listPane.add(listScroll, GBC.std());
@@ -137,17 +103,18 @@ public class MoveFolderDialog extends ExtendedDialog {
 	/**
 	 * 
 	 * buttonPane:Grid
-	 * buttonPane:Grid:1 -- exportButton
+	 * buttonPane:Grid:1 -- moveButton
 	 * buttonPane:Grid:2 -- cancelButton
 	 * 
 	 * @return buttonPane
 	 */
 	private JPanel getButtonPanel() {
-		final JButton exportButton = new JButton(tr("Export"));
-		exportButton.addActionListener(new ActionListener () {
+		moveButton = new JButton(tr("Move to"));
+		moveButton.setEnabled(false);
+		moveButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				exportSelected();
+				move();
 			}
 		});
 
@@ -160,41 +127,32 @@ public class MoveFolderDialog extends ExtendedDialog {
 		});
 		
 		final JPanel buttonPane = new JPanel(new GridBagLayout());
-		buttonPane.add(exportButton, GBC.std());
+		buttonPane.add(moveButton, GBC.std());
 		buttonPane.add(cancelButton, GBC.eol());
 		return buttonPane;
 	}
 	
-	private void exportSelected() {
-		List<PresetsEntry> selectedPresets = new ArrayList<>();
-		for (GroupWrapper wrapper: wrappers) {
-			if (wrapper.getCheckbox().isSelected()) {
-				selectedPresets.add(wrapper.entry);
-			}
-		}
-		
-		alertLabel.setText(" ");
-		if (selectedPresets.isEmpty()) {
-			alertLabel.setText(tr("No presets are selected."));
-			return;
-		}
-		
-		EasyPresets root = new EasyPresets();
-		for (PresetsEntry preset : selectedPresets) {
-			root.addElement(preset);
-		}
-		
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle(tr("Save Presets"));
-        chooser.setFileFilter(new FileNameExtensionFilter("XML File", "xml"));
-        int returnVal = chooser.showSaveDialog(this);
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-        	root.saveTo(chooser.getSelectedFile());
-        }
+	protected void move() {
+		EasyPresets destGroup = (EasyPresets)list.getSelectedValue();
+		destGroup.addElement(entry);
+		parent.removeElement(entry);
+		dispose();
 	}
 	
 	protected void cancel() {
 		dispose();
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent evt) {
+		PresetsEntry selected = list.getSelectedValue();
+		if (selected == null) {
+			moveButton.setEnabled(false);
+		}
+		else {
+			moveButton.setEnabled(true);
+		}
+		return;
 	}
 
 }

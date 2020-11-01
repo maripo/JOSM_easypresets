@@ -1,0 +1,35 @@
+@startsalt
+{
+ ManagePresetsDialog
+ {^ "Manage Custom Presets"
+  {^ "(mainPane)"
+   [Export]
+   { Preset Group Name : | "uiGroupName" }
+   Please select a destination group
+   {^ "(listPane)"
+    {
+     0: EasyPresets (parent)
+     1: EasyPresets (group)
+     2: EasyPreset (preset)
+     3: EasyPresets (group)
+      :
+    } | {^ "(bottonPane)"
+     [up]
+     [down]
+     [Move up]
+     [Move down]
+     [Create a group]
+     [Organize]
+     [Create a preset]
+     [Edit]
+     [Copy]
+     [Delete]
+    }
+   }
+  }
+  {^ "(buttonPane)"
+    [Close]
+  }
+ }
+}
+@endsalt

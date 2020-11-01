@@ -21,6 +21,8 @@ class GroupWrapper {
 	+Component getLabel()
 }
 
+ManagePresetsDialog "[Move to]" --> MoveFolderDialog
+
 MoveFolderDialog "wrappers" *-- GroupWrapper
 (MoveFolderDialog, GroupWrapper) .. java.ArrayList
 

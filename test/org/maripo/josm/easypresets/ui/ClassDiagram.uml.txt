@@ -1,5 +1,4 @@
 @startuml
-"org.maripo.josm.easypresets.ui.*"
 
 class CreatePresetAction extends org.openstreetmap.josm.actions.JosmAction {
 	root : EasyPresets
@@ -44,8 +43,12 @@ class ManagePresetsDialog extends org.openstreetmap.josm.gui.ExtendedDialog impl
 	~PresetsEntry getSelectedPreset()
 }
 
+ManagePresetsDialog "[Move to]" --> MoveFolderDialog
+
+ManagePresetsDialog "[Export]" --> ExportDialog
 ExportDialog *-- ParameterPanelName
 ExportDialog *-- "*" PresetWrapper
+
 class ExportDialog extends org.openstreetmap.josm.gui.ExtendedDialog {
 	presets : EasyPresetsClass
 	alertLabel : JLabel

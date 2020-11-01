@@ -460,4 +460,9 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	public void addListDataListener(GroupPresetMenu groupPresetMenu) {
 		super.addListDataListener(groupPresetMenu);
 	}
+
+	@Override
+	public EasyPresets getParent() {
+		return this.parent;
+	}
 }
