@@ -1,0 +1,33 @@
+@startuml
+
+class MoveFolderDialog extends josm.ExtendedDialog {
+	parent : EasyPresets
+	entry : PresetsEntry
+	alertLabel : JLabel
+	wrappers : List<GroupWrapper>
+	
+	-void initUI()
+	-JPanel getMainPane()
+	-JPanel getButtonPanel()
+	-void exportSelected()
+	~void cancel()
+}
+
+class GroupWrapper {
+	checkbox : JCheckBox
+	label : JLabel
+	entry : PresetsEntry
+	+JCheckBox getCheckbox()
+	+Component getLabel()
+}
+
+ManagePresetsDialog "[Move to]" --> MoveFolderDialog
+
+MoveFolderDialog "wrappers" *-- GroupWrapper
+(MoveFolderDialog, GroupWrapper) .. java.ArrayList
+
+MoveFolderDialog "parent" --> easypresets.EasyPresets
+
+MoveFolderDialog "entry" --> easypresets.PresetsEntry
+
+@enduml

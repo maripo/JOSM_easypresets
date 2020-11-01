@@ -23,7 +23,7 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 	
 	public EasyPresetsPlugin (PluginInformation info) {
 		super(info);
-		root.setLocaleName(tr("Custom Presets"));
+		root.setName(tr("Custom Presets"));
 		root.load();
 		root.addListDataListener(this);
 		

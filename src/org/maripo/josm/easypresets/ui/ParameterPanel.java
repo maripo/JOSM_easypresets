@@ -11,13 +11,13 @@ public abstract class ParameterPanel extends JPanel implements ParamAction {
     public JTextField argField;
     public JLabel argLabel;
 
-    public ParameterPanel(String label, String text) {
+    protected ParameterPanel(String label, String text) {
         this();
         this.argLabel.setText(label);
         this.argField.setText(text);
     }
 
-    public ParameterPanel() {
+    protected ParameterPanel() {
         super();
 
         argLabel = new JLabel();

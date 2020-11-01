@@ -2,8 +2,6 @@ package org.maripo.josm.easypresets.ui;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -23,10 +21,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -34,11 +30,13 @@ import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
 import org.maripo.josm.easypresets.data.PresetsEntry;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
+import org.maripo.josm.easypresets.ui.move.MoveFolderDialog;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetType;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
+import org.openstreetmap.josm.tools.Logging;
 import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 
 @SuppressWarnings("serial")
@@ -68,6 +66,8 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	 * @param tagMap		selected POI Tags
 	 * @param presetTypes	selected POI Types
 	 * @param presets		EasyPresets
+	 * @param parent		uppper class EasyPresets
+	 * @param index			index of list
 	 */
 	public ManagePresetsDialog (
 			Map<String,Map<String, Integer>> tagMap, 
@@ -91,34 +91,6 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	Map<String,Map<String, Integer>> tagMap;
 	List<TaggingPresetType> targetTypes;			// TypesFromSelection
 
-	private static class PresetRenderer extends JLabel implements ListCellRenderer<PresetsEntry> {
-		private final static Color selectionForeground;
-		private final static Color selectionBackground;
-		private final static Color textForeground;
-		private final static Color textBackground;
-		static {
-			selectionForeground = UIManager.getColor("Tree.selectionForeground");
-			selectionBackground = UIManager.getColor("Tree.selectionBackground");
-			textForeground = UIManager.getColor("Tree.textForeground");
-			textBackground = UIManager.getColor("Tree.textBackground");
-		}
-
-		@Override
-		public Component getListCellRendererComponent(
-				JList<? extends PresetsEntry> list, 
-				PresetsEntry preset,
-				int index, 
-				boolean isSelected, 
-				boolean cellHasFocus) 
-		{
-			setIcon(preset.getIcon());
-			setText(preset.getName());
-			setOpaque(true);
-			setBackground(isSelected?selectionBackground:textBackground);
-			setForeground(isSelected?selectionForeground:textForeground);
-			return this;
-		}
-	}
 	private void initUI() {
 		list = new JList<PresetsEntry>(this.presets);
 		list.setCellRenderer(new PresetRenderer());
@@ -200,10 +172,14 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		organizeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				organize();
+				try {
+					organize();
+				} catch (CloneNotSupportedException e1) {
+					Logging.error(e1);
+				}
 			}
 		});
-		organizeButton.setEnabled(true);
+		organizeButton.setEnabled(false);
 		
 		createButton = new JButton();
 		createButton.setToolTipText(tr("Create a preset"));
@@ -292,14 +268,20 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			i = list.getSelectedIndex();
 		}
 		EasyPresets folder = new EasyPresets(presets);
-		folder.setLocaleName(tr("NewGroup"));
+		folder.setName(tr("NewGroup"));
 		presets.insertElementAt(folder, i);
 		ManagePresetsDialog dialog = new ManagePresetsDialog(this.tagMap, this.targetTypes, folder, presets, i);
 		dialog.showDialog();
 	}
 	
-	protected void organize () {
-		System.out.println("TODO open \"move\" dialog");
+	/*
+	 * button action "Organize / Folder_move"
+	 */
+	protected void organize () throws CloneNotSupportedException {
+		if (isSelectionValid()) {
+			PresetsEntry preset = getSelectedPreset();
+			new MoveFolderDialog(preset).showDialog();
+		}
 	}
 
 	protected void create() {
@@ -347,7 +329,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			return false;
 		}
 	}
-	
+
 	private boolean confirmDelete() {
 		ExtendedDialog dialog = new ExtendedDialog(
 			MainApplication.getMainFrame(),
@@ -378,7 +360,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	
 	protected void close() {
 		String str = uiGroupName.getText().trim();
-		this.presets.setLocaleName(str);
+		this.presets.setName(str);
 		if (this.presets.isRoot()) {
 			this.presets.saveTo();
 		}
@@ -403,12 +385,14 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			createButton.setEnabled(false);
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(false);
+			organizeButton.setEnabled(false);
 			return;
 		}
 		folderButton.setEnabled(true);
 		createButton.setEnabled(true);
 		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
+		organizeButton.setEnabled(true);
 		copyButton.setEnabled(true);
 	}
 	

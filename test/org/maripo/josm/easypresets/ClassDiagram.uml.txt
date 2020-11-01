@@ -1,0 +1,12 @@
+@startuml
+
+class EasyPresetsPlugin extends org.openstreetmap.josm.plugins.Plugin implements javax.swing.event.ListDataListener {
+	+void contentsChanged(ListDataEvent)
+	+void intervalAdded(ListDataEvent)
+	+void intervalRemoved(ListDataEvent)
+}
+
+EasyPresetsPlugin "root" *-- org.maripo.josm.easypresets.data.EasyPresets
+EasyPresetsPlugin "groupMenu" *-- org.maripo.josm.easypresets.ui.GroupPresetMenu
+
+@enduml

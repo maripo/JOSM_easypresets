@@ -18,5 +18,7 @@ public interface PresetsEntry {
 
 	PresetsEntry copy();
 	
+	EasyPresets getParent();
+	
 	void addListDataListener(GroupPresetMenu groupPresetMenu);
 }

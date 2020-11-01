@@ -1,0 +1,26 @@
+@startsalt
+{
+ MoveFolderDialog
+ {^ "(basePanel)"
+  {^ "(mainPane)"
+   {#
+    Please select a destination group
+   }
+   {^ "(listPane)"
+    {
+     1: EasyPresets (group)
+     2: EasyPresets (group)
+     3: EasyPresets (group)
+      :
+    }
+   }
+   {# (alertLabel)}
+  }
+  {^ "(buttonPane)"
+   {
+    [Move to upper group] | [Move] | [Cancel]
+   }
+  }
+ }
+}
+@endsalt

@@ -64,33 +64,33 @@ public class ExportDialog extends ExtendedDialog {
 	
 	private void initUI() {
 		// headerPane:Box
-		// headerPane:Box:1 <-- presetsNamePane:Flow:320x30
+		// headerPane:Box:1 -- presetsNamePane:Flow:320x30
 		final JPanel headerPane = getHeaderPane();
 		
 		// mainPane:Grid
-		// mainPane:Grid:1 <-- JLabel
-		// mainPane:Grid:2 <-- listPane:Grid
-		// mainPane:Grid:3 <-- alertLabel
-		// mainPane:Grid:4 <-- selectAllButton
-		// mainPane:Grid:5 <-- deselectAllButton
+		// mainPane:Grid:1 -- JLabel
+		// mainPane:Grid:2 -- listPane:Grid
+		// mainPane:Grid:3 -- alertLabel
+		// mainPane:Grid:4 -- selectAllButton
+		// mainPane:Grid:5 -- deselectAllButton
 		final JPanel mainPane = getMainPane();
 
 		// buttonPane:Grid
-		// buttonPane:Grid:1 <-- exportButton
-		// buttonPane:Grid:2 <-- cancelButton
+		// buttonPane:Grid:1 -- exportButton
+		// buttonPane:Grid:2 -- cancelButton
 		final JPanel buttonPane = getButtonPanel();
 		
 		// basePane:Box
-		// basePane:Box:1 <-- headerPane
-		// basePane:Box:2 <-- mainPane
-		// basePane:Box:3 <-- buttonPane
+		// basePane:Box:1 -- headerPane
+		// basePane:Box:2 -- mainPane
+		// basePane:Box:3 -- buttonPane
 		JPanel basePanel = new JPanel();
 		basePanel.setLayout(new BoxLayout(basePanel, BoxLayout.Y_AXIS));
 		basePanel.add(headerPane);
 		basePanel.add(mainPane);
 		basePanel.add(buttonPane);
 		
-		// ExportDialog:1 <-- basePane
+		// ExportDialog:1 -- basePane
 		setContent(basePanel);
 		
         SwingUtilities.invokeLater(new Runnable() {
@@ -103,7 +103,7 @@ public class ExportDialog extends ExtendedDialog {
 	
 	/**
 	 * panel:Box
-	 * panel:Box:1 <-- presetsNamePane:Flow:320x30
+	 * panel:Box:1 -- presetsNamePane:Flow:320x30
 	 * 
 	 * @return panel 
 	 */
@@ -123,20 +123,20 @@ public class ExportDialog extends ExtendedDialog {
 	/**
 	 * 
 	 * mainPane:Grid
-	 * mainPane:Grid:1 <-- JLabel
-	 * mainPane:Grid:2 <-- listPane
-	 * mainPane:Grid:3 <-- alertLabel
-	 * mainPane:Grid:4 <-- selectAllButton
-	 * mainPane:Grid:5 <-- deselectAllButton
+	 * mainPane:Grid:1 -- JLabel
+	 * mainPane:Grid:2 -- listPane
+	 * mainPane:Grid:3 -- alertLabel
+	 * mainPane:Grid:4 -- selectAllButton
+	 * mainPane:Grid:5 -- deselectAllButton
 	 * 
 	 * @return mainPane
 	 */
 	private JPanel getMainPane() {
-		// mainPane:Grid:2 <-- listPane:Grid
+		// mainPane:Grid:2 -- listPane:Grid
 		JPanel listPane = new JPanel(new GridBagLayout());
 
-		// mainPane:Grid:2 <-- listPane:Grid <-- listScroll::320x420
-		// mainPane:Grid:2 <-- listPane:Grid <-- listScroll:1 <-- list:Grid
+		// mainPane:Grid:2 -- listPane:Grid -- listScroll::320x420
+		// mainPane:Grid:2 -- listPane:Grid -- listScroll:1 -- list:Grid
 		final JPanel list = new JPanel(new GridBagLayout());
 		list.setBackground(Color.WHITE);
 		
@@ -183,8 +183,8 @@ public class ExportDialog extends ExtendedDialog {
 	/**
 	 * 
 	 * buttonPane:Grid
-	 * buttonPane:Grid:1 <-- exportButton
-	 * buttonPane:Grid:2 <-- cancelButton
+	 * buttonPane:Grid:1 -- exportButton
+	 * buttonPane:Grid:2 -- cancelButton
 	 * 
 	 * @return buttonPane
 	 */
@@ -238,7 +238,7 @@ public class ExportDialog extends ExtendedDialog {
 		}
 		
 		EasyPresets root = new EasyPresets();
-		root.setLocaleName(presetsNamePane.getText());
+		root.setName(presetsNamePane.getText());
 		for (PresetsEntry preset : selectedPresets) {
 			root.addElement(preset);
 		}

@@ -1,0 +1,87 @@
+@startuml
+
+class EasyPreset extends org.openstreetmap.josm.gui.tagging.presets.TaggingPreset implements PresetsEntry, Cloneable {
+	parent : EasyPresets
+	-pcs : PropertyChangeSupport
+	+EasyPreset copy()
+	+EasyPreset clone()
+	+addPropertyChangeListener(PropertyChangeListener)
+	+void removePropertyChangeListener(PropertyChangeListener)
+	+int getSize()
+	+EasyPresets getParent()
+	+void addListDataListener(GroupPresetMenu)
+	~Element getItemElement(Document)
+}
+
+EasyPreset "parent" --> EasyPresets
+
+class EasyPresets extends javax.swing.DefaultListModel implements java.beans.PropertyChangeListener, PresetsEntry, Cloneable {
+	-FILE_NAME : String
+	-PRESET_FORMAT_URLS : String[]
+	+PLUGIN_HELP_URL : String
+	~parent : EasyPresets
+
+	+String getXMLPath()
+	+boolean isRoot()
+	+List<PresetsEntry> getEntry()
+	+JMenu getMenu()
+	+PresetsEntry[] toArray()
+	+void load()
+	+void addElement(PresetsEntry)
+	+void setElementAt(PresetsEntry, int)
+	+void saveTo()
+	+void saveTo(File)
+	~Element getPresetsElement(Document)
+	~Element getGroupElement(Document)
+	~Element getGroupElement(Document, String)
+	+void moveDown(int index)
+	+void moveUp(int index)
+	+String getLabelFromExistingPresets(String)
+	+void addPropertyChangeListener(PropertyChangeListener)
+	+void removePropertyChangeListener(PropertyChangeListener)
+	+void propertyChange(PropertyChangeEvent)
+	+Icon getIcon()
+	+String getLocaleName()
+	+String getName()
+	+EasyPresets getParent()
+	+String getRawName()
+	+void setName(String)
+	+PresetsEntry copy()
+	+EasyPresets clone()
+	+void addListDataListener(GroupPresetMenu)
+}
+
+org.maripo.josm.easypresets.EasyPresetsPlugin "root" *-- EasyPresets
+
+class DummyPresetClass extends org.openstreetmap.josm.gui.tagging.presets.items.Text {
+	+String getLocaleText(text, textContext)
+}
+
+class GroupStack {
+	-stack : ArrayList<EasyPresets>
+	~SEPA : String
+	~root : EasyPresets
+	+void setRoot(EasyPresets item)
+	+void clear()
+	+void push(EasyPresets)
+	~EasyPresets pop()
+	+EasyPresets pop(rawName)
+}
+
+EasyPresets "load()" ..> GroupStack
+
+interface PresetsEntry {
+	int getSize();
+	Icon getIcon();
+	String getName();
+	String getLocaleName();
+	String getRawName();
+	PresetsEntry copy();
+	EasyPresets getParent();
+	void addListDataListener(GroupPresetMenu);
+}
+
+EasyPresets -* DummyPresetClass
+javax.swing.DefaultListModel *- PresetsEntry
+
+@enduml
