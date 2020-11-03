@@ -1,6 +1,6 @@
 @startuml
 
-class EasyPreset extends org.openstreetmap.josm.gui.tagging.presets.TaggingPreset implements PresetsEntry, Cloneable {
+class EasyPreset extends josm.gui.tagging.presets.TaggingPreset implements easypresets.data.PresetsEntry, java.Cloneable {
 	parent : EasyPresets
 	-pcs : PropertyChangeSupport
 	+EasyPreset copy()
@@ -13,9 +13,24 @@ class EasyPreset extends org.openstreetmap.josm.gui.tagging.presets.TaggingPrese
 	~Element getItemElement(Document)
 }
 
-EasyPreset "parent" --> EasyPresets
+class EasySeparator extends josm.gui.tagging.presets.TaggingPresetSeparator implements easypresets.data.PresetsEntry, java.Cloneable {
+	parent : EasyPresets
+	
+	+EasyPreset copy()
+	+EasyPreset clone()
+	+int getSize()
+	+String getName()
+	+String getLocaleName()
+	+String getRawName()
+	+EasyPresets getParent()
+	+void addListDataListener(GroupPresetMenu)
+	Element getItemElement(Document)
+}
 
-class EasyPresets extends javax.swing.DefaultListModel implements java.beans.PropertyChangeListener, PresetsEntry, Cloneable {
+EasyPreset "parent" --> EasyPresets
+EasySeparator "parent" --> EasyPresets
+
+class EasyPresets extends javax.swing.DefaultListModel implements java.beans.PropertyChangeListener, PresetsEntry, java.Cloneable {
 	-FILE_NAME : String
 	-PRESET_FORMAT_URLS : String[]
 	+PLUGIN_HELP_URL : String
@@ -51,9 +66,9 @@ class EasyPresets extends javax.swing.DefaultListModel implements java.beans.Pro
 	+void addListDataListener(GroupPresetMenu)
 }
 
-org.maripo.josm.easypresets.EasyPresetsPlugin "root" *-- EasyPresets
+easypresets.EasyPresetsPlugin "root" *-- EasyPresets
 
-class DummyPresetClass extends org.openstreetmap.josm.gui.tagging.presets.items.Text {
+class DummyPresetClass extends josm.gui.tagging.presets.items.Text {
 	+String getLocaleText(text, textContext)
 }
 

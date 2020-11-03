@@ -1,6 +1,6 @@
 @startuml
 
-class CreatePresetAction extends org.openstreetmap.josm.actions.JosmAction {
+class CreatePresetAction extends josm.actions.JosmAction {
 	root : EasyPresets
 	void actionPerformed(ActionEvent)
 }
@@ -26,7 +26,7 @@ Interface javax.swing.event.ListSelectionListener {
 	void valueChanged(ListSelectionEvent)
 }
 
-class ManagePresetsDialog extends org.openstreetmap.josm.gui.ExtendedDialog implements javax.swing.event.ListSelectionListener {
+class ManagePresetsDialog extends josm.gui.ExtendedDialog implements javax.swing.event.ListSelectionListener {
 	-uiGroupName : JTextField
 	-folderButton : JButton
 	-organizeButton : JButton
@@ -43,13 +43,27 @@ class ManagePresetsDialog extends org.openstreetmap.josm.gui.ExtendedDialog impl
 	~PresetsEntry getSelectedPreset()
 }
 
+class MoveFolderDialog extends josm.gui.ExtendedDialog implements java.swing.event.ListSelectionListener {
+	entry : PresetsEntry
+	parent : EasyPresets
+	alertLabel : JLabel
+	list : JList<PresetsEntry>
+	moveParentButton : JButton
+	moveButton : JButton
+	
+	^void moveParent()
+	^void move()
+	^void cancel()
+	+void valueChanged(ListSelectionEvent)
+}
+
 ManagePresetsDialog "[Move to]" --> MoveFolderDialog
 
 ManagePresetsDialog "[Export]" --> ExportDialog
 ExportDialog *-- ParameterPanelName
 ExportDialog *-- "*" PresetWrapper
 
-class ExportDialog extends org.openstreetmap.josm.gui.ExtendedDialog {
+class ExportDialog extends josm.gui.ExtendedDialog {
 	presets : EasyPresetsClass
 	alertLabel : JLabel
 }
@@ -66,12 +80,16 @@ interface javax.swing.event.ListDataListener {
 	void intervalRemoved(ListDataEvent)
 }
 
-class GroupPresetMenu extends org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu implements javax.swing.event.ListDataListener {
-	void updatePresetListMenu()
+class GroupPresetMenu extends josm.gui.tagging.presets.TaggingPresetMenu implements javax.swing.event.ListDataListener {
+	model : EasyPresets
+	+void updatePresetListMenu()
+	+void contentsChanged(ListDataEvent)
+	+void intervalAdded(ListDataEvent)
+	+void intervalRemoved(ListDataEvent)
 }
 
-org.maripo.josm.easypresets.data.EasyPresets "model" --* GroupPresetMenu
+easypresets.data.EasyPresets --* "model" GroupPresetMenu
 
-org.maripo.josm.easypresets.EasyPresetsPlugin *-- GroupPresetMenu
+easypresets.EasyPresetsPlugin *-- GroupPresetMenu
 
 @enduml

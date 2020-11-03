@@ -19,13 +19,14 @@ import org.openstreetmap.josm.plugins.PluginInformation;
 
 public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 	public static final EasyPresets root = new EasyPresets();
-	public static final GroupPresetMenu groupMenu = new GroupPresetMenu(root);
+	public GroupPresetMenu groupMenu;
 	
 	public EasyPresetsPlugin (PluginInformation info) {
 		super(info);
 		root.setName(tr("Custom Presets"));
 		root.load();
 		root.addListDataListener(this);
+			
 		
 		// Add custom presets to "Presets" menu
 		JMenu menu = MainApplication.getMenu().presetsMenu;
@@ -34,10 +35,11 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 		MainMenu.add(menu, new ManagePresetsAction(root));
 		
 		// Group for all custom presets
+		groupMenu = new GroupPresetMenu(root);
 		groupMenu.updatePresetListMenu();
 		menu.add(groupMenu.menu);
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
-		// Call ToolbarPreferences.refreshToolbarControl
+		// TODO remode Call ToolbarPreferences.refreshToolbarControl
 		MainApplication.getToolbar().refreshToolbarControl();
 	}
 	
