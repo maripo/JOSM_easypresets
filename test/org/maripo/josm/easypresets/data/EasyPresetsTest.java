@@ -385,16 +385,16 @@ class EasyPresetsTest {
 			assertEquals(100, root.size());
 			{
 				PresetsEntry item0 = root.get(0);
-				assertTrue(item0 instanceof EasyPreset);
+				assertTrue(item0 instanceof EasyPresets);
 				{
-					EasyPreset i = (EasyPreset)item0;
+					EasyPresets i = (EasyPresets)item0;
 					assertEquals("グループ00", i.getName());
 				}
 
 				PresetsEntry item99 = root.get(99);
-				assertTrue(item99 instanceof EasyPreset);
+				assertTrue(item99 instanceof EasyPresets);
 				{
-					EasyPreset i = (EasyPreset)item99;
+					EasyPresets i = (EasyPresets)item99;
 					assertEquals("グループ99", i.getName());
 				}
 			}
