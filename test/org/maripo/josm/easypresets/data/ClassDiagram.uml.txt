@@ -1,6 +1,6 @@
 @startuml
 
-class EasyPreset extends josm.gui.tagging.presets.TaggingPreset implements easypresets.data.PresetsEntry, java.Cloneable {
+class EasyPreset extends josm.gui.tagging.presets.TaggingPreset implements PresetsEntry, java.Cloneable {
 	parent : EasyPresets
 	-pcs : PropertyChangeSupport
 	+EasyPreset copy()
@@ -9,11 +9,12 @@ class EasyPreset extends josm.gui.tagging.presets.TaggingPreset implements easyp
 	+void removePropertyChangeListener(PropertyChangeListener)
 	+int getSize()
 	+EasyPresets getParent()
+	+void setParent(EasyPresets)
 	+void addListDataListener(GroupPresetMenu)
 	~Element getItemElement(Document)
 }
 
-class EasySeparator extends josm.gui.tagging.presets.TaggingPresetSeparator implements easypresets.data.PresetsEntry, java.Cloneable {
+class EasySeparator extends josm.gui.tagging.presets.TaggingPresetSeparator implements PresetsEntry, java.Cloneable {
 	parent : EasyPresets
 	
 	+EasyPreset copy()
@@ -23,6 +24,7 @@ class EasySeparator extends josm.gui.tagging.presets.TaggingPresetSeparator impl
 	+String getLocaleName()
 	+String getRawName()
 	+EasyPresets getParent()
+	+void setParent(EasyPresets)
 	+void addListDataListener(GroupPresetMenu)
 	Element getItemElement(Document)
 }
@@ -58,7 +60,7 @@ class EasyPresets extends javax.swing.DefaultListModel implements java.beans.Pro
 	+Icon getIcon()
 	+String getLocaleName()
 	+String getName()
-	+EasyPresets getParent()
+	+void setParent(EasyPresets)
 	+String getRawName()
 	+void setName(String)
 	+PresetsEntry copy()
@@ -86,17 +88,17 @@ class GroupStack {
 EasyPresets "load()" ..> GroupStack
 
 interface PresetsEntry {
-	int getSize();
-	Icon getIcon();
-	String getName();
-	String getLocaleName();
-	String getRawName();
-	PresetsEntry copy();
-	EasyPresets getParent();
-	void addListDataListener(GroupPresetMenu);
+	^int getSize();
+	^Icon getIcon();
+	^String getName();
+	^String getLocaleName();
+	^String getRawName();
+	^PresetsEntry copy();
+	^EasyPresets getParent();
+	^EasyPresets getParent()
+	^void addListDataListener(GroupPresetMenu);
 }
 
 EasyPresets -* DummyPresetClass
-javax.swing.DefaultListModel *- PresetsEntry
 
 @enduml

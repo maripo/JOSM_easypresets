@@ -472,10 +472,6 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 		}
 		return obj;
 	}
-	/*
-	static EasyPresets clone(EasyPresets src) {
-		return new EasyPresets();
-	}*/
 
 	@Override
 	public void addListDataListener(GroupPresetMenu groupPresetMenu) {
@@ -485,5 +481,10 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	@Override
 	public EasyPresets getParent() {
 		return this.parent;
+	}
+
+	@Override
+	public void setParent(EasyPresets parent) {
+		this.parent = parent;
 	}
 }

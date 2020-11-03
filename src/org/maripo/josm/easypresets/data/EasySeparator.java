@@ -47,6 +47,11 @@ public class EasySeparator extends TaggingPresetSeparator implements PresetsEntr
 	public EasyPresets getParent() {
 		return this.parent;
 	}
+
+	@Override
+	public void setParent(EasyPresets parent) {
+		this.parent = parent;
+	}
 	
 	@Override
 	public String getName() {

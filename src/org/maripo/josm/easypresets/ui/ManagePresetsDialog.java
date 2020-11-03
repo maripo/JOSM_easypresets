@@ -421,17 +421,18 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		PresetsEntry obj = getSelectedPreset();
 		if (obj instanceof EasySeparator) {
 			editButton.setEnabled(false);
+			organizeButton.setEnabled(false);
 			folderButton.setEnabled(false);
 			copyButton.setEnabled(false);
 		}
 		else {
 			editButton.setEnabled(true);
+			organizeButton.setEnabled(true);
 			folderButton.setEnabled(true);
 			copyButton.setEnabled(true);
 		}
 		createButton.setEnabled(true);
 		deleteButton.setEnabled(true);
-		organizeButton.setEnabled(true);
 	}
 	
 	PresetsEntry getSelectedPreset() {
