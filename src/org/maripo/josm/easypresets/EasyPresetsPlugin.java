@@ -26,7 +26,6 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 		root.setName(tr("Custom Presets"));
 		root.load();
 		root.addListDataListener(this);
-			
 		
 		// Add custom presets to "Presets" menu
 		JMenu menu = MainApplication.getMenu().presetsMenu;
@@ -39,7 +38,6 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 		groupMenu.updatePresetListMenu();
 		menu.add(groupMenu.menu);
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
-		// TODO remode Call ToolbarPreferences.refreshToolbarControl
 		MainApplication.getToolbar().refreshToolbarControl();
 	}
 	

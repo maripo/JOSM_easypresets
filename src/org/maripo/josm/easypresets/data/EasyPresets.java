@@ -110,14 +110,14 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	
 	public static JMenu getMenu(JMenu menu, List<PresetsEntry> lentry, String name) {
         for (PresetsEntry entry : lentry) {
-        	if (entry instanceof TaggingPreset) {
+        	if (entry instanceof TaggingPresetSeparator) {
+                menu.addSeparator();
+        	}
+        	else if (entry instanceof TaggingPreset) {
                 JMenuItem mi = new JMenuItem((TaggingPreset)entry);
                 mi.setText(((TaggingPreset)entry).getName());
                 mi.setEnabled(true);
                 menu.add(mi);
-        	}
-        	if (entry instanceof TaggingPresetSeparator) {
-                menu.addSeparator();
         	}
         	else if (entry instanceof EasyPresets) {
                 menu.add(((EasyPresets) entry).getMenu());
