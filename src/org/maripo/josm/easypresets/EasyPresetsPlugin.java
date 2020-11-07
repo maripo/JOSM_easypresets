@@ -17,7 +17,16 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetNameTemplateList;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
-public class EasyPresetsPlugin extends Plugin implements ListDataListener {
+import org.openstreetmap.josm.gui.layer.LayerManager;
+import org.openstreetmap.josm.gui.layer.LayerManager.LayerAddEvent;
+import org.openstreetmap.josm.gui.layer.LayerManager.LayerChangeListener;
+import org.openstreetmap.josm.gui.layer.LayerManager.LayerOrderChangeEvent;
+import org.openstreetmap.josm.gui.layer.LayerManager.LayerRemoveEvent;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class EasyPresetsPlugin extends Plugin implements ListDataListener, LayerChangeListener {
 	public static final EasyPresets root = new EasyPresets();
 	public static final GroupPresetMenu groupMenu = new GroupPresetMenu(root);
 	
@@ -36,11 +45,24 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener {
 		// Group for all custom presets
 		groupMenu.updatePresetListMenu();
 		menu.add(groupMenu.menu);
-		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
-		// Call ToolbarPreferences.refreshToolbarControl
-		MainApplication.getToolbar().refreshToolbarControl();
+		MainApplication.getLayerManager().addLayerChangeListener(this);
 	}
 	
+	@Override 
+	public void layerAdded (LayerAddEvent e) {
+		TimerTask task = new TimerTask() {
+			public void run() {
+				MainApplication.getToolbar().refreshToolbarControl();
+			}
+		};
+		new Timer().schedule(task, 1000);
+	}
+	@Override public void layerRemoving(LayerRemoveEvent e) {
+		
+	}
+	@Override public void layerOrderChanged(LayerOrderChangeEvent e) {
+		
+	}
 	@Override
 	public void contentsChanged(ListDataEvent arg0) {
 		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
