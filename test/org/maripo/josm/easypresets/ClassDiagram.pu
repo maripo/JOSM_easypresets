@@ -1,0 +1,33 @@
+@startuml
+
+class EasyPresetsPlugin [[java:org.maripo.josm.easypresets.EasyPresetsPlugin]] {
+	+{static}EasyPresets root
+	+GroupPresetMenu groupMenu
+	+EasyPresetsPlugin(PluginInformation info)
+	+void layerAdded(LayerAddEvent e)
+	+void layerRemoving(LayerRemoveEvent e)
+	+void layerOrderChanged(LayerOrderChangeEvent e)
+	+void contentsChanged(ListDataEvent arg0)
+	+void intervalAdded(ListDataEvent arg0)
+	+void intervalRemoved(ListDataEvent arg0)
+}
+
+class Plugin [[java:org.openstreetmap.josm.plugins.Plugin]] {
+}
+
+Plugin <|-- EasyPresetsPlugin
+
+interface ListDataListener [[java:javax.swing.event.ListDataListener]] {
+}
+
+ListDataListener <|.. EasyPresetsPlugin
+
+interface LayerChangeListener [[java:org.openstreetmap.josm.gui.layer.LayerManager$LayerChangeListener]] {
+}
+
+LayerChangeListener <|.. EasyPresetsPlugin
+
+EasyPresetsPlugin "root" *-- org.maripo.josm.easypresets.data.EasyPresets
+EasyPresetsPlugin "groupMenu" *-- org.maripo.josm.easypresets.ui.GroupPresetMenu
+
+@enduml
