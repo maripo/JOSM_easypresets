@@ -17,7 +17,6 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetNameTemplateList;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 
-import org.openstreetmap.josm.gui.layer.LayerManager;
 import org.openstreetmap.josm.gui.layer.LayerManager.LayerAddEvent;
 import org.openstreetmap.josm.gui.layer.LayerManager.LayerChangeListener;
 import org.openstreetmap.josm.gui.layer.LayerManager.LayerOrderChangeEvent;
@@ -28,7 +27,7 @@ import java.util.TimerTask;
 
 public class EasyPresetsPlugin extends Plugin implements ListDataListener, LayerChangeListener {
 	public static final EasyPresets root = new EasyPresets();
-	public static final GroupPresetMenu groupMenu = new GroupPresetMenu(root);
+	public GroupPresetMenu groupMenu;
 	
 	public EasyPresetsPlugin (PluginInformation info) {
 		super(info);
@@ -43,9 +42,11 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener, Layer
 		MainMenu.add(menu, new ManagePresetsAction(root));
 		
 		// Group for all custom presets
+		groupMenu = new GroupPresetMenu(root);
 		groupMenu.updatePresetListMenu();
 		menu.add(groupMenu.menu);
-		MainApplication.getLayerManager().addLayerChangeListener(this);
+		TaggingPresetNameTemplateList.getInstance().taggingPresetsModified();
+		MainApplication.getToolbar().refreshToolbarControl();
 	}
 	
 	@Override 

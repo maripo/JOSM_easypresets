@@ -11,7 +11,7 @@
      0: EasyPresets (parent)
      1: EasyPresets (group)
      2: EasyPreset (preset)
-     3: EasyPresets (group)
+     3: EasySeparator (separator)
       :
     } | {^ "(bottonPane)"
      [up]
@@ -21,6 +21,7 @@
      [Create a group]
      [Organize]
      [Create a preset]
+     [Create a separator]
      [Edit]
      [Copy]
      [Delete]

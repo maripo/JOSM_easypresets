@@ -366,4 +366,41 @@ class EasyPresetsTest {
 			fail(e.toString());
 		}
 	}
+
+	/**
+	 * `EasyPresets-005.xml`
+	 * トップグループなし
+	 * 空のグループが１００個
+	 */
+	@Test
+	void testLoad_005() {
+		try {
+			File file = new File("test/resources/EasyPresets-005.xml");
+			EasyPresets root = new EasyPresets();
+			root.setName(tr("Custom Presets"));
+			root.load(file);
+			
+			// check
+			assertEquals("Custom Presets", root.getName());
+			assertEquals(100, root.size());
+			{
+				PresetsEntry item0 = root.get(0);
+				assertTrue(item0 instanceof EasyPresets);
+				{
+					EasyPresets i = (EasyPresets)item0;
+					assertEquals("グループ00", i.getName());
+				}
+
+				PresetsEntry item99 = root.get(99);
+				assertTrue(item99 instanceof EasyPresets);
+				{
+					EasyPresets i = (EasyPresets)item99;
+					assertEquals("グループ99", i.getName());
+				}
+			}
+		}
+		catch(Exception e) {
+			fail(e.toString());
+		}
+	}
 }

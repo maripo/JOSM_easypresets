@@ -150,6 +150,7 @@ public class MoveFolderDialog extends ExtendedDialog implements ListSelectionLis
 	protected void moveParent() {
 		EasyPresets pp = parent.getParent();
 		if (pp != null) {
+			entry.setParent(pp);
 			pp.addElement(entry);
 			parent.removeElement(entry);
 			dispose();
@@ -158,6 +159,7 @@ public class MoveFolderDialog extends ExtendedDialog implements ListSelectionLis
 	
 	protected void move() {
 		EasyPresets destGroup = (EasyPresets)list.getSelectedValue();
+		entry.setParent(destGroup);
 		destGroup.addElement(entry);
 		parent.removeElement(entry);
 		dispose();

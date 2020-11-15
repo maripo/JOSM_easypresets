@@ -219,6 +219,11 @@ public class EasyPreset extends TaggingPreset implements PresetsEntry, Cloneable
 	}
 
 	@Override
+	public void setParent(EasyPresets parent) {
+		this.parent = parent;
+	}
+
+	@Override
 	public synchronized void addListDataListener(GroupPresetMenu groupPresetMenu) {
 		// TODO Auto-generated method stub
 		System.out.println("EasyPreset.addListDataListener(...)");

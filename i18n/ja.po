@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-01 15:58+0900\n"
-"PO-Revision-Date: 2020-11-01 16:07+0900\n"
+"POT-Creation-Date: 2020-11-03 15:31+0900\n"
+"PO-Revision-Date: 2020-11-03 15:33+0900\n"
 "Last-Translator: Mariko GODA <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
@@ -19,84 +19,87 @@ msgstr ""
 "X-Generator: Poedit 2.0.6\n"
 
 #: org/maripo/josm/easypresets/EasyPresetsPlugin.java:26
-#: org/maripo/josm/easypresets/ui/GroupPresetMenu.java:26
-#: org/maripo/josm/easypresets/data/EasyPresets.java:271
+#: org/maripo/josm/easypresets/ui/GroupPresetMenu.java:21
+#: org/maripo/josm/easypresets/data/EasyPresets.java:285
 msgid "Custom Presets"
 msgstr "カスタムプリセット"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:55
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:78
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:57
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:80
 msgid "Manage Custom Presets"
 msgstr "カスタムプリセットの管理"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:99
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:101
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:35
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:192
 msgid "Export"
 msgstr "エクスポート"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:100
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:102
 msgid "Export custom presets as a local XML file"
 msgstr "カスタムプリセットをXMLファイルとしてローカルに保存"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:109
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:111
 msgid "Preset Group Name"
 msgstr "プリセット・グループ名"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:153
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:155
 msgid "Move up"
 msgstr "上に移動"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:154
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:156
 msgid "Move down"
 msgstr "下に移動"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:157
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:159
 msgid "Create a group"
 msgstr "グループを作成する"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:170
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:172
 #: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:40
 msgid "Organize"
 msgstr "グループ"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:185
-#, fuzzy
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:187
 msgid "Create a preset"
 msgstr "プリセットを作成する"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:196
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:199
+msgid "Create a separator"
+msgstr "セパレータを作成する"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:210
 msgid "Edit"
 msgstr "編集"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:207
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:221
 msgid "Copy"
 msgstr "コピー"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:219
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:336
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:337
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:233
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:366
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:367
 msgid "Delete"
 msgstr "削除"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:242
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:257
 #: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:135
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:200
 msgid "Close"
 msgstr "閉じる"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:271
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:286
 msgid "NewGroup"
 msgstr "新規グループ"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:338
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:368
 #: org/maripo/josm/easypresets/ui/editor/IconPickerDialog.java:75
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:281
 #: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:57
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:340
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:370
 #, java-format
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\" を削除しますか?"
@@ -139,9 +142,8 @@ msgid "Move to upper group"
 msgstr "上位グループへ移動する"
 
 #: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:126
-#, fuzzy
 msgid "Move to"
-msgstr "下に移動"
+msgstr "グループ内に移動"
 
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:63
 msgid "Presets name"
@@ -315,20 +317,20 @@ msgid "New Preset"
 msgstr "新規プリセット"
 
 #: org/maripo/josm/easypresets/data/EasyPreset.java:61
-#: org/maripo/josm/easypresets/data/EasyPresets.java:429
+#: org/maripo/josm/easypresets/data/EasyPresets.java:447
 #, java-format
 msgid "Copy of {0}"
 msgstr "{0}のコピー"
 
-#: org/maripo/josm/easypresets/data/EasyPresets.java:247
+#: org/maripo/josm/easypresets/data/EasyPresets.java:261
 msgid "This file is generated by EasyPresets plugin.\n"
 msgstr "このファイルはプラグイン \"EasyPresets\" によって生成されました。\n"
 
-#: org/maripo/josm/easypresets/data/EasyPresets.java:250
+#: org/maripo/josm/easypresets/data/EasyPresets.java:264
 msgid "It supports just a few tags and attributes.\n"
 msgstr "サポートされているのはごく一部のタグです。\n"
 
-#: org/maripo/josm/easypresets/data/EasyPresets.java:251
+#: org/maripo/josm/easypresets/data/EasyPresets.java:265
 msgid ""
 "If you want to share your custom tags with other users, please look through "
 "the official document.\n"

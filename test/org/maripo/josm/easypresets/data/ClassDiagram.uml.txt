@@ -1,87 +1,146 @@
 @startuml
 
-class EasyPreset extends org.openstreetmap.josm.gui.tagging.presets.TaggingPreset implements PresetsEntry, Cloneable {
-	parent : EasyPresets
-	-pcs : PropertyChangeSupport
+class EasyPreset [[java:org.maripo.josm.easypresets.data.EasyPreset]] {
+	-{static}long serialVersionUID
+	-EasyPresets parent
+	-PropertyChangeSupport pcs
+	+EasyPreset()
+	+EasyPreset(TaggingPreset src, EasyPresets parent)
 	+EasyPreset copy()
 	+EasyPreset clone()
-	+addPropertyChangeListener(PropertyChangeListener)
-	+void removePropertyChangeListener(PropertyChangeListener)
+	-{static}TaggingPresetItem clonePresetTag(TaggingPresetItem itemFrom)
+	~Element getItemElement(Document doc)
+	+void addPropertyChangeListener(PropertyChangeListener listener)
+	+void removePropertyChangeListener(PropertyChangeListener listener)
 	+int getSize()
 	+EasyPresets getParent()
-	+void addListDataListener(GroupPresetMenu)
-	~Element getItemElement(Document)
+	+void setParent(EasyPresets parent)
+	+void addListDataListener(GroupPresetMenu groupPresetMenu)
+}
+class TaggingPreset [[java:org.openstreetmap.josm.gui.tagging.presets.TaggingPreset]] {
 }
 
-EasyPreset "parent" --> EasyPresets
-
-class EasyPresets extends javax.swing.DefaultListModel implements java.beans.PropertyChangeListener, PresetsEntry, Cloneable {
-	-FILE_NAME : String
-	-PRESET_FORMAT_URLS : String[]
-	+PLUGIN_HELP_URL : String
-	~parent : EasyPresets
-
+class EasyPresets [[java:org.maripo.josm.easypresets.data.EasyPresets]] {
+	-{static}String FILE_NAME
+	-{static}String[] PRESET_FORMAT_URLS
+	+{static}String PLUGIN_HELP_URL
+	-String name
+	-PropertyChangeSupport pcs
 	+String getXMLPath()
+	+EasyPresets()
+	+EasyPresets(EasyPresets parent)
 	+boolean isRoot()
 	+List<PresetsEntry> getEntry()
 	+JMenu getMenu()
+	+{static}JMenu getMenu(JMenu menu, List<PresetsEntry> lentry, String name)
 	+PresetsEntry[] toArray()
 	+void load()
-	+void addElement(PresetsEntry)
-	+void setElementAt(PresetsEntry, int)
+	~void load(File file)
+	+void addElement(PresetsEntry preset)
+	+void setElementAt(PresetsEntry element, int index)
 	+void saveTo()
-	+void saveTo(File)
-	~Element getPresetsElement(Document)
-	~Element getGroupElement(Document)
-	~Element getGroupElement(Document, String)
+	+void saveTo(File file)
+	~Element getPresetsElement(Document doc)
+	-String getComment()
+	~Element getGroupElement(Document doc)
+	~Element getGroupElement(Document doc, String name)
 	+void moveDown(int index)
 	+void moveUp(int index)
-	+String getLabelFromExistingPresets(String)
-	+void addPropertyChangeListener(PropertyChangeListener)
-	+void removePropertyChangeListener(PropertyChangeListener)
-	+void propertyChange(PropertyChangeEvent)
+	+String getLabelFromExistingPresets(String key)
+	-String getLocaleLabel(KeyedItem _item)
+	+void addPropertyChangeListener(PropertyChangeListener listener)
+	+void removePropertyChangeListener(PropertyChangeListener listener)
+	+void propertyChange(PropertyChangeEvent arg0)
 	+Icon getIcon()
 	+String getLocaleName()
 	+String getName()
-	+EasyPresets getParent()
 	+String getRawName()
-	+void setName(String)
+	+void setName(String name)
 	+PresetsEntry copy()
 	+EasyPresets clone()
-	+void addListDataListener(GroupPresetMenu)
+	+void addListDataListener(GroupPresetMenu groupPresetMenu)
+	+EasyPresets getParent()
+	+void setParent(EasyPresets parent)
 }
 
-org.maripo.josm.easypresets.EasyPresetsPlugin "root" *-- EasyPresets
 
-class DummyPresetClass extends org.openstreetmap.josm.gui.tagging.presets.items.Text {
-	+String getLocaleText(text, textContext)
+class "DefaultListModel<PresetsEntry>" as DefaultListModel_PresetsEntry_ {
 }
 
-class GroupStack {
-	-stack : ArrayList<EasyPresets>
-	~SEPA : String
-	~root : EasyPresets
+class EasySeparator [[java:org.maripo.josm.easypresets.data.EasySeparator]] {
+	-{static}long serialVersionUID
+	-EasyPresets parent
+	+EasySeparator()
+	+EasySeparator(EasyPresets parent)
+	+EasySeparator copy()
+	+EasySeparator clone()
+	+int getSize()
+	+EasyPresets getParent()
+	+void setParent(EasyPresets parent)
+	+String getName()
+	+String getLocaleName()
+	+String getRawName()
+	+void addListDataListener(GroupPresetMenu groupPresetMenu)
+	~Element getItemElement(Document doc)
+}
+class TaggingPresetSeparator [[java:org.openstreetmap.josm.gui.tagging.presets.TaggingPresetSeparator]] {
+}
+interface Cloneable [[java:java.lang.Cloneable]] {
+}
+
+
+class GroupStack [[java:org.maripo.josm.easypresets.data.GroupStack]] {
+	-ArrayList<EasyPresets> stack
+	~{static}String SEPA
+	~EasyPresets root
+	+GroupStack()
+	+GroupStack(EasyPresets root)
 	+void setRoot(EasyPresets item)
 	+void clear()
-	+void push(EasyPresets)
+	+void push(EasyPresets item)
 	~EasyPresets pop()
-	+EasyPresets pop(rawName)
+	-EasyPresets getLast()
+	+EasyPresets pop(String rawName)
 }
+
+interface PresetsEntry [[java:org.maripo.josm.easypresets.data.PresetsEntry]] {
+	int getSize()
+	Icon getIcon()
+	String getName()
+	String getLocaleName()
+	String getRawName()
+	PresetsEntry copy()
+	EasyPresets getParent()
+	void setParent(EasyPresets parent)
+	void addListDataListener(GroupPresetMenu groupPresetMenu)
+}
+
+
+class DummyPresetClass [[java:org.maripo.josm.easypresets.data.EasyPresets$DummyPresetClass]] {
+	+{static}String getLocaleText(String text, String textContext)
+}
+class Text [[java:com.kitfox.svg.Text]] {
+}
+
+Cloneable <|.. EasySeparator
+Cloneable <|.. EasyPreset
+Cloneable <|.. EasyPresets
+TaggingPreset <|-- EasyPreset
+PresetsEntry <|.. EasyPreset
+
+EasyPresets --> "1" EasyPresets : parent
+EasyPreset "parent" --> EasyPresets
+EasySeparator "parent" --> EasyPresets
+DefaultListModel_PresetsEntry_ <|-- EasyPresets
+
+easypresets.EasyPresetsPlugin "root" *-- EasyPresets
+
+TaggingPresetSeparator <|-- EasySeparator
+PresetsEntry <|.. EasySeparator
+Text <|-- DummyPresetClass
 
 EasyPresets "load()" ..> GroupStack
 
-interface PresetsEntry {
-	int getSize();
-	Icon getIcon();
-	String getName();
-	String getLocaleName();
-	String getRawName();
-	PresetsEntry copy();
-	EasyPresets getParent();
-	void addListDataListener(GroupPresetMenu);
-}
-
-EasyPresets -* DummyPresetClass
-javax.swing.DefaultListModel *- PresetsEntry
+EasyPresets --* DummyPresetClass
 
 @enduml

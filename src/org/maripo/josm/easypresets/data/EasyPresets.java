@@ -37,6 +37,7 @@ import org.openstreetmap.josm.gui.tagging.presets.TaggingPreset;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetItem;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetMenu;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetReader;
+import org.openstreetmap.josm.gui.tagging.presets.TaggingPresetSeparator;
 import org.openstreetmap.josm.gui.tagging.presets.TaggingPresets;
 import org.openstreetmap.josm.gui.tagging.presets.items.Check;
 import org.openstreetmap.josm.gui.tagging.presets.items.ComboMultiSelect;
@@ -103,10 +104,16 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	}
 	
 	public JMenu getMenu() {
-		JMenu menu = new JMenu(this.getLocaleName());
-		List<PresetsEntry> lentry = this.getEntry();
+		JMenu menu = new JMenu(name);
+        return getMenu(menu, this.getEntry(), this.getLocaleName());
+	}
+	
+	public static JMenu getMenu(JMenu menu, List<PresetsEntry> lentry, String name) {
         for (PresetsEntry entry : lentry) {
-        	if (entry instanceof TaggingPreset) {
+        	if (entry instanceof TaggingPresetSeparator) {
+                menu.addSeparator();
+        	}
+        	else if (entry instanceof TaggingPreset) {
                 JMenuItem mi = new JMenuItem((TaggingPreset)entry);
                 mi.setText(((TaggingPreset)entry).getName());
                 mi.setEnabled(true);
@@ -140,8 +147,11 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 				if (readResult != null) {
 					GroupStack stack = new GroupStack(this);
 					for (TaggingPreset preset : readResult) {
-						String locale = preset.getLocaleName();
 						String raw = preset.getRawName();
+						String locale = preset.getLocaleName();
+						if (locale == null) {
+							locale = "null";
+						}
 						String path = raw.substring(0, raw.length() - locale.length());
 						if (!path.startsWith(this.name)) {
 							path = this.name + GroupStack.SEPA + path;
@@ -158,7 +168,11 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 								pp.addElement(group);
 							}
 						}
-						else {
+						else if (preset instanceof TaggingPresetSeparator) {
+							EasySeparator tag = new EasySeparator(pp);
+							pp.addElement(tag);
+						}
+						else if (preset instanceof TaggingPreset) {
 							EasyPreset tags = new EasyPreset((TaggingPreset)preset, pp);
 							pp.addElement(tags);
 						}
@@ -276,6 +290,10 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 				Element itemElement = ((EasyPreset)preset).getItemElement(doc);
 				groupElement.appendChild(itemElement);
 			}
+			if (preset instanceof EasySeparator) {
+				Element itemElement = ((EasySeparator)preset).getItemElement(doc);
+				groupElement.appendChild(itemElement);
+			}
 			else if (preset instanceof EasyPresets) {
 				if (!((EasyPresets)preset).isEmpty()) {
 					Element itemElement = ((EasyPresets)preset).getGroupElement(doc);
@@ -335,7 +353,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 		for (String label: labelCountMap.keySet()) {
 			if (labelCountMap.get(label) > maxCount) {
 				mostFrequentLabel = label;
-				maxCount = labelCountMap.get(label); 
+				maxCount = labelCountMap.get(label);
 			}
 		}
 		return mostFrequentLabel;
@@ -445,16 +463,15 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 			if (entry instanceof EasyPreset) {
 				obj.addElement(((EasyPreset) entry).clone());
 			}
+			else if (entry instanceof EasySeparator) {
+				obj.addElement(((EasySeparator) entry).clone());
+			}
 			else if (entry instanceof EasyPresets) {
 				obj.addElement(((EasyPresets) entry).clone());
 			}
 		}
 		return obj;
 	}
-	/*
-	static EasyPresets clone(EasyPresets src) {
-		return new EasyPresets();
-	}*/
 
 	@Override
 	public void addListDataListener(GroupPresetMenu groupPresetMenu) {
@@ -464,5 +481,10 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	@Override
 	public EasyPresets getParent() {
 		return this.parent;
+	}
+
+	@Override
+	public void setParent(EasyPresets parent) {
+		this.parent = parent;
 	}
 }

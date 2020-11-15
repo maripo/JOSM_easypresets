@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.maripo.josm.easypresets.data.EasyPreset;
 import org.maripo.josm.easypresets.data.EasyPresets;
+import org.maripo.josm.easypresets.data.EasySeparator;
 import org.maripo.josm.easypresets.data.PresetsEntry;
 import org.maripo.josm.easypresets.ui.editor.PresetEditorDialog;
 import org.maripo.josm.easypresets.ui.move.MoveFolderDialog;
@@ -45,6 +46,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	private JButton folderButton;
 	private JButton organizeButton;
 	private JButton createButton;
+	private JButton separatorButton;
 	private JButton editButton;
 	private JButton copyButton;
 	private JButton deleteButton;
@@ -192,6 +194,18 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		});
 		createButton.setEnabled(true);
 		
+		// 'separator'
+		separatorButton = new JButton();
+		separatorButton.setToolTipText(tr("Create a separator"));
+		separatorButton.setIcon(ImageProvider.get("preferences", "separator", ImageSizes.LARGEICON));
+		separatorButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				separator();
+			}
+		});
+		separatorButton.setEnabled(true);
+		
 		editButton = new JButton();
 		editButton.setToolTipText(tr("Edit"));
 		editButton.setIcon(ImageProvider.get("dialogs", "edit", ImageSizes.LARGEICON));
@@ -233,6 +247,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		buttons.add(organizeButton, GBC.eol());
 		buttons.add(folderButton, GBC.eol());
 		buttons.add(createButton, GBC.eol());
+		buttons.add(separatorButton, GBC.eol());
 		buttons.add(editButton, GBC.eol());
 		buttons.add(copyButton, GBC.eol());
 		buttons.add(deleteButton, GBC.eol());
@@ -302,6 +317,21 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		presets.insertElementAt(preset, i);
 		PresetEditorDialog dialog = new PresetEditorDialog(preset, tagMap, i, presets);
 		dialog.showDialog();
+	}
+
+	/**
+	 * button action "Create Separator"
+	 */
+	protected void separator() {
+		int i;
+		if (!isSelectionValid()) {
+			i = presets.getSize();
+		}
+		else {
+			i = list.getSelectedIndex();
+		}
+		EasySeparator separator = new EasySeparator(parent);
+		presets.insertElementAt(separator, i);
 	}
 
 	protected void edit() {
@@ -388,12 +418,21 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 			organizeButton.setEnabled(false);
 			return;
 		}
-		folderButton.setEnabled(true);
+		PresetsEntry obj = getSelectedPreset();
+		if (obj instanceof EasySeparator) {
+			editButton.setEnabled(false);
+			organizeButton.setEnabled(false);
+			folderButton.setEnabled(false);
+			copyButton.setEnabled(false);
+		}
+		else {
+			editButton.setEnabled(true);
+			organizeButton.setEnabled(true);
+			folderButton.setEnabled(true);
+			copyButton.setEnabled(true);
+		}
 		createButton.setEnabled(true);
-		editButton.setEnabled(true);
 		deleteButton.setEnabled(true);
-		organizeButton.setEnabled(true);
-		copyButton.setEnabled(true);
 	}
 	
 	PresetsEntry getSelectedPreset() {
