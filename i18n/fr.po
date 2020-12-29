@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-03 15:31+0900\n"
-"PO-Revision-Date: 2020-11-03 15:34+0900\n"
-"Last-Translator: gendy54 <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-12-29 19:31+0100\n"
+"PO-Revision-Date: 2020-12-29 19:31+0100\n"
+"Last-Translator: gendy54 <donat.r@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -23,12 +23,12 @@ msgstr ""
 #: org/maripo/josm/easypresets/data/EasyPresets.java:285
 #, fuzzy
 msgid "Custom Presets"
-msgstr "Manage Custom Presets"
+msgstr "Liste des presets"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:57
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:80
 msgid "Manage Custom Presets"
-msgstr "Manage Custom Presets"
+msgstr "Gestion des presets personnalisés"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:101
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:35
@@ -38,143 +38,145 @@ msgstr "Export"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:102
 msgid "Export custom presets as a local XML file"
-msgstr ""
+msgstr "Export des préréglages personnalisés sous la forme d'un fichier XML local"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:111
 msgid "Preset Group Name"
-msgstr "Presets group name"
+msgstr "Nom du groupe de preset"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:155
 msgid "Move up"
-msgstr ""
+msgstr "Monter"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:156
 msgid "Move down"
-msgstr ""
+msgstr "Descendre"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:159
 msgid "Create a group"
-msgstr "Create group"
+msgstr "Créer un groupe"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:172
 #: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:40
 msgid "Organize"
-msgstr ""
+msgstr "Organiser"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:187
 #, fuzzy
 msgid "Create a preset"
-msgstr "Create Preset"
+msgstr "Créer un preset"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:199
 msgid "Create a separator"
-msgstr "Create separator"
+msgstr "Créer un separateur"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:210
 msgid "Edit"
-msgstr "Edit"
+msgstr "Éditer"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:221
 msgid "Copy"
-msgstr ""
+msgstr "Copier"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:233
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:366
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:367
 msgid "Delete"
-msgstr "Delete"
+msgstr "Supprimer"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:257
 #: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:135
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:200
 msgid "Close"
-msgstr "Close"
+msgstr "Fermer"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:286
 msgid "NewGroup"
-msgstr "New Group"
+msgstr "Nouveau groupe"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:368
 #: org/maripo/josm/easypresets/ui/editor/IconPickerDialog.java:75
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:281
 #: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:57
 msgid "Cancel"
-msgstr "Cancel"
+msgstr "Annuler"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:370
 #, java-format
 msgid "Are you sure you want to delete \"{0}\"?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer \"{0}\"?"
 
 #: org/maripo/josm/easypresets/ui/CreatePresetAction.java:49
 #: org/maripo/josm/easypresets/ui/CreatePresetAction.java:52
 msgid "Create Preset"
-msgstr "Create Preset"
+msgstr "Créer un preset"
 
 #: org/maripo/josm/easypresets/ui/CreatePresetAction.java:50
 msgid ""
 "Create or edit your custom preset based on tags from the current selection"
 msgstr ""
-"Create or edit your custom preset based on tags from the current selection"
+"Créez ou modifiez votre preset personnalisé basé sur les tags des objets séletionnés"
 
 #: org/maripo/josm/easypresets/ui/CreatePresetAction.java:52
 #, java-format
 msgid "Tool: {0}"
-msgstr "Tool: {0}"
+msgstr "Outil: {0}"
 
 #: org/maripo/josm/easypresets/ui/CreatePresetAction.java:62
 msgid "Layer is null"
-msgstr ""
+msgstr "Aucun calque de données présent"
 
 #: org/maripo/josm/easypresets/ui/CreatePresetAction.java:67
 msgid ""
 "Selection is empty. EasyPresets creates new presets based on selected nodes "
 "or ways."
 msgstr ""
+"La sélection est vide. EasyPresets crée de nouveaux preset basés sur les nœuds sélectionnés"
+"ou les ways".
 
 #: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:96
 msgid "Please select a destination group."
-msgstr ""
+msgstr "Veuillez sélectionner un groupe de destination."
 
 #: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:112
 msgid "Move to upper group"
-msgstr ""
+msgstr "Passer au groupe supérieur"
 
 #: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:126
 msgid "Move to"
-msgstr ""
+msgstr "Aller à"
 
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:63
 msgid "Presets name"
-msgstr "Preset name is empty"
+msgstr "Le nom du preset est vide"
 
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:158
 msgid "Check all"
-msgstr ""
+msgstr "Tout cocher"
 
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:166
 msgid "Uncheck all"
-msgstr ""
+msgstr "Tout décocher"
 
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:175
 msgid "Please check presets you want to export."
-msgstr ""
+msgstr "Veuillez cocher les préréglages que vous souhaitez exporter."
 
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:231
 msgid "Illegal presets name."
-msgstr "Illegal presets name."
+msgstr "Nom de preset interdit."
 
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:236
 msgid "No presets are selected."
-msgstr ""
+msgstr "Aucun préréglage n'est sélectionné."
 
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:247
 msgid "Save Presets"
-msgstr "Save Presets"
+msgstr "Sauvegarder le preset"
 
 #: org/maripo/josm/easypresets/ui/editor/TagsPane.java:44
 msgid "Use"
-msgstr "Use"
+msgstr "Utiliser"
 
 #: org/maripo/josm/easypresets/ui/editor/TagsPane.java:45
 msgid "Type"
@@ -182,77 +184,77 @@ msgstr "Type"
 
 #: org/maripo/josm/easypresets/ui/editor/TagsPane.java:46
 msgid "Key"
-msgstr "Key"
+msgstr "Clé"
 
 #: org/maripo/josm/easypresets/ui/editor/TagsPane.java:47
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 #: org/maripo/josm/easypresets/ui/editor/TagsPane.java:47
 msgid "Optional"
-msgstr "Optional"
+msgstr "Optionnel"
 
 #: org/maripo/josm/easypresets/ui/editor/TagsPane.java:48
 msgid "Value"
-msgstr "Value"
+msgstr "Valeur"
 
 #: org/maripo/josm/easypresets/ui/editor/TagsPane.java:49
 msgid "Order"
-msgstr ""
+msgstr "Ordre"
 
 #: org/maripo/josm/easypresets/ui/editor/IconPickerDialog.java:52
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:193
 msgid "Icon"
-msgstr ""
+msgstr "Icône"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:75
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:112
 msgid "Preset Editor"
-msgstr "Preset Editor"
+msgstr "Éditeur du preset"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:168
 msgid "PresetEditorDialogreset Name"
-msgstr ""
+msgstr "Nom du preset"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:175
 msgid "Show the name on the dialog"
-msgstr ""
+msgstr "Afficher le nom dans la boîte de dialogue"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:203
 msgid "Select icon"
-msgstr ""
+msgstr "Sélectionner l'icône"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:238
 msgid "Applies to"
-msgstr ""
+msgstr "S'applique à"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:241
 msgid "Reference URL"
-msgstr ""
+msgstr "URL de la page de référence du wiki"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:245
 msgid "Tags"
-msgstr ""
+msgstr "Tags"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:263
 msgid "Add Tag"
-msgstr ""
+msgstr "Ajouter tag"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:272
 msgid "Save"
-msgstr "Save"
+msgstr "Sauvegarder"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:379
 msgid "Preset name is empty."
-msgstr "Preset name is empty."
+msgstr "Le nom de la présélection est vide."
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:389
 msgid "Tag list is empty."
-msgstr "Tag list is empty."
+msgstr "La liste des tags est vide."
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:155
 msgid "Default"
-msgstr "Default"
+msgstr "Défaut"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:195
 #, fuzzy
@@ -266,31 +268,31 @@ msgstr "{0} options"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:309
 msgid "Fixed value"
-msgstr ""
+msgstr "Valeur fixe"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:310
 msgid "Textbox"
-msgstr ""
+msgstr "Valeur à compléter"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:311
 msgid "Selection"
-msgstr ""
+msgstr "Sélection valeur"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:312
 msgid "Checkbox"
-msgstr ""
+msgstr "Case à cocher"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:313
 msgid "Multiselect"
-msgstr ""
+msgstr "Multisélection"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:330
 msgid "Unavailable"
-msgstr ""
+msgstr "Non disponible"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:331
 msgid "A field of this type doesn't have a label."
-msgstr ""
+msgstr "Un champ de ce type n'a pas de label."
 
 #: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:45
 msgid "Options"
@@ -298,7 +300,7 @@ msgstr "Options"
 
 #: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:55
 msgid "Enter one option per line."
-msgstr "Enter one option per line."
+msgstr "Indiquez une valeur par ligne."
 
 #: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:56
 msgid "OK"
@@ -306,15 +308,15 @@ msgstr "OK"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsAction.java:19
 msgid "Manage custom presets"
-msgstr "Manage custom presets"
+msgstr "Gérer les preset personnalisées"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsAction.java:20
 msgid "List, Update Or Delete Custom Presets"
-msgstr "List, Update Or Delete Custom Presets"
+msgstr "Lister, mettre à jour ou supprimer des presets personnalisés"
 
 #: org/maripo/josm/easypresets/data/EasyPreset.java:38
 msgid "New Preset"
-msgstr "New Custom Preset"
+msgstr "Nouveau preset personnalisé"
 
 #: org/maripo/josm/easypresets/data/EasyPreset.java:61
 #: org/maripo/josm/easypresets/data/EasyPresets.java:447
@@ -324,19 +326,19 @@ msgstr "Tool: {0}"
 
 #: org/maripo/josm/easypresets/data/EasyPresets.java:261
 msgid "This file is generated by EasyPresets plugin.\n"
-msgstr "This file is generated by EasyPresets plugin.\n"
+msgstr "Ce fichier est généré par le greffon EasyPresets.\n"
 
 #: org/maripo/josm/easypresets/data/EasyPresets.java:264
 msgid "It supports just a few tags and attributes.\n"
-msgstr "It supports just a few tags and attributes.\n"
+msgstr "Il ne prend en charge que quelques tags et attributs.\n"
 
 #: org/maripo/josm/easypresets/data/EasyPresets.java:265
 msgid ""
 "If you want to share your custom tags with other users, please look through "
 "the official document.\n"
 msgstr ""
-"If you want to share your custom tags with other users, please look through "
-"the official document.\n"
+"Si vous souhaitez partager vos étiquettes personnalisées avec d'autres utilisateurs, veuillez consulter la page
+"document officiel".
 
 #~ msgid "Custom Presets name"
-#~ msgstr "Custom Presets name"
+#~ msgstr "Nom des presets personnalisés"
