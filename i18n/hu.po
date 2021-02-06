@@ -1,0 +1,338 @@
+# JOSM EasyPresets Hungarian tanslations.
+# Copyright (C) 2017-2021 Maripo Goda
+# This file is distributed under the same license as the JOSM EasyPresets package.
+# Meskó Balázs <mesko.balazs@fsf.hu>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-03 15:31+0900\n"
+"PO-Revision-Date: 2021-02-06 16:44+0100\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Meskó Balázs <mesko.balazs@fsf.hu>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.4.2\n"
+
+#: org/maripo/josm/easypresets/EasyPresetsPlugin.java:26
+#: org/maripo/josm/easypresets/ui/GroupPresetMenu.java:21
+#: org/maripo/josm/easypresets/data/EasyPresets.java:285
+msgid "Custom Presets"
+msgstr "Egyéni címkesablonok"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:57
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:80
+msgid "Manage Custom Presets"
+msgstr "Egyéni címkesablonok kezelése"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:101
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:35
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:192
+msgid "Export"
+msgstr "Exportálás"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:102
+msgid "Export custom presets as a local XML file"
+msgstr "Egyéni címkesablonok exportálása helyi XML-fájlként"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:111
+msgid "Preset Group Name"
+msgstr "Címkesablon neve"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:155
+msgid "Move up"
+msgstr "Mozgatás fel"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:156
+msgid "Move down"
+msgstr "Mozgatás le"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:159
+msgid "Create a group"
+msgstr "Csoport létrehozása"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:172
+#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:40
+msgid "Organize"
+msgstr "Rendszerezés"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:187
+msgid "Create a preset"
+msgstr "Címkesablon létrehozása"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:199
+msgid "Create a separator"
+msgstr "Elválasztó létrehozása"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:210
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:221
+msgid "Copy"
+msgstr "Másolás"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:233
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:366
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:367
+msgid "Delete"
+msgstr "Törlés"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:257
+#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:135
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:200
+msgid "Close"
+msgstr "Bezárás"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:286
+msgid "NewGroup"
+msgstr "Új csoport"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:368
+#: org/maripo/josm/easypresets/ui/editor/IconPickerDialog.java:75
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:281
+#: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:57
+msgid "Cancel"
+msgstr "Mégse"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:370
+#, java-format
+msgid "Are you sure you want to delete \"{0}\"?"
+msgstr "Biztos, hogy törlöd a következőt: „{0}”?"
+
+#: org/maripo/josm/easypresets/ui/CreatePresetAction.java:49
+#: org/maripo/josm/easypresets/ui/CreatePresetAction.java:52
+msgid "Create Preset"
+msgstr "Címkesablon létrehozása"
+
+#: org/maripo/josm/easypresets/ui/CreatePresetAction.java:50
+msgid ""
+"Create or edit your custom preset based on tags from the current selection"
+msgstr ""
+"Egyéni címkesablon létrehozása vagy szerkesztése a jelenlegi kiválasztás "
+"címkéi alapján"
+
+#: org/maripo/josm/easypresets/ui/CreatePresetAction.java:52
+#, java-format
+msgid "Tool: {0}"
+msgstr "Eszköz: {0}"
+
+#: org/maripo/josm/easypresets/ui/CreatePresetAction.java:62
+msgid "Layer is null"
+msgstr "A réteg null"
+
+#: org/maripo/josm/easypresets/ui/CreatePresetAction.java:67
+msgid ""
+"Selection is empty. EasyPresets creates new presets based on selected nodes "
+"or ways."
+msgstr ""
+"A kiválasztás üres. Az EasyPresets a kiválasztott pontok vagy vonalak "
+"alapján hoz létre új címkesablonokat."
+
+#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:96
+msgid "Please select a destination group."
+msgstr "Válasszon célcsoportot."
+
+#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:112
+msgid "Move to upper group"
+msgstr "Áthelyezés a fentebbi csoportba"
+
+#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:126
+msgid "Move to"
+msgstr "Áthelyezés…"
+
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:63
+msgid "Presets name"
+msgstr "Címkesablon neve"
+
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:158
+msgid "Check all"
+msgstr "Összes kiválasztása"
+
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:166
+msgid "Uncheck all"
+msgstr "Kiválasztások megszüntetése"
+
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:175
+msgid "Please check presets you want to export."
+msgstr "Válaszd ki az exportálandó címkesablonokat."
+
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:231
+msgid "Illegal presets name."
+msgstr "Érvénytelen címkesablonnév."
+
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:236
+msgid "No presets are selected."
+msgstr "Nincs címkesablon kiválasztva."
+
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:247
+msgid "Save Presets"
+msgstr "Címkesablon mentése"
+
+#: org/maripo/josm/easypresets/ui/editor/TagsPane.java:44
+msgid "Use"
+msgstr "Használat"
+
+#: org/maripo/josm/easypresets/ui/editor/TagsPane.java:45
+msgid "Type"
+msgstr "Típus"
+
+#: org/maripo/josm/easypresets/ui/editor/TagsPane.java:46
+msgid "Key"
+msgstr "Kulcs"
+
+#: org/maripo/josm/easypresets/ui/editor/TagsPane.java:47
+msgid "Label"
+msgstr "Címke"
+
+#: org/maripo/josm/easypresets/ui/editor/TagsPane.java:47
+msgid "Optional"
+msgstr "Nem kötelező"
+
+#: org/maripo/josm/easypresets/ui/editor/TagsPane.java:48
+msgid "Value"
+msgstr "Érték"
+
+#: org/maripo/josm/easypresets/ui/editor/TagsPane.java:49
+msgid "Order"
+msgstr "Sorrend"
+
+#: org/maripo/josm/easypresets/ui/editor/IconPickerDialog.java:52
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:193
+msgid "Icon"
+msgstr "Ikon"
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:75
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:112
+msgid "Preset Editor"
+msgstr "Címkesablon-szerkesztő"
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:168
+msgid "PresetEditorDialogreset Name"
+msgstr "Címkesablon neve"
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:175
+msgid "Show the name on the dialog"
+msgstr "A párbeszédablak nevének megjelenítése"
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:203
+msgid "Select icon"
+msgstr "Válassz ikont"
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:238
+msgid "Applies to"
+msgstr "Erre vonatkozik:"
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:241
+msgid "Reference URL"
+msgstr "Referencia URL"
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:245
+msgid "Tags"
+msgstr "Címkék"
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:263
+msgid "Add Tag"
+msgstr "Címke hozzáadása"
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:272
+msgid "Save"
+msgstr "Mentés"
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:379
+msgid "Preset name is empty."
+msgstr "A címkesablon neve üres."
+
+#: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:389
+msgid "Tag list is empty."
+msgstr "A címkelista üres."
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:155
+msgid "Default"
+msgstr "Alapértelmezett"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:195
+msgid "Edit options"
+msgstr "Beállítások szerkesztése"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:223
+#, java-format
+msgid "{0} options"
+msgstr "{0} beállítások"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:309
+msgid "Fixed value"
+msgstr "Rögzített érték"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:310
+msgid "Textbox"
+msgstr "Szövegdoboz"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:311
+msgid "Selection"
+msgstr "Kiválasztás"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:312
+msgid "Checkbox"
+msgstr "Jelölőmező"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:313
+msgid "Multiselect"
+msgstr "Többszörös kiválasztás"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:330
+msgid "Unavailable"
+msgstr "Nem érhető el"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:331
+msgid "A field of this type doesn't have a label."
+msgstr "Az ilyen típusú mezőnek nincs címkéje."
+
+#: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:45
+msgid "Options"
+msgstr "Beállítások"
+
+#: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:55
+msgid "Enter one option per line."
+msgstr "Soronként egy lehetőséget adj meg."
+
+#: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:56
+msgid "OK"
+msgstr "OK"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsAction.java:19
+msgid "Manage custom presets"
+msgstr "Egyéni címkesablonok kezelése"
+
+#: org/maripo/josm/easypresets/ui/ManagePresetsAction.java:20
+msgid "List, Update Or Delete Custom Presets"
+msgstr "Egyéni címkesablonok felsorolása, frissítése vagy törlése"
+
+#: org/maripo/josm/easypresets/data/EasyPreset.java:38
+msgid "New Preset"
+msgstr "Új címkesablon"
+
+#: org/maripo/josm/easypresets/data/EasyPreset.java:61
+#: org/maripo/josm/easypresets/data/EasyPresets.java:447
+#, java-format
+msgid "Copy of {0}"
+msgstr "{0} másolata"
+
+#: org/maripo/josm/easypresets/data/EasyPresets.java:261
+msgid "This file is generated by EasyPresets plugin.\n"
+msgstr "A fájlt az EasyPresets bővítmény állította elő.\n"
+
+#: org/maripo/josm/easypresets/data/EasyPresets.java:264
+msgid "It supports just a few tags and attributes.\n"
+msgstr "Csak néhány címkét és attribútumot támogat.\n"
+
+#: org/maripo/josm/easypresets/data/EasyPresets.java:265
+msgid ""
+"If you want to share your custom tags with other users, please look through "
+"the official document.\n"
+msgstr ""
+"Ha meg akarod osztani másokkal a címkesablonjaidat, akkor nézd át a "
+"hivatalos dokumentumot.\n"
