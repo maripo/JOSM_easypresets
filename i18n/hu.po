@@ -256,12 +256,12 @@ msgstr "Alapértelmezett"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:195
 msgid "Edit options"
-msgstr "Beállítások szerkesztése"
+msgstr "Lehetőségek szerkesztése"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:223
 #, java-format
 msgid "{0} options"
-msgstr "{0} beállítások"
+msgstr "{0} lehetőség"
 
 #: org/maripo/josm/easypresets/ui/editor/TagEditor.java:309
 msgid "Fixed value"
