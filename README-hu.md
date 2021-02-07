@@ -1,6 +1,7 @@
 # JOSM EasyPresets Plugin
 
 [English](https://github.com/maripo/JOSM_easypresets/blob/master/README-en.md)
+[日本語](https://github.com/maripo/JOSM_easypresets/blob/master/README-ja.md)
 
 Az EasyPresets bővítménnyel egyéni címkesablonokat készíthetsz és használhatsz.
 Könnyen hozhatsz létre címkesablonokat a kiválasztott objektumok alapján.

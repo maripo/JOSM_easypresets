@@ -1,6 +1,7 @@
 # JOSM EasyPresets Plugin
 
 [English](https://github.com/maripo/JOSM_easypresets/blob/master/README.md)
+[ハンガリー語](https://github.com/maripo/JOSM_easypresets/blob/master/README-hu.md)
 
 簡単にプリセットを作って使用することができます。このプラグインは "プリセット" メニューに新しいメニューを追加します。
 また、JOSMのプリセットとして使うことのできるXMLをエクスポートすることが可能です。

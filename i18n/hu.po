@@ -7,21 +7,38 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-03 15:31+0900\n"
+"POT-Creation-Date: 2021-02-07 23:00+0900\n"
 "PO-Revision-Date: 2021-02-06 16:44+0100\n"
+"Last-Translator: Meskó Balázs <mesko.balazs@fsf.hu>\n"
+"Language-Team: \n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: Meskó Balázs <mesko.balazs@fsf.hu>\n"
-"Language-Team: \n"
 "X-Generator: Poedit 2.4.2\n"
 
-#: org/maripo/josm/easypresets/EasyPresetsPlugin.java:26
-#: org/maripo/josm/easypresets/ui/GroupPresetMenu.java:21
-#: org/maripo/josm/easypresets/data/EasyPresets.java:285
-msgid "Custom Presets"
-msgstr "Egyéni címkesablonok"
+#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:40
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:172
+msgid "Organize"
+msgstr "Rendszerezés"
+
+#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:96
+msgid "Please select a destination group."
+msgstr "Válasszon célcsoportot."
+
+#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:112
+msgid "Move to upper group"
+msgstr "Áthelyezés a fentebbi csoportba"
+
+#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:126
+msgid "Move to"
+msgstr "Áthelyezés…"
+
+#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:135
+#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:257
+#: org/maripo/josm/easypresets/ui/ExportDialog.java:200
+msgid "Close"
+msgstr "Bezárás"
 
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:57
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:80
@@ -54,11 +71,6 @@ msgstr "Mozgatás le"
 msgid "Create a group"
 msgstr "Csoport létrehozása"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:172
-#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:40
-msgid "Organize"
-msgstr "Rendszerezés"
-
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:187
 msgid "Create a preset"
 msgstr "Címkesablon létrehozása"
@@ -81,12 +93,6 @@ msgstr "Másolás"
 msgid "Delete"
 msgstr "Törlés"
 
-#: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:257
-#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:135
-#: org/maripo/josm/easypresets/ui/ExportDialog.java:200
-msgid "Close"
-msgstr "Bezárás"
-
 #: org/maripo/josm/easypresets/ui/ManagePresetsDialog.java:286
 msgid "NewGroup"
 msgstr "Új csoport"
@@ -102,6 +108,12 @@ msgstr "Mégse"
 #, java-format
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Biztos, hogy törlöd a következőt: „{0}”?"
+
+#: org/maripo/josm/easypresets/ui/GroupPresetMenu.java:21
+#: org/maripo/josm/easypresets/EasyPresetsPlugin.java:34
+#: org/maripo/josm/easypresets/data/EasyPresets.java:285
+msgid "Custom Presets"
+msgstr "Egyéni címkesablonok"
 
 #: org/maripo/josm/easypresets/ui/CreatePresetAction.java:49
 #: org/maripo/josm/easypresets/ui/CreatePresetAction.java:52
@@ -132,17 +144,13 @@ msgstr ""
 "A kiválasztás üres. Az EasyPresets a kiválasztott pontok vagy vonalak "
 "alapján hoz létre új címkesablonokat."
 
-#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:96
-msgid "Please select a destination group."
-msgstr "Válasszon célcsoportot."
+#: org/maripo/josm/easypresets/ui/ManagePresetsAction.java:19
+msgid "Manage custom presets"
+msgstr "Egyéni címkesablonok kezelése"
 
-#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:112
-msgid "Move to upper group"
-msgstr "Áthelyezés a fentebbi csoportba"
-
-#: org/maripo/josm/easypresets/ui/move/MoveFolderDialog.java:126
-msgid "Move to"
-msgstr "Áthelyezés…"
+#: org/maripo/josm/easypresets/ui/ManagePresetsAction.java:20
+msgid "List, Update Or Delete Custom Presets"
+msgstr "Egyéni címkesablonok felsorolása, frissítése vagy törlése"
 
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:63
 msgid "Presets name"
@@ -171,6 +179,47 @@ msgstr "Nincs címkesablon kiválasztva."
 #: org/maripo/josm/easypresets/ui/ExportDialog.java:247
 msgid "Save Presets"
 msgstr "Címkesablon mentése"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:155
+msgid "Default"
+msgstr "Alapértelmezett"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:195
+msgid "Edit options"
+msgstr "Lehetőségek szerkesztése"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:223
+#, java-format
+msgid "{0} options"
+msgstr "{0} lehetőség"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:309
+msgid "Fixed value"
+msgstr "Rögzített érték"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:310
+msgid "Textbox"
+msgstr "Szövegdoboz"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:311
+msgid "Selection"
+msgstr "Kiválasztás"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:312
+msgid "Checkbox"
+msgstr "Jelölőmező"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:313
+msgid "Multiselect"
+msgstr "Többszörös kiválasztás"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:330
+msgid "Unavailable"
+msgstr "Nem érhető el"
+
+#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:331
+msgid "A field of this type doesn't have a label."
+msgstr "Az ilyen típusú mezőnek nincs címkéje."
 
 #: org/maripo/josm/easypresets/ui/editor/TagsPane.java:44
 msgid "Use"
@@ -250,47 +299,6 @@ msgstr "A címkesablon neve üres."
 msgid "Tag list is empty."
 msgstr "A címkelista üres."
 
-#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:155
-msgid "Default"
-msgstr "Alapértelmezett"
-
-#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:195
-msgid "Edit options"
-msgstr "Lehetőségek szerkesztése"
-
-#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:223
-#, java-format
-msgid "{0} options"
-msgstr "{0} lehetőség"
-
-#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:309
-msgid "Fixed value"
-msgstr "Rögzített érték"
-
-#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:310
-msgid "Textbox"
-msgstr "Szövegdoboz"
-
-#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:311
-msgid "Selection"
-msgstr "Kiválasztás"
-
-#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:312
-msgid "Checkbox"
-msgstr "Jelölőmező"
-
-#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:313
-msgid "Multiselect"
-msgstr "Többszörös kiválasztás"
-
-#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:330
-msgid "Unavailable"
-msgstr "Nem érhető el"
-
-#: org/maripo/josm/easypresets/ui/editor/TagEditor.java:331
-msgid "A field of this type doesn't have a label."
-msgstr "Az ilyen típusú mezőnek nincs címkéje."
-
 #: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:45
 msgid "Options"
 msgstr "Beállítások"
@@ -302,14 +310,6 @@ msgstr "Soronként egy lehetőséget adj meg."
 #: org/maripo/josm/easypresets/ui/editor/ValuesEditorDialog.java:56
 msgid "OK"
 msgstr "OK"
-
-#: org/maripo/josm/easypresets/ui/ManagePresetsAction.java:19
-msgid "Manage custom presets"
-msgstr "Egyéni címkesablonok kezelése"
-
-#: org/maripo/josm/easypresets/ui/ManagePresetsAction.java:20
-msgid "List, Update Or Delete Custom Presets"
-msgstr "Egyéni címkesablonok felsorolása, frissítése vagy törlése"
 
 #: org/maripo/josm/easypresets/data/EasyPreset.java:38
 msgid "New Preset"
