@@ -276,7 +276,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	 */
 	protected void addFolder() {
 		int i;
-		if (!isSelectionValid()) {
+		if (list.isSelectionEmpty()) {
 			i = presets.getSize();
 		}
 		else {
@@ -293,7 +293,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	 * button action "Organize / Folder_move"
 	 */
 	protected void organize () throws CloneNotSupportedException {
-		if (isSelectionValid()) {
+		if (!list.isSelectionEmpty()) {
 			PresetsEntry preset = getSelectedPreset();
 			new MoveFolderDialog(preset).showDialog();
 		}
@@ -301,7 +301,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 
 	protected void create() {
 		int i;
-		if (!isSelectionValid()) {
+		if (list.isSelectionEmpty()) {
 			i = presets.getSize();
 		}
 		else {
@@ -324,7 +324,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	 */
 	protected void separator() {
 		int i;
-		if (!isSelectionValid()) {
+		if (list.isSelectionEmpty()) {
 			i = presets.getSize();
 		}
 		else {
@@ -335,7 +335,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 
 	protected void edit() {
-		if (isSelectionValid()) {
+		if (!list.isSelectionEmpty()) {
 			int i = list.getSelectedIndex();
 			PresetsEntry preset = getSelectedPreset();
 			if (preset instanceof EasyPresets) {
@@ -350,7 +350,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 
 	private boolean copy() {
-		if (isSelectionValid()) {
+		if (!list.isSelectionEmpty()) {
 			int index = list.getSelectedIndex();
 			PresetsEntry copiedPreset = getSelectedPreset().copy();
 			presets.insertElementAt(copiedPreset, index);
@@ -378,7 +378,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 	
 	private void delete() {
-		if (isSelectionValid()) {
+		if (!list.isSelectionEmpty()) {
 			presets.removeElement(getSelectedPreset());
 		}
 	}
@@ -399,44 +399,38 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		}
 		dispose();
 	}
-
-	boolean isSelectionValid () {
-		return !(list.getSelectedIndex() < 0 || list.getSelectedIndex() >= presets.getSize()); 
-	}
 	
 	@Override
 	public void valueChanged(ListSelectionEvent evt) {
-		int i = list.getSelectedIndex();
-		reorderUpButton.setEnabled(i > 0);
-		reorderDownButton.setEnabled(i < presets.getSize()-1);
-		
-		if (!isSelectionValid()) {
-			folderButton.setEnabled(false);
-			createButton.setEnabled(false);
+		if (list.isSelectionEmpty()) {
+			reorderUpButton.setEnabled(false);
+			reorderDownButton.setEnabled(false);
 			editButton.setEnabled(false);
 			deleteButton.setEnabled(false);
 			organizeButton.setEnabled(false);
 			return;
 		}
+
 		PresetsEntry obj = getSelectedPreset();
 		if (obj instanceof EasySeparator) {
 			editButton.setEnabled(false);
 			organizeButton.setEnabled(false);
-			folderButton.setEnabled(false);
 			copyButton.setEnabled(false);
 		}
 		else {
 			editButton.setEnabled(true);
 			organizeButton.setEnabled(true);
-			folderButton.setEnabled(true);
 			copyButton.setEnabled(true);
 		}
-		createButton.setEnabled(true);
+
+		int index = list.getSelectedIndex();
+		reorderDownButton.setEnabled(index < presets.getSize() - 1);
+		reorderUpButton.setEnabled(index > 0);
 		deleteButton.setEnabled(true);
 	}
 	
 	PresetsEntry getSelectedPreset() {
-		if (isSelectionValid()) {
+		if (!list.isSelectionEmpty()) {
 			int i = list.getSelectedIndex();
 			return presets.elementAt(i);
 		}
@@ -444,7 +438,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 	
 	private void reorderUp () {
-		if (!isSelectionValid()) {
+		if (list.isSelectionEmpty()) {
 			return;
 		}
 		int i = list.getSelectedIndex();
@@ -453,7 +447,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 	}
 	
 	private void reorderDown () {
-		if (!isSelectionValid()) {
+		if (list.isSelectionEmpty()) {
 			return;
 		}
 		int i = list.getSelectedIndex();
