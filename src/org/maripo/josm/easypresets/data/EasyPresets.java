@@ -51,6 +51,7 @@ import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+import org.openstreetmap.josm.gui.MainApplication;
 
 /**
  * Container of custom presets
@@ -177,6 +178,8 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 							pp.addElement(tags);
 						}
 					}
+					TaggingPresets.addTaggingPresets(readResult);
+					// MainApplication.getToolbar().refreshToolbarControl();
 				}
 			} catch (FileNotFoundException e) {
 				Logging.debug("File not found: " + file.getAbsolutePath());
@@ -208,7 +211,7 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	}
 
 	/*
-	 * Save all TaggingPresets to specified file
+	 * Save all TaggingPreset instances to specified file
 	 */
 	public void saveTo(File file) {
 		try {

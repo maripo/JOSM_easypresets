@@ -51,12 +51,6 @@ public class EasyPresetsPlugin extends Plugin implements ListDataListener, Layer
 	
 	@Override 
 	public void layerAdded (LayerAddEvent e) {
-		TimerTask task = new TimerTask() {
-			public void run() {
-				MainApplication.getToolbar().refreshToolbarControl();
-			}
-		};
-		new Timer().schedule(task, 1000);
 	}
 	@Override public void layerRemoving(LayerRemoveEvent e) {
 		

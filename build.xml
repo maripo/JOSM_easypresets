@@ -17,7 +17,7 @@
     <property name="commit.message" value="Commit message"/>
     <!-- enter the *lowest* JOSM version this plugin is currently compatible with -->
     <property name="plugin.main.version" value="17084"/>
-    <property name="plugin.version" value="2.3"/>
+    <property name="plugin.version" value="2.4"/>
 
     <!-- Configure these properties (replace "..." accordingly).
          See https://josm.openstreetmap.de/wiki/DevelopersGuide/DevelopingPlugins
