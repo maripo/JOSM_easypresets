@@ -53,6 +53,9 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import org.openstreetmap.josm.gui.MainApplication;
 
+import org.openstreetmap.josm.data.preferences.sources.SourceEntry;
+import org.openstreetmap.josm.data.preferences.sources.SourceType;
+import org.openstreetmap.josm.data.preferences.sources.PresetPrefHelper;
 /**
  * Container of custom presets
  * @author maripo
@@ -89,6 +92,30 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 	public EasyPresets(EasyPresets parent) {
 		super();
 		this.parent = parent;
+		this.addToSourceEntries();
+	}
+	
+	
+	private void addToSourceEntries () {
+		final String xmlPath = getXMLPath();
+		final SourceEntry customPresetsEntry =  new SourceEntry(SourceType.TAGGING_PRESET, 
+			xmlPath, "EasyPresets", "EasyPresets", true);
+		// Add to existing source list
+		List <SourceEntry> entries = PresetPrefHelper.INSTANCE.get();
+		for (SourceEntry entry: entries) {
+			if (xmlPath.equals(entry.url)) {
+				// Already added.
+				return;
+			}
+		}
+		entries.add(customPresetsEntry);
+		PresetPrefHelper.INSTANCE.put(entries);
+		reloadAllPresets();
+	}
+	
+	public void reloadAllPresets () {
+		TaggingPresets.destroy();
+		TaggingPresets.initialize();
 	}
 	
 	public boolean isRoot() {
@@ -178,8 +205,6 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 							pp.addElement(tags);
 						}
 					}
-					TaggingPresets.addTaggingPresets(readResult);
-					// MainApplication.getToolbar().refreshToolbarControl();
 				}
 			} catch (FileNotFoundException e) {
 				Logging.debug("File not found: " + file.getAbsolutePath());

@@ -393,6 +393,7 @@ public class ManagePresetsDialog extends ExtendedDialog implements ListSelection
 		this.presets.setName(str);
 		if (this.presets.isRoot()) {
 			this.presets.saveTo();
+			this.presets.reloadAllPresets();
 		}
 		else {
 			this.parent.setElementAt(presets, this.index);
