@@ -95,7 +95,6 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 		this.addToSourceEntries();
 	}
 	
-	
 	private void addToSourceEntries () {
 		final String xmlPath = getXMLPath();
 		final SourceEntry customPresetsEntry =  new SourceEntry(SourceType.TAGGING_PRESET, 
@@ -113,9 +112,20 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 		reloadAllPresets();
 	}
 	
+	public interface EasyPresetsListener {
+		void onReload();
+	}
+	private EasyPresetsListener listener = null;
+	public void setListener(EasyPresetsListener listener) {
+		this.listener = listener;
+	}
+	
 	public void reloadAllPresets () {
 		TaggingPresets.destroy();
 		TaggingPresets.initialize();
+		if (this.listener != null) {
+			listener.onReload();
+		}
 	}
 	
 	public boolean isRoot() {
@@ -299,12 +309,12 @@ public class EasyPresets extends DefaultListModel<PresetsEntry> implements Prope
 		return comment.toString();
 	}
 	
-	Element getGroupElement(Document doc) {
+	private Element getGroupElement(Document doc) {
 		String name = this.getLocaleName();
 		return getGroupElement(doc, name);
 	}
 
-	Element getGroupElement(Document doc, String name) {
+	private Element getGroupElement(Document doc, String name) {
 		Element groupElement = doc.createElement("group");
 		if (name != null) {
 			groupElement.setAttribute("name", name);
