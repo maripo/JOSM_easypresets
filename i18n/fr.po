@@ -213,7 +213,7 @@ msgid "Preset Editor"
 msgstr "Éditeur du preset"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:168
-msgid "PresetEditorDialogreset Name"
+msgid "Preset Name"
 msgstr "Nom du preset"
 
 #: org/maripo/josm/easypresets/ui/editor/PresetEditorDialog.java:175
